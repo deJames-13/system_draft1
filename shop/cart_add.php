@@ -1,6 +1,11 @@
 <?php
+
 session_start();
-require_once "../scripts/db-config.php";
+require_once '../scripts/db-config.php';
+if (!isset($_SESSION['userId'])) {
+    header("Location: ./?page=shop");
+    exit;
+}
 
 if (empty($_SESSION['currentItemID']) && !$_GET['isquickAdd']) {
     header("Location: ./");

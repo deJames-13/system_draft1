@@ -52,61 +52,134 @@ try {
 } catch (Exception $e) {
   echo $e->getMessage();
 }
-
+// Group Result arry
+$groupedResult = [];
 ?>
 
-<div class="shop-panel-wrapper container p-6 mb-8 mx-4 border border-t-2 border-accent overflow-scroll rounded-t-xl flex flex-col items-start">
-  <div class="container border-0 border-b-2 pb-2 text-3xl text-accent flex justify-between items-center ">
+<!-- -------------------------------------------------------------- -->
+<!-- ORDER LISTS -->
+<!-- -------------------------------------------------------------- -->
+
+
+<div class="relative shop-panel-wrapper container p-6 mb-8 mx-4 border border-t-2 border-accent overflow-scroll rounded-t-xl flex flex-col items-start">
+  <div class="container border-0 border-b-2 pb-2  text-accent flex justify-between items-center ">
+
+    <!-- TITLE -->
     <div class="flex space-x-3 items-center">
       <i class="fas fa-cart-shopping"></i>
-      <h1 class="font-bold">Your Orders</h1>
+      <h1 class="font-bold text-xl md:text-3xl">Your Orders</h1>
     </div>
 
-    <div id="ordertype" class="flex space-x-4 items-center ">
-      <a href="?page=orders&type=pending" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'pending' ? 'bg-primary30 border' : 'bg-none' ?>  hover:bg-secondary50">Pending</a>
-      <a href="?page=orders&type=shipped" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'shipped' ? 'bg-primary30 border' : 'bg-none' ?>  hover:bg-secondary50">Shipped</a>
-      <a href="?page=orders&type=delivered" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'delivered' ? 'bg-primary30 border' : 'bg-none' ?>  hover:bg-secondary50">Delivered</a>
-      <a href="?page=orders&type=cancelled" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'cancelled' ? 'bg-primary30 border' : 'bg-none' ?>  hover:bg-secondary50">Cancelled</a>
+    <!-- Menu Category -->
+    <div id="ordertype" class=" space-x-2 items-center hidden md:flex">
+      <a href="?page=orders&type=pending" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'pending' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Pending</a>
+      <a href="?page=orders&type=shipped" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'shipped' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Shipped</a>
+      <a href="?page=orders&type=delivered" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'delivered' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Delivered</a>
+      <a href="?page=orders&type=cancelled" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'cancelled' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Cancelled</a>
     </div>
+
+    <!-- Menu Mobile -->
+    <div class="p-1 px-2 rounded-full border border-accent hover:bg-primary50 md:hidden">
+      <a class="inline-block"><i class="fas fa-caret-down"></i></a>
+    </div>
+
 
   </div>
 
   <!-- Order List -->
   <div class="w-full flex flex-col mt-2 space-y-4">
     <?php foreach ($result as $i => $row) : ?>
-
       <?php
-      $index = $i + 1;
+      $orderStatus = $row['status'];
+      $prevID = null;
+
+      if ($type != strtolower($orderStatus)) {
+        continue;
+      }
+
+
+      // Result Info unpack
       $id = $row['id'];
       $itemId = $row['product_id'];
       $itemName = $row['item_name'];
       $itemPrice = $row['price'];
       $itemQuantity = $row['quantity'];
       $itemImage = $row['image_dir'];
+      $priceCost = $itemPrice * $itemQuantity;
       $total = $row['cost'];
+      $tax = 0.12;
+      $subtotal = $priceCost + ($priceCost * $tax);
       $shippingType = $row['ship_type'];
       $shippingDate = $row['ship_date'];
       $shipAmount = $row['shipping_fee'];
-      $orderStatus = $row['status'];
 
+      // Groups the items based on order id
 
+      if ($prevId != $id) {
+        $info = [
+          'id' => $id,
+          'ship_type' => $shippingType,
+          'ship_date' => $shippingDate,
+          'status' =>   $orderStatus,
+          'shipping_fee' => $shipAmount,
+          'items' => [
+            "item_$itemId" => [
+              'product_id' => $itemId,
+              'item_name' => $itemName,
+              'price' => $itemPrice,
+              'quantity' => $itemQuantity,
+              'image_dir' => $itemImage,
+              'cost' => $total
+            ]
+          ]
+        ];
+        $groupedResult["order_$id"] = $info;
+      } else {
+        $item = [
+          'product_id' => $itemId,
+          'item_name' => $itemName,
+          'price' => $itemPrice,
+          'quantity' => $itemQuantity,
+          'image_dir' => $itemImage,
+          'cost' => $total
+        ];
+        $groupedResult["order_$id"]['items']["item_$itemId"] = $item;
+      }
 
+      $index = $i + 1;
       ?>
 
       <!-- Order -->
-      <div class="container flex flex-col-reverse my-4">
+
+
+      <!-- Order ID -->
+      <?php if ($prevID != $id) : ?>
+        <div class="container p-1 flex flex-col space-y-2 my-2 pb-4">
+          <div class="container flex justify-between items-center border-b-2 border-accent ">
+            <h1 class=" text-ellipsis whitespace-nowrap pt-2 mb-2">
+              Order ID:
+              <span class="text-lg font-bold"><?= $id ?></span>
+            </h1>
+            <?php if ($type == 'pending') : ?>
+              <div class="bg-primary10 mx-2 flex items-center justify-center aspect-square border border-accent rounded hover:border-2 b hover:bg-primary">
+                <a class="px-2" href="./?page=orders&id=<?= $id ?>"><i class="fas fa-bars"></i></a>
+              </div>
+            <?php endif; ?>
+          </div>
+
+        <?php endif; ?>
 
         <!-- Order Card -->
-        <div class="border border-accent rounded-md bg-primary10 hover:border-2 hover:bg-primary30 lg:flex lg:space-x-4">
+        <div class="h-full border border-accent rounded-md bg-primary10 hover:border-2 hover:bg-primary30 lg:flex lg:space-x-4">
 
           <!-- Item Image -->
-          <div class="container h-32 p-8 flex justify-center items-center bg-white rounded-t-md lg:rounded-l-md  lg:h-48 lg:max-w-xs ">
-            <img src="<?= $itemImage ?>" alt="" class=" object-contain h-full w-full" />
+          <div class="container h-52 flex justify-center items-center bg-white rounded-t-md lg:rounded-tr-none lg:rounded-l-md lg:max-w-xs ">
+            <img src="<?= $itemImage ?>" alt="" class="object-contain h-full w-full" />
           </div>
 
           <div class="container px-4 py-4 lg:flex  lg:justify-between lg:space-x-4">
 
-            <!-- Cart Info -->
+            <!-- Order Info -->
             <div class="flex flex-col h-full justify-between">
               <div class=" grid grid-cols-1 gap-x-4 text-sm font-light md:px-8 lg:px-0 md:grid-cols-2">
 
@@ -119,117 +192,102 @@ try {
 
                 <!-- Price -->
                 <p class="text-ellipsis whitespace-nowrap hidden md:block">Price</p>
-                <p> ₱ <?= $itemPrice ?> x<?= $itemQuantity ?></p>
-
-                <p class="text-ellipsis whitespace-nowrap hidden md:block">Shipping</p>
-                <p> ₱ <?= $shipAmount ?></p>
+                <p> ₱ <span id="txtPrc_<?= $id . '_' . $itemId ?>"><?= $itemPrice ?></span> x <span id="txtQuant<?= $id . '_' . $item_id ?>"><?= $itemQuantity ?></span></p>
 
                 <p class="text-ellipsis whitespace-nowrap hidden md:block">VAT</p>
-                <p> 12% </p>
+                <p> <?= $tax * 100 ?>%</p>
+
+                <p class="text-ellipsis whitespace-nowrap hidden md:block">Sub Total</p>
+                <p> <span id="txtSub_<?= $id . '_' . $itemId ?>"><?= $subtotal ?></span></p>
+                <p class="text-ellipsis whitespace-nowrap hidden md:block">Shipping Fee</p>
+                <p> ₱ <?= $shipAmount ?></p>
               </div>
 
               <!-- Total -->
-              <div class="py-4 md:px-8 lg:px-0">
-                <p class="text-md font-semibold">Total: <strong> ₱<?= $total ?></strong></p>
+              <div class="pt-4 md:px-8 lg:px-0">
+                <p class="text-md">Item Total: <strong> ₱<span id="txtTotal"><?= $total ?></span></strong></p>
               </div>
             </div>
-
 
             <!-- Quantity Buttons -->
             <div id="qtyBtns_<?= $index ?>" class="menu-hidden h-full flex flex-row-reverse justify-around lg:flex-col  items-center">
 
-
               <!-- Plus Qty -->
-              <button onclick="setQty(this)" name="addBtn_<?= $index ?>" id="addBtn_<?= $index ?>" class="border p-2 aspect-square flex items-center justify-center border-accent hover:bg-primary50">
+              <button onclick="setQty(this)" name="addBtn_<?= $id . '_' . $item_id ?>" id="addBtn_<?= $id . '_' . $itemId ?>" class="border p-2 aspect-square flex items-center justify-center border-accent hover:bg-primary50">
                 <i class="fas fa-plus"></i>
               </button>
 
-
-              <div id="setQty_<?= $index ?>" class="p-2 aspect-square flex items-center justify-center">
+              <!-- Qty -->
+              <div id="setQty_<?= $id . '_' . $itemId ?>" class="p-2 aspect-square flex items-center justify-center">
                 <p class="text-semibold text-lg">
                   <?= $itemQuantity ?>
                 </p>
               </div>
 
-
               <!-- Sub Qty -->
-              <button onclick="setQty(this)" name="subBtn_<?= $index ?>" id="subBtn_<?= $index ?>" class="border p-2 aspect-square flex items-center justify-center border-accent hover:bg-primary50">
+              <button onclick="setQty(this)" name="subBtn_<?= $id . '_' . $item_id ?>" id="subBtn_<?= $id . '_' . $itemId ?>" class="border p-2 aspect-square flex items-center justify-center border-accent hover:bg-primary50">
                 <i class="fas fa-minus"></i>
               </button>
 
             </div>
           </div>
 
-
-
           <!-- Actions -->
-          <div class="">
+          <div class="<?php echo $type != 'pending' ? 'hidden' : '' ?>">
             <div id="btnShow_<?= $index ?>" onclick="swapCardAction(this)" class="h-full p-4 flex justify-center items-center rounded-b-md border-t lg:border-l lg:rounded-b-none lg:rounded-br-md lg:rounded-tr-md hover:bg-secondary30">
-              <i class="fas fa-bars"></i>
+              <i class="fas fa-pen"></i>
             </div>
           </div>
-          <div class="menu-hidden flex items-center justify-around lg:flex-col">
-            <a href="./?page=orders&idx=<?= $index ?>" class="flex items-center justify-center w-full h-full p-4 border-t border-accent rounded-bl-md lg:rounded-b-none lg:rounded-tr-md lg:border-t-0 lg:border-l hover:bg-primary">
-              <i class="fas fa-pen hover:text-secondary"></i>
+          <div class="menu-hidden flex flex-row-reverse items-center justify-around lg:flex-col">
+
+            <a onclick="manageOrder(this)" name="btnUpdateOrderItem_<?= $id . '_' . $itemId ?>" id="btnUpdateOrderItem_<?= $id . '_' . $itemId ?>" class="flex items-center justify-center w-full h-full border-t border-accent p-4 rounded-br-md lg:rounded-b-none lg:rounded-tr-md border-l lg:border-t-0 hover:bg-primary">
+              <i class=" fas fa-check hover:text-secondary"></i>
             </a>
-            <div id="btnHide_<?= $index ?>" onclick="swapCardAction(this)" class="flex items-center justify-center w-full h-full border-t border-accent p-4 rounded-br-md lg:rounded-b-none lg:rounded-br-md lg:border-l hover:bg-red-300">
-              <i class="fas fa-xmark hover:text-red-600"></i>
-            </div>
+
+            <button onclick="manageOrder(this)" name="btnDeleteOrderItem_<?= $id . '_' . $itemId ?>" id="btnDeleteOrderItem_<?= $id . '_' . $itemId ?>" class="flex items-center justify-center w-full h-full p-4 border-t border-accent rounded-bl-md lg:rounded-b-none lg:rounded-br-md lg:border-t lg:border-l hover:bg-red-300">
+              <i class="fas fa-trash hover:text-red-600"></i>
+            </button>
           </div>
 
         </div>
 
-
-        <!-- Order ID -->
-
-        <?php if (!isset($prevID) || $prevID != $id) : ?>
-          <p class=" text-ellipsis whitespace-nowrap pt-2 md:block">
-            Order ID:
-            <span class="text-lg font-bold"><?= $id ?></span>
-          </p>
-          <div class="h-[2px] w-full bg-accent"></div>
-        <?php endif; ?>
-
-        <?php $prevID = $id; ?>
-
-      </div>
-
-
+        <?php if ($result[$index]['id'] != $id) : ?>
+        </div>
+      <?php endif; ?>
+      <?php $prevID = $id; ?>
     <?php endforeach; ?>
-
   </div>
-
-
   <br /><br />
 </div>
 
-<?php if (!empty($_GET['idx']) && is_numeric($_GET['idx'])) : ?>
+
+<!-- -------------------------------------------------------------- -->
+<!-- Manage an Order -->
+<!-- -------------------------------------------------------------- -->
+<?php
+$isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
+?>
+<?php if ($isValid) : ?>
 
   <?php
 
-  $index = $_GET['idx'] - 1;
-  $row = $result[$index];
+  $id = $_GET['id'];
   $customerName = $row['customer_name'];
   $customerAddress = $row['address'];
-  $id = $row['id'];
-  $itemId = $row['product_id'];
-  $itemName = $row['item_name'];
-  $itemPrice = $row['price'];
-  $itemQuantity = $row['quantity'];
-  $itemImage = $row['image_dir'];
-  $subtotal = $itemPrice * $itemQuantity;
+  $order = $groupedResult["order_$id"];
   $tax = 0.12;
-  $subtotal = $subtotal + ($subtotal * $tax);
-  $total = $row['cost'];
-  $shippingType = $row['ship_type'];
-  $shippingDate = $row['ship_date'];
-  $shipAmount = $row['shipping_fee'];
-  $orderStatus = $row['status'];
+  $shippingType = $order['ship_type'];
+  $shippingDate = $order['ship_date'];
+  $shipAmount = $order['shipping_fee'];
+  $orderStatus = $order['status'];
+
+  $items = $order['items'];
 
   ?>
 
+
   <!-- Manage an Order -->
-  <div class="fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
+  <div class="<? $isItem ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
       <div class="fixed inset-0 transition-opacity">
@@ -239,95 +297,114 @@ try {
         &#8203;
       </span>
 
-      <div class="h-[95%] inline-block align-center overflow-y-auto py-8 transform transition-all align-middle w-full max-w-xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+      <div class="h-full inline-block align-center py-4 transform transition-all align-middle w-full max-w-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
 
-        <form method="post" action="./order_add.php" class="container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl h-full border border-accent30 bg-white pt-4">
+        <form method="post" action="./order_update.php?id=<?= $id ?>" class="pb-12 relative container flex flex-col justify-between rounded-lg overflow-y-auto h-full shadow-xl border border-accent30 bg-white pt-4">
 
           <div class="flex px-4 pb-4 items-center justify-between border-b-2">
             <h1 class="text-xl font-bold text-accent md:text-3xl">
               Order #<?= $id ?>
             </h1>
-            <a class="py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" href="./?page=orders" name="closeModal" id="closeModal_<?= $itemId ?>"><i class=" fas fa-times"></i></a>
+            <a class="px-2 rounded border-red-600 border hover:bg-red-300 mr-2" href="./?page=orders" name="closeModal" id="closeModal_<?= $itemId ?>"><i class=" fas fa-times"></i></a>
           </div>
 
-          <div class="h-full py-3 px-6 text-lef flex flex-col justify-between">
+          <div class="py-3 px-6 text-left flex flex-col space-y-4">
             <!-- Order Details -->
-            <div>
-              <!-- Customer Info -->
-              <div class="flex justify-between items-center">
-                <p class="text-sm font-light">
-                  Name: <?= $customerName ?>
-                </p>
+            <!-- Customer Info -->
+            <div class="flex justify-between items-center">
+              <p class="text-sm font-light">
+                Name: <?= $customerName ?>
+              </p>
 
-                <!-- Order Date -->
-                <p class="text-sm font-light">
-                  Order Date: <strong><?php echo date('M d, Y') ?></strong>
-                </p>
-              </div>
-              <div class="flex flex-col items-start my-2">
-                <p class="text-sm font-light">
-                  Shipping Address:
-                  <br>
-                </p>
-                <textarea type="text" class="text-sm w-full items-start px-0 font-light resize-none" name="shipAddr" id="shipAddr" value="<?= $customerAddress ?>"><?= $customerAddress ?></textarea>
-              </div>
+              <!-- Order Date -->
+              <p class="text-sm font-light">
+                Order Date: <strong><?php echo date('M d, Y') ?></strong>
+              </p>
+            </div>
+            <div class="flex flex-col items-start my-2">
+              <p class="text-sm font-light">
+                Shipping Address:
+                <br>
+              </p>
+              <textarea type="text" class="text-sm w-full items-start px-0 font-light resize-none" name="shipAddr" id="shipAddr" value="<?= $customerAddress ?>"><?= $customerAddress ?></textarea>
+            </div>
 
-              <!-- Item ID -->
-              <div class="flex justify-between items-center">
-                <p class="text-sm font-light">
-                  Item ID
-                </p>
-                <h1 class="text-md font-bold">
-                  #<?= $itemId ?>
+            <h1 class="font-bold">Products Ordered</h1>
+
+            <div class="container max-h-60 overflow-y-scroll flex flex-col space-y-2">
+
+              <div class="hidden grid grid-cols-1 gap-5 text-left  md:grid-cols-4 md:grid border-b-2 border-accent">
+                <!-- Item ID -->
+                <h1 class="text-md font-light">
                 </h1>
-              </div>
 
-              <!-- Item Name -->
-              <div class="flex justify-between items-center">
-                <p class="text-sm font-light">
+                <!-- Item Name -->
+                <h1 class="text-md">
                   Name
-                </p>
-                <h1 class="text-lg">
-                  <?= $itemName ?>
                 </h1>
-              </div>
-
-              <!-- Price -->
-              <div class="flex justify-between items-center">
-                <p class="text-sm font-light">
+                <!-- Price -->
+                <p>
                   Price
                 </p>
-                <h1 class="text-md">
-                  P<?= $itemPrice ?>
-                </h1>
-              </div>
-
-              <!-- Quantity -->
-              <div class="flex justify-between items-center">
-                <p class="text-sm font-light">
+                <!-- Qty -->
+                <p>
                   Qty
                 </p>
-                <h1 class="text-md">
-                  <?= $itemQuantity ?>
-                </h1>
               </div>
-              <div class="my-2 text-left">
-                <p class="self-start text-sm font-light"> Choose shipping mode: </p>
+              <?php foreach ($items as $row) : ?>
+                <?php
+                $itemId = $row['product_id'];
+                $itemName = $row['item_name'];
+                $itemPrice = $row['price'];
+                $itemQuantity = $row['quantity'];
+                $itemImage = $row['image_dir'];
+                $subtotal = $itemPrice * $itemQuantity;
+                $subtotal = $subtotal + ($subtotal * $tax);
+                $total = $row['cost'];
 
-                <div class="flex items-center space-x-8 px-4 p-2">
+                ?>
 
-                  <div id="std" onclick="setShipMode(this)" class="flex  space-x-4 items-center cursor-pointer">
-                    <div name="chkstd" id="chkStd" class=" bg-primary border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="fas fa-check"></i></div>
-                    <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Standard</span>
-                  </div>
-                  <div id="exp" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
-                    <div name="chkexp" id="chkExp" class=" w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
-                    <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Express</span>
-                  </div>
-                  <div id="prt" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
-                    <div name="chkprt" id="chkPrt" class=" w-6 h-6 aspect-square border border-accent flex items-center justify-center rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
-                    <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Priority</span>
-                  </div>
+                <div class="grid grid-cols-1 gap-5 text-left  md:grid-cols-4">
+                  <!-- Item ID -->
+                  <h1 class="text-md font-light">
+                    <strong>Item #<?= $itemId ?></strong>
+                  </h1>
+
+                  <!-- Item Name -->
+                  <h1 class="text-md">
+                    <?= $itemName ?>
+                  </h1>
+                  <!-- Price -->
+                  <p>
+                    P<?= $itemPrice ?>
+                  </p>
+                  <!-- Qty -->
+                  <p>
+                    x<?= $itemQuantity ?>
+                  </p>
+                </div>
+
+                <hr>
+              <?php endforeach; ?>
+            </div>
+
+            <!-- Shipping -->
+            <div class="my-2 text-left">
+              <p class="self-start text-sm font-light"> Choose shipping mode: </p>
+
+              <div class="flex items-center space-x-8 px-4 p-2">
+
+                <div id="std" onclick="setShipMode(this)" class="flex  space-x-4 items-center cursor-pointer">
+                  <div name="chkstd" id="chkStd" class=" bg-primary border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="fas fa-check"></i></div>
+                  <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Standard</span>
+                </div>
+                <div id="exp" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
+                  <div name="chkexp" id="chkExp" class=" w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
+                  <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Express</span>
+                </div>
+                <div id="prt" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
+                  <div name="chkprt" id="chkPrt" class=" w-6 h-6 aspect-square border border-accent flex items-center justify-center rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
+                  <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Priority</span>
                 </div>
               </div>
             </div>
@@ -336,6 +413,15 @@ try {
             <div class="flex flex-col space-y-2">
 
               <div class="h-[0.1rem] bg-accent"></div>
+              <!-- VAT -->
+              <div class="flex justify-between items-center">
+                <p class="text-sm font-light">
+                  VAT
+                </p>
+                <h1 class="text-md">
+                  <?= $tax * 100 ?>%
+                </h1>
+              </div>
               <!-- Sub Total -->
               <div class="flex justify-between items-center">
                 <p class="text-sm font-light">
@@ -354,15 +440,6 @@ try {
                   P<?= $shippingfee ?? 150 ?>
                 </h1>
               </div>
-              <!-- VAT -->
-              <div class="flex justify-between items-center">
-                <p class="text-sm font-light">
-                  VAT
-                </p>
-                <h1 class="text-md">
-                  <?= $tax * 100 ?>%
-                </h1>
-              </div>
               <!-- Total -->
               <div class="flex justify-between items-center">
                 <p class="text-lg font-bold">
@@ -376,19 +453,22 @@ try {
 
           </div>
 
-          <input type="hidden" name="productId" value="<?= $itemId ?>">
-          <input type="hidden" name="quantity" value="<?= $qty ?>">
-          <input type="hidden" name="subtotal" id="subtotal" value="<?= $subtotal ?>">
-          <input type="hidden" name="shippingType" id="shippingType" value="Standard">
-          <input type="hidden" name="totalCost" id="totalCost" value="<?= $total ?>">
+          <!-- Inputs for POST -->
+          <div>
+            <input type="hidden" name="productId" value="<?= $itemId ?>">
+            <input type="hidden" name="quantity" value="<?= $itemQuantity ?>">
+            <input type="hidden" name="subtotal" id="subtotal" value="<?= $subtotal ?>">
+            <input type="hidden" name="shippingType" id="shippingType" value="Standard">
+            <input type="hidden" name="totalCost" id="totalCost" value="<?= $total ?>">
+          </div>
 
 
           <!-- BUTTONS -->
-          <div class="bg-gray-200 px-4 py-3 text-right ">
+          <div class="bottom-0 fixed md:bottom-3 bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
 
-            <button class="py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" href="./?page=orders" name="closeModal" id="closeModal_<?= $itemId ?>"><i class=" fas fa-times"></i> Cancel Order</button>
-            <button type="submit" class="py-2 px-4 bg-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Update Order</button>
+            <a class="cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" onclick="manageOrder(this)" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>"><i class=" fas fa-times"></i> Cancel Order</a>
 
+            <button onclick="manageOrder(this)" name="btnUpdateOrder_<?= $id ?>" id="btnUpdateOrder_<?= $id ?>" type="submit" class="py-2 px-4 bg-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Update Order</button>
           </div>
 
         </form>

@@ -1,8 +1,45 @@
 var lastChecked = document.getElementById('chkStd');
+var checkOut = [];
 
 function cardClicked(card) {
   var id = card.id.split('_')[1];
   window.location.replace('./?item_id=' + id);
+}
+
+function manageOrder(btn) {
+  var [name, id, item_id] = btn.name.split('_');
+
+  console.log('Clicked from', btn.name);
+
+  if (name == 'btnDeleteOrder') {
+    window.location.replace('./order_delete.php?id=' + id);
+  } else if (name == 'btnUpdateOrder') {
+    window.location.replace('./order_update.php?id=' + id);
+  } else if (name == 'btnUpdateOrderItem') {
+    var qty = document.getElementById('setQty_' + id + '_' + item_id).innerText;
+    var sub = document.getElementById('txtPrc_' + id + '_' + item_id).innerText;
+    var cost = parseInt(sub) * parseInt(qty);
+    var tax_cost = cost * 0.12;
+    var total = parseInt(cost) + parseInt(tax_cost);
+
+    console.log('sub: ', sub);
+    console.log('redirecting to: ', './order_updateitem');
+    window.location.replace(
+      './order_update.php?id=' +
+        id +
+        '&type=item' +
+        '&item=' +
+        item_id +
+        '&qty=' +
+        qty +
+        '&sub=' +
+        total
+    );
+  } else if (name == 'btnDeleteOrderItem') {
+    window.location.replace(
+      './order_delete.php?id=' + id + '&type=item' + '&item=' + item_id
+    );
+  }
 }
 
 function addToCart(btn) {
@@ -43,6 +80,7 @@ function updateCart(id) {
 
 function setQty(btn) {
   var [name, id, itemId] = btn.id.split('_');
+  console.log('btn: ', btn.id);
 
   if (btn.id.split('_').length > 1) {
     var el = document.getElementById(
@@ -134,4 +172,27 @@ function setShipMode(el) {
 
 function btnlog(btn) {
   console.log('Clicked from', btn.id);
+}
+
+function checkCart(btn) {
+  var [name, id] = btn.id.split('_');
+  btn.classList.toggle('bg-primary');
+  if (!checkOut.find((item) => item === id)) {
+    checkOut.push(id);
+  } else {
+    checkOut = checkOut.filter((item) => item !== id);
+  }
+  if (checkOut.length <= 1) {
+    var btn = document.getElementById('btnCheckOut');
+    btn.classList.toggle('hidden');
+  }
+  // console.log('Check Out Ids: ', checkOut);
+}
+
+function checkOutCart(btn) {
+  var [name, id] = btn.id.split();
+  if (checkOut.length > 0) {
+    var ids = checkOut.join(',');
+    window.location.replace('./cart_checkout.php?ids=' + ids);
+  }
 }

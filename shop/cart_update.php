@@ -27,7 +27,7 @@ try {
             "id" => $_GET['id']
         ]
     );
-    echo $res ? header('Location: ./?page=cart') :  "Internal error";
+    echo $res ? header("Location: ./?page=cart&res=$res") :  "Internal error";
 } catch (Exception $ex) {
     //throw $th;
     echo $ex->getMessage();

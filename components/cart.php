@@ -4,7 +4,6 @@ $userName = $_SESSION['userName'];
 $customerId = $_SESSION['userID'];
 
 $query = <<<SQL
-
 SELECT 
     c.id,
     c.id as cart_id,
@@ -14,7 +13,6 @@ SELECT
     p.item_name,
     p.price,
     c.quantity,
-    (p.price * c.quantity) as cost_per_item,
     p.image_dir
 
     FROM cart as c
@@ -44,15 +42,22 @@ try {
 
 
 
-
 ?>
 
 
 <div class="shop-panel-wrapper container p-6 mb-8 mx-4 border border-t-2 border-accent overflow-scroll rounded-t-xl flex flex-col items-start space-y-6">
 
     <div class="container border-0 border-b-2 pb-2 text-3xl text-accent flex space-x-3 items-center">
-        <i class="fas fa-cart-shopping"></i>
-        <h1 class="font-bold">Your Cart</h1>
+
+        <div class=" container pb-2  text-accent flex justify-between items-center ">
+            <div class="flex space-x-2 items-center">
+                <i class="fas fa-cart-shopping"></i>
+                <h1 class="cursor-pointer font-bold hover:text-secondary">Your Cart</h1>
+            </div>
+            <button onclick="checkOutCart(this)" id="btnCheckOut" class="hidden p-2 rounded border-accent text-sm font-semibold bg-primary30 border border-b-2 hover:bg-secondary50">
+                Check Out
+            </button>
+        </div>
     </div>
     <?php foreach ($result as $row) : ?>
 
@@ -63,7 +68,9 @@ try {
         $itemPrice = $row['price'];
         $itemQuantity = $row['quantity'];
         $itemImage = $row['image_dir'];
-        $total = $row['cost_per_item'];
+        $costPrice = $itemPrice * $itemQuantity;
+        $tax = 0.12;
+        $total = $costPrice + ($costPrice * $tax);
 
 
         ?>
@@ -73,7 +80,7 @@ try {
             <div class="border border-accent rounded-md bg-primary10 hover:border-2 hover:bg-primary30 lg:flex lg:space-x-4">
 
                 <!-- Item Image -->
-                <div class="container h-32 p-8 flex justify-center items-center bg-white rounded-t-md lg:rounded-l-md  lg:h-48 lg:max-w-xs ">
+                <div class="container h-32 p-8 flex justify-center items-center bg-white rounded-t-md lg:rounded-tr-none lg:rounded-l-md  lg:h-48 lg:max-w-xs ">
                     <img src="<?= $itemImage ?>" alt="" class=" object-contain h-full w-full" />
                 </div>
 
@@ -123,20 +130,20 @@ try {
                     </div>
                 </div>
                 <!-- Actions -->
-                <div class="">
-                    <div id="btnShow_<?= $id ?>" onclick="swapCardAction(this)" class="h-full p-4 flex justify-center items-center rounded-b-md border-t lg:border-l lg:rounded-b-none lg:rounded-br-md lg:rounded-tr-md hover:bg-secondary30">
+                <div class="flex flex-row-reverse items-center justify-around lg:flex-col">
+                    <div onclick="checkCart(this)" name="btnCartCheck_<?= $id ?>" id="btnCartCheck_<?= $id ?>" class="flex items-center justify-center w-full h-full p-4 border-l border-t border-accent rounded-br-md lg:rounded-b-none lg:rounded-tr-md lg:border-t-0  hover:bg-primary">
+                        <i class="fas fa-check "></i>
+                    </div>
+                    <div id="btnShow_<?= $id ?>" onclick="swapCardAction(this)" class="w-full h-full p-4 flex justify-center items-center rounded-bl-md border-t border-accent lg:border-l lg:rounded-b-none lg:rounded-br-md hover:bg-secondary30">
                         <i class="fas fa-pen"></i>
                     </div>
                 </div>
                 <div class="menu-hidden flex items-center justify-around lg:flex-col">
-                    <div class="flex items-center justify-center w-full h-full p-4 border-t border-accent rounded-bl-md lg:rounded-b-none lg:rounded-tr-md lg:border-t-0 lg:border-l hover:bg-primary">
-                        <i class="fas fa-check "></i>
-                    </div>
-                    <div id="btnHideAndUpdate_<?= $id ?>" onclick="swapCardAction(this)" class="flex items-center justify-center w-full h-full border-t border-accent p-4 lg:rounded-b-none  lg:border-l hover:bg-blue-300">
+                    <div id="btnHideAndUpdate_<?= $id ?>" onclick="swapCardAction(this)" class="flex items-center justify-center w-full h-full border-t rounded-bl-md  border-accent p-4 lg:rounded-b-none lg-border-t-0 lg:rounded-tr-md lg:border-l hover:bg-blue-300">
                         <i class="hidden fas fa-angle-right lg:block hover:bg-blue-300"></i>
-                        <i class="fas fa-angle-up lg:hidden hover:bg-blue-300"></i>
+                        <i class="fas fa-angle-down lg:hidden hover:bg-blue-300"></i>
                     </div>
-                    <div class="flex items-center justify-center w-full h-full border-t border-accent p-4 rounded-br-md lg:rounded-b-none lg:rounded-br-md lg:border-l hover:bg-red-300">
+                    <div class="flex items-center justify-center w-full h-full border-t border-l border-accent p-4 rounded-br-md lg:rounded-b-none lg:rounded-br-md  hover:bg-red-300">
                         <i onclick="deleteCart(<?= $itemId ?>)" class="fas fa-trash hover:text-red-600"></i>
                     </div>
                 </div>

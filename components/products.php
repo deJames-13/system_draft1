@@ -39,9 +39,9 @@ try {
     $_SESSION['currentItemID'] = $itemId;
     $isOrder = isset($_GET['type']) && $_GET['type'] == "order" ? 1 : 0;
     $qty = isset($_GET['qty']) ? $_GET['qty'] : 1;
-    $subtotal = $itemPrice * $qty;
     $tax = 0.12;
-    $subtotal = $subtotal + ($subtotal * $tax);
+    $priceCost = $itemPrice * $qty;
+    $subtotal = $priceCost + ($priceCost * $tax);
     $shippingfee = 150;
     $shipdate = date_format(date_add(date_create(date('M d, Y')), date_interval_create_from_date_string("7 days")), 'Y-m-d');
     $total = $subtotal + $shippingfee;
@@ -158,7 +158,7 @@ try {
                     &#8203;
                 </span>
 
-                <div class="h-[80%] inline-block align-center overflow-y-auto py-8 transform transition-all align-middle w-full max-w-xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                <div class="h-full inline-block align-center overflow-y-auto py-2 transform transition-all align-middle w-full max-w-xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
 
                     <form method="post" action="./order_add.php" class="container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl h-full border border-accent30 bg-white pt-4">
                         <h1 class="text-xl pb-4 font-bold text-accent border-b-2 md:text-3xl">
@@ -184,8 +184,7 @@ try {
                                         Shipping Address:
                                         <br>
                                     </p>
-                                    <textarea type="text" class="text-sm w-full items-start px-0 font-light resize-none" name="shipAddr" id="shipAddr" value="<?= $customerAddress ?>"><?= $customerAddress ?>
-                                </textarea>
+                                    <textarea type="text" class="text-sm w-full items-start px-0 font-light resize-none" name="shipAddr" id="shipAddr" value="<?= $customerAddress ?>"><?= $customerAddress ?></textarea>
                                 </div>
 
                                 <!-- Item ID -->
@@ -227,6 +226,7 @@ try {
                                         <?= $qty ?>
                                     </h1>
                                 </div>
+
                                 <div class="my-2 text-left">
                                     <p class="self-start text-sm font-light"> Choose shipping mode: </p>
 
@@ -252,6 +252,24 @@ try {
                             <div class="flex flex-col space-y-2">
 
                                 <div class="h-[0.1rem] bg-accent"></div>
+                                <!-- Price Cost -->
+                                <div class="flex justify-between items-center">
+                                    <p class="text-sm font-light">
+                                        Price Cost
+                                    </p>
+                                    <h1 class="text-md">
+                                        P<?= $priceCost ?>
+                                    </h1>
+                                </div>
+                                <!-- VAT -->
+                                <div class="flex justify-between items-center">
+                                    <p class="text-sm font-light">
+                                        VAT
+                                    </p>
+                                    <h1 class="text-md">
+                                        <?= $tax * 100 ?>%
+                                    </h1>
+                                </div>
                                 <!-- Sub Total -->
                                 <div class="flex justify-between items-center">
                                     <p class="text-sm font-light">
@@ -268,15 +286,6 @@ try {
                                     </p>
                                     <h1 id="shippingfee" class="text-md">
                                         P<?= $shippingfee ?>
-                                    </h1>
-                                </div>
-                                <!-- VAT -->
-                                <div class="flex justify-between items-center">
-                                    <p class="text-sm font-light">
-                                        VAT
-                                    </p>
-                                    <h1 class="text-md">
-                                        <?= $tax * 100 ?>%
                                     </h1>
                                 </div>
                                 <!-- Total -->
