@@ -48,7 +48,7 @@ try {
         ]
     );
 
-    header('Location: ../shop/?page=orders&status=success');
+    header("Location: ../shop/?page=orders&status=$res");
     $dbc->disconnect();
     exit;
 } catch (Exception $ex) {

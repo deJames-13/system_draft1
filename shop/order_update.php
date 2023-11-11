@@ -52,19 +52,19 @@ try {
                 'id' => $id,
             ]
         );
+        // $res = $dbc->update_into(
+        //     tableName: 'order_has_product',
+        //     data: [
+        //         'quantity' => $quantity,
+        //         'cost' => $subTotal,
+        //     ],
+        //     where: [
+        //         'order_id' => $id,
+        //         'product_id' => $productId
+        //     ]
+        // );
     }
 
-    $res = $dbc->update_into(
-        tableName: 'order_has_product',
-        data: [
-            'quantity' => $quantity,
-            'cost' => $subTotal,
-        ],
-        where: [
-            'order_id' => $id,
-            'product_id' => $productId
-        ]
-    );
 
     if ($res) {
         header("Location: ./?page=orders&res=item_update_success");

@@ -1,4 +1,4 @@
-var lastChecked = document.getElementById('chkStd');
+var lastChecked = document.getElementsByClassName('chkChecked')[0];
 var checkOut = [];
 
 function cardClicked(card) {
@@ -131,42 +131,39 @@ function toggleModal(btn) {
 }
 
 function setShipMode(el) {
-  console.log('clicked');
+  // console.log('clicked: ', el.id);
+  // console.log('clicked: ', lastChecked);
   var chk = el.firstElementChild;
   var icon = chk.firstElementChild;
   var inp = document.getElementById('shippingType');
   var total = document.getElementById('totalCost');
   var txtTotal = document.getElementById('txtTotal');
   var shippingfee = document.getElementById('shippingfee');
-  var subtotal = document.getElementById('subtotal');
+  var subtotal = document.getElementById('accsubtotal');
 
   if (el.id === 'std') {
     inp.value = 'Standard';
-    total.value = parseInt(subtotal.value) + 300;
-    shippingfee.innerText = '₱150';
+    total.value = parseInt(subtotal.innerText) + 150.0;
+    shippingfee.innerText = '150';
   } else if (el.id === 'exp') {
     inp.value = 'Express';
-    total.value = parseInt(subtotal.value) + 300;
-    shippingfee.innerText = '₱300';
+    total.value = parseInt(subtotal.innerText) + 300.0;
+    shippingfee.innerText = '300';
   } else if (el.id === 'prt') {
     inp.value = 'Priority';
-    total.value = parseInt(subtotal.value) + 500;
-    shippingfee.innerText = '₱500';
+    total.value = parseInt(subtotal.innerText) + 500.0;
+    shippingfee.innerText = '500';
   }
-  txtTotal.innerText = `₱${total.value}`;
+  txtTotal.innerText = total.value;
 
-  console.log('Total: ', txtTotal.innerText);
-  console.log('shippingfee: ', shippingfee.innerText);
-  console.log('Total: ', txtTotal.innerText);
-
+  chk.classList.toggle('chkChecked');
   chk.classList.toggle('bg-primary');
   chk.classList.toggle('border-b-2');
   icon.classList.toggle('hidden');
-
+  lastChecked.classList.toggle('chkChecked');
   lastChecked.classList.toggle('bg-primary');
   lastChecked.classList.toggle('border-b-2');
   lastChecked.firstElementChild.classList.toggle('hidden');
-
   lastChecked = chk;
 }
 
@@ -176,23 +173,27 @@ function btnlog(btn) {
 
 function checkCart(btn) {
   var [name, id] = btn.id.split('_');
+  var chkOutBtn = document.getElementById('btnCheckOut');
+
   btn.classList.toggle('bg-primary');
+
   if (!checkOut.find((item) => item === id)) {
     checkOut.push(id);
   } else {
     checkOut = checkOut.filter((item) => item !== id);
   }
-  if (checkOut.length <= 1) {
-    var btn = document.getElementById('btnCheckOut');
-    btn.classList.toggle('hidden');
+  if (
+    (checkOut.length == 1 && chkOutBtn.classList.contains('hidden')) ||
+    checkOut.length == 0
+  ) {
+    chkOutBtn.classList.toggle('hidden');
   }
-  // console.log('Check Out Ids: ', checkOut);
 }
 
 function checkOutCart(btn) {
   var [name, id] = btn.id.split();
   if (checkOut.length > 0) {
     var ids = checkOut.join(',');
-    window.location.replace('./cart_checkout.php?ids=' + ids);
+    window.location.replace('./?page=cart&ids=' + ids);
   }
 }

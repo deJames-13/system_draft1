@@ -87,11 +87,11 @@ $groupedResult = [];
   </div>
 
   <!-- Order List -->
+  <?php $prevId = null;   ?>
   <div class="w-full flex flex-col mt-2 space-y-4">
     <?php foreach ($result as $i => $row) : ?>
       <?php
       $orderStatus = $row['status'];
-      $prevID = null;
 
       if ($type != strtolower($orderStatus)) {
         continue;
@@ -109,7 +109,7 @@ $groupedResult = [];
       $total = $row['cost'];
       $tax = 0.12;
       $subtotal = $priceCost + ($priceCost * $tax);
-      $shippingType = $row['ship_type'];
+      $shippingType = $row['shipping_type'];
       $shippingDate = $row['ship_date'];
       $shipAmount = $row['shipping_fee'];
 
@@ -153,9 +153,9 @@ $groupedResult = [];
 
 
       <!-- Order ID -->
-      <?php if ($prevID != $id) : ?>
+      <?php if ($prevId != $id) : ?>
         <div class="container p-1 flex flex-col space-y-2 my-2 pb-4">
-          <div class="container flex justify-between items-center border-b-2 border-accent ">
+          <div class=" container flex justify-between items-center border-b-2 border-accent ">
             <h1 class=" text-ellipsis whitespace-nowrap pt-2 mb-2">
               Order ID:
               <span class="text-lg font-bold"><?= $id ?></span>
@@ -198,14 +198,14 @@ $groupedResult = [];
                 <p> <?= $tax * 100 ?>%</p>
 
                 <p class="text-ellipsis whitespace-nowrap hidden md:block">Sub Total</p>
-                <p> <span id="txtSub_<?= $id . '_' . $itemId ?>"><?= $subtotal ?></span></p>
+                <p>₱ <span id="txtSub_<?= $id . '_' . $itemId ?>"><?= $subtotal ?></span></p>
                 <p class="text-ellipsis whitespace-nowrap hidden md:block">Shipping Fee</p>
                 <p> ₱ <?= $shipAmount ?></p>
               </div>
 
               <!-- Total -->
               <div class="pt-4 md:px-8 lg:px-0">
-                <p class="text-md">Item Total: <strong> ₱<span id="txtTotal"><?= $total ?></span></strong></p>
+                <p class="text-md">Item Total: <strong> ₱ <span><?= $total ?></span></strong></p>
               </div>
             </div>
 
@@ -251,10 +251,10 @@ $groupedResult = [];
 
         </div>
 
-        <?php if ($result[$index]['id'] != $id) : ?>
+        <?php if ($index == count($result) || $result[$index]['id'] != $id) : ?>
         </div>
       <?php endif; ?>
-      <?php $prevID = $id; ?>
+      <?php $prevId = $id; ?>
     <?php endforeach; ?>
   </div>
   <br /><br />
@@ -280,8 +280,10 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
   $shippingDate = $order['ship_date'];
   $shipAmount = $order['shipping_fee'];
   $orderStatus = $order['status'];
-
   $items = $order['items'];
+
+  $accSubtotal;
+  $total;
 
   ?>
 
@@ -333,7 +335,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
             <div class="container max-h-60 overflow-y-scroll flex flex-col space-y-2">
 
-              <div class="hidden grid grid-cols-1 gap-5 text-left  md:grid-cols-4 md:grid border-b-2 border-accent">
+              <div class="hidden sm:grid grid-cols-1 gap-5 text-left  md:grid-cols-4 md:grid border-b-2 border-accent">
                 <!-- Item ID -->
                 <h1 class="text-md font-light">
                 </h1>
@@ -358,9 +360,9 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
                 $itemPrice = $row['price'];
                 $itemQuantity = $row['quantity'];
                 $itemImage = $row['image_dir'];
-                $subtotal = $itemPrice * $itemQuantity;
-                $subtotal = $subtotal + ($subtotal * $tax);
-                $total = $row['cost'];
+                $priceCost = $itemPrice * $itemQuantity;
+                $subtotal = $priceCost + ($priceCost * $tax);
+                $accSubtotal += $subtotal;
 
                 ?>
 
@@ -390,20 +392,24 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
             <!-- Shipping -->
             <div class="my-2 text-left">
-              <p class="self-start text-sm font-light"> Choose shipping mode: </p>
+              <p class="self-start text-sm font-light"> Choose shipping mode: <?= empty($shippingType) ?></p>
 
               <div class="flex items-center space-x-8 px-4 p-2">
 
                 <div id="std" onclick="setShipMode(this)" class="flex  space-x-4 items-center cursor-pointer">
-                  <div name="chkstd" id="chkStd" class=" bg-primary border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="fas fa-check"></i></div>
+                  <div name="chkstd" id="chkStd" class="<?= $shippingType == 'Standard' ? 'chkChecked bg-primary' : '' ?> border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary ">
+                    <i class="<?= $shippingType == 'Standard' ? '' : 'hidden' ?> fas fa-check"></i>
+                  </div>
+
                   <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Standard</span>
                 </div>
                 <div id="exp" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
-                  <div name="chkexp" id="chkExp" class=" w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
+                  <div name="chkexp" id="chkExp" class="<?= $shippingType == 'Express' ? 'chkChecked bg-primary' : '' ?> w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="<?= $shippingType == 'Express' ? 'bg-primary' : 'hidden' ?> fas fa-check"></i></div>
+
                   <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Express</span>
                 </div>
                 <div id="prt" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
-                  <div name="chkprt" id="chkPrt" class=" w-6 h-6 aspect-square border border-accent flex items-center justify-center rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
+                  <div name="chkprt" id="chkPrt" class="<?= $shippingType == 'Priority' ? 'chkChecked bg-primary' : '' ?> w-6 h-6 aspect-square border border-accent flex items-center justify-center rounded hover:transform hover:transition-all hover:bg-secondary "><i class="<?= $shippingType == 'Priority' ? 'bg-primary' : 'hidden' ?> fas fa-check"></i></div>
                   <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Priority</span>
                 </div>
               </div>
@@ -428,7 +434,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
                   Sub Total
                 </p>
                 <h1 class="text-md">
-                  P<?= $subtotal ?>
+                  ₱ <span id="accsubtotal"><?= $accSubtotal ?></span>
                 </h1>
               </div>
               <!-- Shipping Fee -->
@@ -436,8 +442,8 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
                 <p class="text-sm font-light">
                   Shipping Fee
                 </p>
-                <h1 id="shippingfee" class="text-md">
-                  P<?= $shippingfee ?? 150 ?>
+                <h1 class="text-md">
+                  ₱ <span id="shippingfee"><?= $shipAmount ?? 150 ?></span>
                 </h1>
               </div>
               <!-- Total -->
@@ -445,8 +451,9 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
                 <p class="text-lg font-bold">
                   Total
                 </p>
-                <h1 id="txtTotal" class="text-lg font-bold">
-                  P<?= $total ?>
+                <?php $total = $accSubtotal + $shipAmount ?>
+                <h1 class="text-lg font-bold">
+                  ₱ <span id="txtTotal"><?= $total ?></span>
                 </h1>
               </div>
             </div>
@@ -457,8 +464,8 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
           <div>
             <input type="hidden" name="productId" value="<?= $itemId ?>">
             <input type="hidden" name="quantity" value="<?= $itemQuantity ?>">
-            <input type="hidden" name="subtotal" id="subtotal" value="<?= $subtotal ?>">
-            <input type="hidden" name="shippingType" id="shippingType" value="Standard">
+            <input type="hidden" name="subtotal" id="subtotal" value="<?= $accSubtotal ?>">
+            <input type="hidden" name="shippingType" id="shippingType" value="<?= $shippingType ?? 'Standard' ?>">
             <input type="hidden" name="totalCost" id="totalCost" value="<?= $total ?>">
           </div>
 

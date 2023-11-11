@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once '../scripts/db-config.php';
 
@@ -6,50 +7,46 @@ if (!isset($_SESSION['userId'])) {
     header('Location: ../account/login.php');
     exit;
 }
-if (empty($_GET['ids'])) {
+if (empty($_POST['selected_cart_ids'])) {
     header('Location: ../shop/?page=cart');
     exit;
 }
 
-$cart_ids = explode(',', $_GET['ids']);
-$placeholders = implode(',', array_fill(0, count($cart_ids), '?'));
-$query = <<<SQL
-SELECT 
-    c.id,
-    c.id as cart_id,
-    c.customer_id,
-    cust.username,
-    c.product_id,
-    p.item_name,
-    p.price,
-    c.quantity,
-    p.image_dir
-
-    FROM cart as c
-    INNER JOIN customer as cust
-    ON c.customer_id = cust.id
-
-    INNER JOIN product as p
-    ON c.product_id = p.id
-
-    WHERE cust.username = ? AND c.id IN ($placeholders)
-    ORDER BY c.id DESC
-    ;
-SQL;
-
 try {
-    $params = array_merge([$_SESSION['userName']], $cart_ids);
-    $dbc = new DatabaseConfig();
-    $res = $dbc->executeQuery(
-        query: $query,
-        params: $params
-    );
 
-    foreach ($res as $row) {
-        print_r($row);
-        echo '<br>';
-        echo '<br>';
+    $cart_ids = explode(',', $_POST['selected_cart_ids']);
+    $cart_items = $_SESSION['selected_cart_items'];
+    $placeholders = implode(',', array_fill(0, count($cart_ids), '?'));
+
+    $shippingType = $_POST['shippingType'];
+    $customerId = $_SESSION['userId'];
+
+    $dbc = new DatabaseConfig();
+    $res = $dbc->insert_into(
+        tableName: 'order',
+        data: [
+            'customer_id' => $customerId,
+            'shipping_type' => $shippingType,
+        ]
+    );
+    $orderId = $dbc->getConnection()->insert_id;
+    foreach ($cart_items as $item) {
+        $res = $dbc->insert_into(
+            tableName: 'order_has_product',
+            data: [
+                'order_id' => $orderId,
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'cost' => $item['total_cost'],
+            ]
+        );
+        $res = $dbc->delete_from(
+            tableName: "cart",
+            where: ["id" => $item['id']]
+        );
     }
+    header("Location: ../shop/?page=orders&status=$res");
+    exit;
 } catch (Exception $ex) {
     echo $dbc->getQuery();
     echo $ex->getMessage();
