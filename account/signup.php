@@ -49,7 +49,7 @@
                     <p>Already Have an account?</p>
                     <h3>
                         <a href="./login.php" class="text-primary font-bold text-xl hover:text-secondary hover:text-2xl hover:transition-all">
-                            Log In
+                            LOG IN
                         </a>
                     </h3>
                 </div>
@@ -58,7 +58,7 @@
             <div class="hidden lg:mt-12 lg:flex lg:flex-col lg:space-y-4 lg:items-center lg:w-1/3 lg:h-64">
                 <p>Already Have an account?</p>
                 <a href="./login.php" class="text-center text-7xl text-white font-semibold drop-shadow-2xl hover:text-primary hover:cursor-pointer hover:text-8xl hover:transition-all">
-                    Log In
+                    LOG IN
                 </a>
             </div>
         </div>

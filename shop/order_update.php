@@ -22,6 +22,17 @@ try {
         $quantity = $_GET['qty'];
         $subTotal = $_GET['sub'];
         $productId = $_GET['item'];
+        $res = $dbc->update_into(
+            tableName: 'order_has_product',
+            data: [
+                'quantity' => $quantity,
+                'cost' => $subTotal,
+            ],
+            where: [
+                'order_id' => $id,
+                'product_id' => $productId
+            ]
+        );
     } else {
         $customerId = $_SESSION['userId'];
         $shippingType = $_POST['shippingType'];
@@ -41,7 +52,6 @@ try {
                 break;
         }
 
-
         $res = $dbc->update_into(
             tableName: '`order`',
             data: [
@@ -52,17 +62,6 @@ try {
                 'id' => $id,
             ]
         );
-        // $res = $dbc->update_into(
-        //     tableName: 'order_has_product',
-        //     data: [
-        //         'quantity' => $quantity,
-        //         'cost' => $subTotal,
-        //     ],
-        //     where: [
-        //         'order_id' => $id,
-        //         'product_id' => $productId
-        //     ]
-        // );
     }
 
 
@@ -70,7 +69,6 @@ try {
         header("Location: ./?page=orders&res=item_update_success");
         exit;
     } else {
-
         header("Location: ./?page=orders&res=error");
         exit;
     }

@@ -150,6 +150,17 @@ $groupedResult = [];
 
       $index = $i + 1;
       $accSubtotal += $subtotal;
+      $script = <<<HTML
+      <script>
+        var el = document.getElementById("txtOrdertotal_" + $id) ?? null;
+        if (el){
+          el.innerText = $accSubtotal + $shipAmount;
+          console.log(el.innerText);
+        }
+        </script>
+      HTML;
+      echo $script;
+
       ?>
 
       <!-- Order Card -->
@@ -166,7 +177,7 @@ $groupedResult = [];
               <div class="h-full text-sm flex items-center space-x-4 justify-end">
                 <!-- Shipping Fee -->
                 <p class=" text-ellipsis whitespace-nowrap hidden md:block">Order Total:</p>
-                <p> ₱ <?= $accSubtotal + $shipAmount ?></p>
+                <p> ₱ <span id="txtOrdertotal_<?= $id ?>"></span></p>
               </div>
             </div>
 
@@ -266,6 +277,7 @@ $groupedResult = [];
         </div>
 
         <?php if ($index == count($result) || $result[$index]['id'] != $id) : ?>
+          <?php $accSubtotal = 0; ?>
         </div>
       <?php endif; ?>
       <?php $prevId = $id; ?>

@@ -1,12 +1,38 @@
 <?php
 session_start();
-if (empty($_SESSION['newUser'])) {
+if (empty($_SESSION['newUser']) && empty($_SESSION['userName'])) {
     header('Location: ./signup.php');
+    exit;
+}
+
+if ($_GET['viewprofile'] != 1) {
+    header('Location: ../home/');
     exit;
 }
 
 $userName = $_SESSION['newUser']['username'];
 $email = $_SESSION['newUser']['email'];
+$isViewProfile = !empty($_SESSION['userId']) && $_GET['viewprofile'] == 1;
+require_once '../scripts/db-config.php';
+if ($_SESSION['userId']) {
+    $dbc = new DatabaseConfig();
+    $result = $dbc->select("customer", where: ["id" => $_SESSION['userId']])[0];
+    $userName = $result['username'];
+    $email = $result['email'];
+    $firstName = $result['first_name'];
+    $middleName = $result['middle_name'];
+    $lastName = $result['last_name'];
+    $phoneNumber = $result['phone_number'];
+    $address = explode(",", $result['address']);
+    $street_address = $address[0];
+    $region = $address[1];
+    $country = $address[2];
+    $zip_code = $address[3];
+    $$birthdate = $result['birthdate'];
+    $age = $result['age'];
+}
+
+
 
 
 
@@ -66,26 +92,26 @@ $email = $_SESSION['newUser']['email'];
                             <label class="text-light" for="first_name">First Name</label>
 
                             <!-- First Name -->
-                            <input name="first_name" id="first_name" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required />
+                            <input name="first_name" id="first_name" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $firstName ?>" />
                         </div>
 
                         <div class="w-full md:w-2/3 lg:w-1/3 flex flex-col space-y-2 items-start">
                             <label class="text-light" for="middle_name">Middle Name</label>
 
                             <!-- middle_name -->
-                            <input name="middle_name" id="middle_name" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" />
+                            <input name="middle_name" id="middle_name" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $middleName ?>" />
                         </div>
 
                         <div class="w-full md:w-2/3 lg:w-1/3 flex flex-col space-y-2 items-start">
                             <label class="text-light" for="last_name">Last Name</label>
 
                             <!-- last_name -->
-                            <input name="last_name" id="last_name" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required />
+                            <input name="last_name" id="last_name" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $lastName ?>" />
                         </div>
                     </div>
 
 
-                    <div class="container flex flex-col space-y-4 justify-around items-center lg:flex-row lg:space-y-0 lg:space-x-4">
+                    <div class=" container flex flex-col space-y-4 justify-around items-center lg:flex-row lg:space-y-0 lg:space-x-4">
 
                         <div class="w-full md:w-2/3 lg:w-1/3 flex flex-col space-y-2 items-start">
                             <label class="text-light" for="username">Username</label>
@@ -106,7 +132,7 @@ $email = $_SESSION['newUser']['email'];
                         <label class="text-light" for="street_address">Street Address and City</label>
 
                         <!-- street_address -->
-                        <input name="street_address" id="street_address" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required />
+                        <input name="street_address" id="street_address" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $street_address ?>" />
                     </div>
 
 
@@ -116,7 +142,7 @@ $email = $_SESSION['newUser']['email'];
                             <label class="text-light" for="region">Province/Region</label>
 
                             <!-- region -->
-                            <input name="region" id="region" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required />
+                            <input name="region" id="region" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $region ?>" />
                         </div>
 
 
@@ -124,7 +150,7 @@ $email = $_SESSION['newUser']['email'];
                             <label class="text-light" for="country">Country</label>
 
                             <!-- country -->
-                            <input name="country" id="country" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required />
+                            <input name="country" id="country" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $country ?>" />
                         </div>
                     </div>
 
@@ -135,14 +161,14 @@ $email = $_SESSION['newUser']['email'];
                             <label class="text-light" for="zipcode">Zip Code</label>
 
                             <!-- zipcode -->
-                            <input name="zipcode" id="zipcode" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required />
+                            <input name="zipcode" id="zipcode" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $zip_code ?>" />
                         </div>
 
                         <div class="w-full md:w-2/3 lg:container flex flex-col space-y-2 items-start">
                             <label class="text-light" for="contact_number">Contact Number</label>
 
                             <!-- contact_number -->
-                            <input name="contact_number" id="contact_number" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" />
+                            <input name="contact_number" id="contact_number" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $phoneNumber ?>" />
                         </div>
                     </div>
 
@@ -154,18 +180,21 @@ $email = $_SESSION['newUser']['email'];
                             <label class="text-light" for="birthdate">Birthdate</label>
 
                             <!-- birthdate -->
-                            <input name="birthdate" id="birthdate" type="date" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" />
+                            <input name="birthdate" id="birthdate" type="date" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $birthdate ?>" />
                         </div>
                         <div class="h-full w-full md:w-2/3 lg:container flex flex-col space-y-2 items-start">
                             <label class="text-light" for="age">Age</label>
 
                             <!-- age -->
-                            <input name="age" id="age" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" />
+                            <input name="age" id="age" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $age ?>" />
                         </div>
                     </div>
-                    <div class="h-full w-full md:w-2/3 lg:container flex flex-col pt-4 items-center">
+                    <div class="container md:w-2/3 max-w-2/3 lg:w-full flex  space-x-2 items-center">
                         <!-- Btn Submit -->
-                        <input name="action" type="Submit" class="w-full md:w-2/3 lg:w-1/2 border-2 border-accent text-center rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="SUBMIT" value="saveprofile" />
+                        <button name="action" type="Submit" class="<?= $isViewProfile ? '' : 'hidden' ?> w-full md:w-2/3 lg:w-1/2 border-2 border-accent text-center rounded-md p-2 px-4 text-lg bg-red-400 hover:bg-secondary50 focus:bg-primary30" placeholder="SUBMIT" value="<?= $isViewProfile ? 'deleteprofile' : '' ?>">Delete</button>
+
+
+                        <button name="action" type="Submit" class="w-full md:w-2/3 lg:w-1/2 border-2 border-accent text-center rounded-md p-2 px-4 text-lg bg-green-400  hover:bg-secondary50 " placeholder="SUBMIT" value="<?= $isViewProfile ? 'updateprofile' : 'saveprofile' ?>">Save</button>
                     </div>
                 </div>
 
