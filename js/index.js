@@ -1,6 +1,23 @@
 var lastChecked = document.getElementsByClassName('chkChecked')[0];
 var checkOut = [];
 
+function showPassword(btn) {
+  var parent = btn.parentNode;
+  var input = parent.firstElementChild;
+  var show_icon = input.nextElementSibling;
+  var hide_icon = show_icon.nextElementSibling;
+
+  if (btn.id === 'showIcon') {
+    input.type = 'text';
+  }
+  if (btn.id === 'hideIcon') {
+    input.type = 'password';
+  }
+
+  show_icon.classList.toggle('hidden');
+  hide_icon.classList.toggle('hidden');
+}
+
 function cardClicked(card) {
   var id = card.id.split('_')[1];
   window.location.replace('./?item_id=' + id);

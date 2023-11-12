@@ -182,6 +182,8 @@ try {
     $accSubTotal;
     ?>
 
+    <!-- Modal -->
+
     <div class=" fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity">
@@ -371,4 +373,7 @@ try {
             </div>
         </div>
     </div>
+
+    <!-- /// -->
+
 <?php endif; ?>

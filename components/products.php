@@ -83,7 +83,7 @@ try {
                 <!-- Price -->
                 <div class="flex justify-between">
                     <p class="text-lg lg:text-2xl font-light">Price</p>
-                    <p class="text-lg lg:text-2xl font-bold"><?= $itemPrice ?></p>
+                    <p class="text-lg lg:text-2xl font-bold">₱ <?= $itemPrice ?></p>
                 </div>
 
                 <!-- Stock -->
@@ -213,7 +213,7 @@ try {
                                         Price
                                     </p>
                                     <h1 class="text-md">
-                                        P<?= $itemPrice ?>
+                                        ₱ <?= $itemPrice ?>
                                     </h1>
                                 </div>
 
@@ -232,18 +232,24 @@ try {
 
                                     <div class="flex items-center space-x-8 px-4 p-2">
 
+                                        <!-- Standard -->
                                         <div id="std" onclick="setShipMode(this)" class="flex  space-x-4 items-center cursor-pointer">
-                                            <div name="chkstd" id="chkStd" class=" bg-primary border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="fas fa-check"></i></div>
+                                            <div name="chkstd" id="chkStd" class=" chkChecked bg-primary border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="fas fa-check"></i></div>
                                             <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Standard</span>
                                         </div>
+
+                                        <!-- Express -->
                                         <div id="exp" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
                                             <div name="chkexp" id="chkExp" class=" w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
                                             <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Express</span>
                                         </div>
+
+                                        <!-- Priority -->
                                         <div id="prt" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
                                             <div name="chkprt" id="chkPrt" class=" w-6 h-6 aspect-square border border-accent flex items-center justify-center rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
                                             <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Priority</span>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -258,7 +264,7 @@ try {
                                         Price Cost
                                     </p>
                                     <h1 class="text-md">
-                                        P<?= $priceCost ?>
+                                        ₱ <?= $priceCost ?>
                                     </h1>
                                 </div>
                                 <!-- VAT -->
@@ -276,7 +282,7 @@ try {
                                         Sub Total
                                     </p>
                                     <h1 class="text-md">
-                                        P<?= $subtotal ?>
+                                        ₱ <span id="accsubtotal"><?= $subtotal ?></span>
                                     </h1>
                                 </div>
                                 <!-- Shipping Fee -->
@@ -284,8 +290,8 @@ try {
                                     <p class="text-sm font-light">
                                         Shipping Fee
                                     </p>
-                                    <h1 id="shippingfee" class="text-md">
-                                        P<?= $shippingfee ?>
+                                    <h1 class="text-md">
+                                        ₱ <span id="shippingfee"><?= $shippingfee ?></span>
                                     </h1>
                                 </div>
                                 <!-- Total -->
@@ -293,8 +299,8 @@ try {
                                     <p class="text-lg font-bold">
                                         Total
                                     </p>
-                                    <h1 id="txtTotal" class="text-lg font-bold">
-                                        P<?= $total ?>
+                                    <h1 class="text-lg font-bold">
+                                        ₱ <span id="txtTotal"><?= $total ?></span>
                                     </h1>
                                 </div>
                             </div>

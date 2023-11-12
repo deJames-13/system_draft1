@@ -1,6 +1,8 @@
 <?php
 require_once "../scripts/db-config.php";
 
+session_start();
+
 
 
 ?>

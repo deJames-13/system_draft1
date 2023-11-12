@@ -87,12 +87,14 @@ $groupedResult = [];
   </div>
 
   <!-- Order List -->
-  <?php $prevId = null;   ?>
+  <?php
+  $prevId = null;
+  $accSubtotal = 0;
+  ?>
   <div class="w-full flex flex-col mt-2 space-y-4">
     <?php foreach ($result as $i => $row) : ?>
       <?php
       $orderStatus = $row['status'];
-
       if ($type != strtolower($orderStatus)) {
         continue;
       }
@@ -147,22 +149,33 @@ $groupedResult = [];
       }
 
       $index = $i + 1;
+      $accSubtotal += $subtotal;
       ?>
 
-      <!-- Order -->
-
+      <!-- Order Card -->
 
       <!-- Order ID -->
       <?php if ($prevId != $id) : ?>
         <div class="container p-1 flex flex-col space-y-2 my-2 pb-4">
-          <div class=" container flex justify-between items-center border-b-2 border-accent ">
-            <h1 class=" text-ellipsis whitespace-nowrap pt-2 mb-2">
-              Order ID:
-              <span class="text-lg font-bold"><?= $id ?></span>
-            </h1>
+          <div class="container flex space-x-2 justify-between items-center border-b-2 border-accent ">
+            <div class="container flex items-center justify-between">
+              <h1 class=" text-ellipsis whitespace-nowrap pt-2 mb-2">
+                Order ID:
+                <span class="text-lg font-bold"><?= $id ?></span>
+              </h1>
+              <div class="h-full text-sm flex items-center space-x-4 justify-end">
+                <!-- Shipping Fee -->
+                <p class=" text-ellipsis whitespace-nowrap hidden md:block">Order Total:</p>
+                <p> ₱ <?= $accSubtotal + $shipAmount ?></p>
+              </div>
+            </div>
+
+
             <?php if ($type == 'pending') : ?>
-              <div class="bg-primary10 mx-2 flex items-center justify-center aspect-square border border-accent rounded hover:border-2 b hover:bg-primary">
-                <a class="px-2" href="./?page=orders&id=<?= $id ?>"><i class="fas fa-bars"></i></a>
+              <div class="cursor-pointer bg-primary10 p-1 mx-2 flex items-center justify-center border border-accent rounded hover:border-2 hover:bg-primary">
+                <a class="px-2" href="./?page=orders&id=<?= $id ?>">
+                  <i class="fas fa-bars"></i>
+                </a>
               </div>
             <?php endif; ?>
           </div>
@@ -173,7 +186,7 @@ $groupedResult = [];
         <div class="h-full border border-accent rounded-md bg-primary10 hover:border-2 hover:bg-primary30 lg:flex lg:space-x-4">
 
           <!-- Item Image -->
-          <div class="container h-52 flex justify-center items-center bg-white rounded-t-md lg:rounded-tr-none lg:rounded-l-md lg:max-w-xs ">
+          <div class="container h-52 flex justify-center items-center bg-white rounded-t-md p-8 lg:rounded-tr-none lg:rounded-l-md lg:max-w-xs ">
             <img src="<?= $itemImage ?>" alt="" class="object-contain h-full w-full" />
           </div>
 
@@ -194,13 +207,14 @@ $groupedResult = [];
                 <p class="text-ellipsis whitespace-nowrap hidden md:block">Price</p>
                 <p> ₱ <span id="txtPrc_<?= $id . '_' . $itemId ?>"><?= $itemPrice ?></span> x <span id="txtQuant<?= $id . '_' . $item_id ?>"><?= $itemQuantity ?></span></p>
 
+                <!-- TAX -->
                 <p class="text-ellipsis whitespace-nowrap hidden md:block">VAT</p>
                 <p> <?= $tax * 100 ?>%</p>
 
+                <!-- SUB TOTAL -->
                 <p class="text-ellipsis whitespace-nowrap hidden md:block">Sub Total</p>
                 <p>₱ <span id="txtSub_<?= $id . '_' . $itemId ?>"><?= $subtotal ?></span></p>
-                <p class="text-ellipsis whitespace-nowrap hidden md:block">Shipping Fee</p>
-                <p> ₱ <?= $shipAmount ?></p>
+
               </div>
 
               <!-- Total -->
@@ -282,8 +296,8 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
   $orderStatus = $order['status'];
   $items = $order['items'];
 
-  $accSubtotal;
-  $total;
+  $accSubtotal = 0;
+  $total = 0;
 
   ?>
 
