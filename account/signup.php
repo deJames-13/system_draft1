@@ -9,7 +9,7 @@
     <?php require_once '../scripts/links.php'; ?>
 </head>
 
-<body class="relative">
+<body class="relative text-accent">
     <div class="hidden sign-up-bg lg:block">
         <img src="../img/tilted_signin_bg.png" alt="" />
     </div>

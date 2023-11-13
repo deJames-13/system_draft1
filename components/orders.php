@@ -136,6 +136,7 @@ $groupedResult = [];
           ]
         ];
         $groupedResult["order_$id"] = $info;
+        $accSubtotal = 0;
       } else {
         $item = [
           'product_id' => $itemId,
@@ -155,7 +156,6 @@ $groupedResult = [];
         var el = document.getElementById("txtOrdertotal_" + $id) ?? null;
         if (el){
           el.innerText = $accSubtotal + $shipAmount;
-          console.log(el.innerText);
         }
         </script>
       HTML;
@@ -177,7 +177,7 @@ $groupedResult = [];
               <div class="h-full text-sm flex items-center space-x-4 justify-end">
                 <!-- Shipping Fee -->
                 <p class=" text-ellipsis whitespace-nowrap hidden md:block">Order Total:</p>
-                <p> ₱ <span id="txtOrdertotal_<?= $id ?>"></span></p>
+                <p> ₱ <span id="txtOrdertotal_<?= $id ?>"><?= $subtotal + $shipAmount ?></span></p>
               </div>
             </div>
 

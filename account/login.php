@@ -19,7 +19,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
     <?php require_once '../scripts/links.php'; ?>
 </head>
 
-<body class="relative">
+<body class="relative text-accent">
     <div class="hidden login-bg lg:block">
         <img src="../img/log-in-bg.png" alt="" />
     </div>

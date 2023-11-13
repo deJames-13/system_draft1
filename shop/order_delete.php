@@ -15,16 +15,16 @@ if (!is_numeric($_GET['id'])) {
 try {
     $id = $_GET['id'];
     if ($isItem) {
+        $itemId  = $_GET['item'];
         $dbc = new DatabaseConfig();
 
         $c = $dbc->select("order_has_product", where: ["order_id" => "$id"]);
         $c = count($c);
-
-
         $res = $dbc->delete_from(
             tableName: "order_has_product",
             where: [
                 'order_id' => "$id",
+                'product_id' => "$itemId",
             ]
         );
 

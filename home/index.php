@@ -21,7 +21,7 @@ session_start();
 
 </head>
 
-<body>
+<body class="relative text-accent">
     <!-- Header -->
     <?php include '../components/header.php'; ?>
 

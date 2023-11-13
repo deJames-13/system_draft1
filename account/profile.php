@@ -51,7 +51,7 @@ if ($_SESSION['userId']) {
     <?php require_once '../scripts/links.php'; ?>
 </head>
 
-<body class="relative">
+<body class="relative text-accent">
 
     <?php include_once '../components/header.php'; ?>
 
