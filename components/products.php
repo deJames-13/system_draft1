@@ -336,7 +336,7 @@ try {
 
 
     <!-- CARD LIST CONTAINER -->
-    <div class="max-h-screen container py-4 grid grid-col-1 gap-5 border-0 mb-4 mx-4 border-t-2 border-accent  place-items-start overflow-scroll md:grid-cols-3 lg:grid-cols-4">
+    <div class="max-h-screen container py-4 grid grid-col-1 gap-5 mb-4 mx-4  border-t-2 border-accent place-items-start overflow-scroll md:grid-cols-3 lg:grid-cols-4">
 
         <?php foreach ($result as $row) : ?>
             <?php

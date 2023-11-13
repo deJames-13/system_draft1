@@ -50,7 +50,7 @@ try {
             'email' => $_POST['email'],
             'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
         ];
-        header('Location: ./profile.php');
+        header('Location: ./profile.php?viewprofile=1');
         exit;
     } else if ($_POST['action'] == 'saveprofile') {
 

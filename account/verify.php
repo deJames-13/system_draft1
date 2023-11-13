@@ -5,6 +5,7 @@ require_once '../scripts/db-config.php';
 
 
 if (empty($_POST['action'])) {
+    header("Location: ../shop/");
     return;
 }
 

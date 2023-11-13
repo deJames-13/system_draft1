@@ -53,25 +53,25 @@ if ($_SESSION['userId']) {
 
 <body class="relative">
 
-    <?php include '../components/header.php'; ?>
+    <?php include_once '../components/header.php'; ?>
 
     <main>
-        <div class="border mt-12 flex items-center justify-center p-6 h-48 bg-cover bg-opacity-50 bg-center bg-no-repeat drop-shadow-lg lg:hidden" style="background-image: url(../img/sign-in-bg.png)">
+        <div class="border p-6 my-12 flex items-center justify-center h-48 bg-cover bg-opacity-50 bg-center bg-no-repeat drop-shadow-lg lg:hidden" style="background-image: url(../img/sign-in-bg.png)">
             <h1 class="text-center self-center text-5xl text-white font-semibold drop-shadow-lg hover:text-primary hover:cursor-pointer hover:text-6xl hover:transition-all">
                 YOUR PROFILE
             </h1>
         </div>
 
-        <div class=" flex flex-col items-center justify-center mx-auto p-8 w-auto">
+        <div class="flex flex-col items-center  w-auto pb-12">
             <h1 class="hidden pb-8 text-5xl text-accent font-semibold hover:text-secondary lg:text-6xl lg:block">
                 YOUR PROFILE
             </h1>
 
             <!-- MAIN FORM -->
-            <form method="post" action="./register.php" enctype="multipart/form-data" class=" container flex flex-col space-y-6 items-center w-full lg:flex-row lg:space-x-12 lg:items-start">
+            <form method="post" action="./register.php" enctype="multipart/form-data" class=" container flex flex-col space-y-6 items-center w-full lg:flex-row lg:space-x-12 py-12 lg:py-0 lg:items-start">
 
                 <!-- IMAGE -->
-                <div class=" container flex flex-col space-y-6 items-center justify-center lg:w-2/5">
+                <div class="border-accent border border-t-2 rounded py-8 container flex flex-col space-y-6 items-center justify-center lg:w-2/5">
                     <div class=" max-w-sm aspect-square container flex items-center justify-center p-4 shadow-xl lg:p-8 ">
                         <img src="../img/customer/customer_1.jpg" alt="" class=" max-w-xs object-contain aspect-square  shadow-lg">
                     </div>
