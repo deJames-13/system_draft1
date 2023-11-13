@@ -1,10 +1,9 @@
 <?php
-
 session_start();
 require_once '../scripts/db-config.php';
 
 if (!isset($_SESSION['userId'])) {
-    header('Location: ../account/login.php');
+    header('Location: ../account/login.php?res=usernotfound');
     exit;
 }
 
@@ -48,10 +47,16 @@ try {
         ]
     );
 
-    header("Location: ../shop/?page=orders&status=$res");
+    if ($res) {
+        header("Location: ../shop/?page=orders&res=ordersuccess");
+    } else {
+        header("Location: ../shop/?page=orders&res=orderfailed");
+    }
     $dbc->disconnect();
+
     exit;
 } catch (Exception $ex) {
+    exit;
     echo $dbc->getQuery();
     echo $ex->getMessage();
 }

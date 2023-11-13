@@ -23,7 +23,12 @@ try {
             "product_id" => $_GET['id']
         ]
     );
-    echo $res ? header("Location: ./?page=cart&res=$res") :  "Internal error";
+    if ($res) {
+        header("Location: ./?page=cart&res=cartdeletesuccessfully");
+    } else {
+        header("Location: ./?page=cart&res=cartdeleteunsucessfully");
+    }
+    exit;
 } catch (Exception $ex) {
     //throw $th;
     echo $ex->getMessage();

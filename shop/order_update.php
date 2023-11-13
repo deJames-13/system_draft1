@@ -65,13 +65,15 @@ try {
     }
 
 
-    if ($res) {
-        header("Location: ./?page=orders&res=item_update_success");
+    if ($res && !$isItem) {
+        header("Location: ./?page=orders&res=order_update_success");
         exit;
-    } else {
-        header("Location: ./?page=orders&res=error");
+    } else if ($res) {
+        header("Location: ./?page=orders&res=order_item_update_success");
         exit;
     }
+    header("Location: ./?page=orders");
+    exit;
 } catch (Exception $ex) {
     echo $dbc->getQuery();
     echo $ex->getMessage();

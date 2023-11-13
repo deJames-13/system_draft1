@@ -3,7 +3,7 @@
 session_start();
 require_once '../scripts/db-config.php';
 if (!isset($_SESSION['userId'])) {
-    header("Location: ./?page=shop");
+    header("Location: ./?page=shop&res=usernotfound");
     exit;
 }
 
@@ -52,9 +52,11 @@ try {
 
 
     if ($res) {
-        header("Location: ./?page=cart");
-        exit;
+        header("Location: ./?res=cartAdded");
+    } else {
+        header("Location: ./?res=cartAddError");
     }
+    exit;
 } catch (Exception $e) {
     echo $e->getMessage();
 }

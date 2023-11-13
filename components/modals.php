@@ -1,19 +1,22 @@
-<div class="flex items-center justify-center h-screen">
-    <button class="py-2 px-6 bg-blue-500 text-white rounded hover:bg-blue-700" onclick="showModal()">Show Modal</button>
-</div>
-
-
 <?php
 
-function createModal($title = null, $message = null, $funcName = '', $btnClose = null, $btnConfirm = null)
+function createModal($title = null, $message = null, $visible = false, $btnFunc = '', $btnClose = null, $btnConfirm = null)
 {
     $title = $title ?? "No title";
     $message = $message ?? "No message";
-    $btnConfirm = $btnConfirm ?? "Confirm";
     $btnClose = $btnClose ?? "Close";
+    $hidden = $visible ? '' : 'hidden';
+
+    if ($btnConfirm == null) {
+        $btnConfirm = "";
+    } else {
+        $btnConfirm = <<<HTML
+        <button onclick="$btnFunc" class="px-4 py-2 bg-primary50 border border-accent text-accent rounded hover:bg-blue-400">$btnConfirm</button>
+        HTML;
+    }
 
     $modal = <<<HTML
-<div class="hidden fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
+<div class="${$hidden} fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <div class="fixed inset-0 transition-opacity">
@@ -23,7 +26,7 @@ function createModal($title = null, $message = null, $funcName = '', $btnClose =
             &#8203;
         </span>
 
-        <div class="h-full inline-block align-center overflow-y-auto py-8 transform transition-all align-middle w-full max-w-xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+        <div class="h-full inline-block align-center overflow-y-auto py-8 transform transition-all align-middle w-full max-w-xl p-2" >
 
             <div id="modal-content" class="animate-fall container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 max-h-1/2 border border-accent30 bg-white text-left">
                 <div class="pb-2 border-b-2 border-accent">
@@ -40,7 +43,8 @@ function createModal($title = null, $message = null, $funcName = '', $btnClose =
                 <!-- option buttons -->
                 <div class="flex justify-end pt-2 space-x-4">
                     <button class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" onclick="showModal(this)">$btnClose</button>
-                    <button onclick="$funcName" class="px-4 py-2 bg-primary50 border border-accent text-accent rounded hover:bg-blue-400">$btnConfirm</button>
+
+                    $btnConfirm
                 </div>
 
             </div>
@@ -51,9 +55,3 @@ HTML;
 
     return $modal;
 }
-
-echo createModal("Hatdog", "tnginamo", '');
-
-
-
-?>

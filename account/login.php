@@ -72,6 +72,37 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
             </div>
         </div>
     </main>
+
+    <?php include_once '../components/modals.php';
+    switch ($_GET['res']) {
+        case 'wronguser':
+            echo createModal(
+                title: "Unknown username.",
+                message: "The username is not found. Please try again or sign up with the username.",
+                visible: true,
+                btnConfirm: "Sign up",
+                btnFunc: "()=>{window.location.replace('./signup.php')}"
+            );
+            break;
+        case 'wrongpass':
+            echo createModal(
+                title: "Incorrect password.",
+                message: "The password you entered does not match. Please try again.",
+                visible: true,
+            );
+            break;
+        case 'usernotfound':
+            echo createModal(
+                title: "Sign in first",
+                message: "Please sign up or log in to an existing account to have transactions on our shop.",
+                visible: true,
+            );
+            break;
+
+        default:
+            break;
+    }
+    ?>
     <script src="../js/index.js"></script>
 </body>
 

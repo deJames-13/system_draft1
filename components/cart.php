@@ -136,7 +136,7 @@ try {
                     <div onclick="checkCart(this)" name="btnCartCheck_<?= $id ?>" id="btnCartCheck_<?= $id ?>" class="flex items-center justify-center w-full h-full p-4 border-l border-t border-accent rounded-br-md lg:rounded-b-none lg:rounded-tr-md lg:border-t-0  hover:bg-green-400 ">
                         <i class="fas fa-check "></i>
                     </div>
-                    <div id="btnShow_<?= $id ?>" onclick="swapCardAction(this)" class="w-full h-full p-4 flex justify-center items-center rounded-bl-md border-t border-accent lg:border-l lg:rounded-b-none lg:rounded-br-md hover:bg-red-400">
+                    <div id="btnShow_<?= $id ?>" onclick="swapCardAction(this)" class="w-full h-full p-4 flex justify-center items-center rounded-bl-md border-t border-accent lg:border-l lg:rounded-b-none lg:rounded-br-md hover:bg-blue-400">
                         <i class="fas fa-pen"></i>
                     </div>
                 </div>
@@ -145,9 +145,9 @@ try {
                         <i class="hidden fas fa-angle-right lg:block hover:bg-blue-300"></i>
                         <i class="fas fa-angle-down lg:hidden hover:bg-blue-300"></i>
                     </div>
-                    <div class="flex items-center justify-center w-full h-full border-t border-l border-accent p-4 rounded-br-md lg:rounded-b-none lg:rounded-br-md  hover:bg-red-300">
-                        <i onclick="deleteCart(<?= $itemId ?>)" class="fas fa-trash hover:text-red-600"></i>
-                    </div>
+                    <a href="./?page=cart&res=confirmdelete&id=<?= $itemId ?>" class="flex items-center justify-center w-full h-full border-t border-l border-accent p-4 rounded-br-md lg:rounded-b-none lg:rounded-br-md  hover:bg-red-300">
+                        <i class="fas fa-trash hover:text-red-600"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -296,6 +296,7 @@ try {
                                     <div name="chkstd" id="chkStd" class=" chkChecked bg-primary border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="fas fa-check"></i></div>
                                     <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Standard</span>
                                 </div>
+
                                 <div id="exp" onclick="setShipMode(this)" class="flex space-x-4 items-center cursor-pointer">
                                     <div name="chkexp" id="chkExp" class=" w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="hidden fas fa-check"></i></div>
                                     <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Express</span>
@@ -368,8 +369,6 @@ try {
                     </div>
 
                 </form>
-
-
             </div>
         </div>
     </div>

@@ -45,7 +45,11 @@ try {
             where: ["id" => $item['id']]
         );
     }
-    header("Location: ../shop/?page=orders&status=$res");
+    if ($res) {
+        header("Location: ../shop/?page=orders&res=cartcheckoutsuccess");
+    } else {
+        header("Location: ../shop/?page=orders&res=cartcheckouterror");
+    }
     exit;
 } catch (Exception $ex) {
     echo $dbc->getQuery();

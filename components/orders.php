@@ -325,7 +325,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
         &#8203;
       </span>
 
-      <div class="h-full inline-block align-center py-4 transform transition-all align-middle w-full max-w-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+      <div class="h-full inline-block align-center py-4 transform transition-all align-middle w-full max-w-2xl">
 
         <form method="post" action="./order_update.php?id=<?= $id ?>" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto h-full shadow-xl border border-accent30 bg-white pt-4">
 
@@ -499,7 +499,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
           <!-- BUTTONS -->
           <div class="bottom-0 fixed bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
 
-            <a class="cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" onclick="manageOrder(this)" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>"><i class=" fas fa-times"></i> Cancel Order</a>
+            <a class="cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" href="./?page=orders&res=confirmordercancel&id=<?= $id ?>" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>"><i class=" fas fa-times"></i> Cancel Order</a>
 
             <button onclick="manageOrder(this)" name="btnUpdateOrder_<?= $id ?>" id="btnUpdateOrder_<?= $id ?>" type="submit" class="py-2 px-4 bg-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Update Order</button>
           </div>

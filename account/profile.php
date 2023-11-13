@@ -58,24 +58,26 @@ if ($_SESSION['userId']) {
     <main>
         <div class="border p-6 my-12 flex items-center justify-center h-48 bg-cover bg-opacity-50 bg-center bg-no-repeat drop-shadow-lg lg:hidden" style="background-image: url(../img/sign-in-bg.png)">
             <h1 class="text-center self-center text-5xl text-white font-semibold drop-shadow-lg hover:text-primary hover:cursor-pointer hover:text-6xl hover:transition-all">
+                <?php echo $_SESSION['newUser'] ? 'SET UP ' : '' ?>
                 YOUR PROFILE
             </h1>
         </div>
 
-        <div class="flex flex-col items-center  w-auto pb-12">
-            <h1 class="hidden pb-8 text-5xl text-accent font-semibold hover:text-secondary lg:text-6xl lg:block">
+        <div class="flex flex-col items-center w-auto pb-12 p-2">
+            <h1 class="hidden pb-8 text-accent font-semibold hover:text-secondary lg:text-6xl lg:block">
+                <?php echo $_SESSION['newUser'] ? 'SET UP ' : '' ?>
                 YOUR PROFILE
             </h1>
 
             <!-- MAIN FORM -->
-            <form method="post" action="./register.php" enctype="multipart/form-data" class=" container flex flex-col space-y-6 items-center w-full lg:flex-row lg:space-x-12 py-12 lg:py-0 lg:items-start">
+            <form method="post" action="./register.php" enctype="multipart/form-data" class="border border-t-2 border-accent rounded mx-auto container flex flex-col space-y-6 items-center justify-center p-4 py-12 lg:flex-row lg:space-x-12 lg:px-12">
 
                 <!-- IMAGE -->
-                <div class="border-accent border border-t-2 rounded py-8 container flex flex-col space-y-6 items-center justify-center lg:w-2/5">
-                    <div class=" max-w-sm aspect-square container flex items-center justify-center p-4 shadow-xl lg:p-8 ">
+                <div class="flex flex-col space-y-8 items-center justify-center py-8">
+                    <div class="max-w-xs aspect-square flex items-center justify-center shadow-xl ">
                         <img src="../img/customer/customer_1.jpg" alt="" class=" max-w-xs object-contain aspect-square  shadow-lg">
                     </div>
-                    <div class="w-full md:w-2/3 lg:w-2/3 flex flex-col space-y-2 items-center">
+                    <div class="flex flex-col space-y-2 items-center">
 
                         <input name="profile_image" id="profile_image" type="file" class="w-full border border-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Add Image" />
                         <label class="text-light" for="first_name">Select Profile Picture</label>
@@ -83,7 +85,7 @@ if ($_SESSION['userId']) {
                 </div>
 
                 <!-- DETAILS -->
-                <div class=" container flex flex-col space-y-6 items-center lg:w-3/5 lg:items-start">
+                <div class="w-full flex flex-col space-y-6 lg:items-start lg:w-auto">
 
                     <!-- NAME -->
                     <div class="container flex flex-col space-y-4 justify-around items-center lg:flex-row lg:space-y-0 lg:space-x-4">
@@ -189,7 +191,7 @@ if ($_SESSION['userId']) {
                             <input name="age" id="age" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $age ?>" />
                         </div>
                     </div>
-                    <div class="container md:w-2/3 max-w-2/3 lg:w-full flex  space-x-2 items-center">
+                    <div class="container flex space-x-8 items-center justify-center">
                         <!-- Btn Submit -->
                         <button name="action" type="Submit" class="<?= $isViewProfile ? '' : 'hidden' ?> w-full md:w-2/3 lg:w-1/2 border-2 border-accent text-center rounded-md p-2 px-4 text-lg bg-red-400 hover:bg-secondary50 focus:bg-primary30" placeholder="SUBMIT" value="<?= $isViewProfile ? 'deleteprofile' : '' ?>">Delete</button>
 

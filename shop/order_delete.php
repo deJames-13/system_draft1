@@ -38,19 +38,21 @@ try {
         }
     } else {
         $dbc = new DatabaseConfig();
-        $res = $dbc->delete_from(
+        $res = $dbc->update_into(
             tableName: "`order`",
+            data: [
+                "status" => 'Cancelled'
+            ],
             where: [
                 'id' => "$id",
             ]
         );
     }
     if ($res) {
-        header("Location: ./?page=orders&res=item_delete_success");
+        header("Location: ./?page=orders&res=order_item_delete_success");
         exit;
     } else {
-
-        header("Location: ./?page=orders&res=error");
+        header("Location: ./?page=orders&res=order_item_delete_failed");
         exit;
     }
 } catch (Exception $ex) {

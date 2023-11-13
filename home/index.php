@@ -29,7 +29,10 @@ session_start();
         <div class="border border-b-2 py-4 hover:text-secondary">
             <h1 class="text-4xl text-center">Welcome to the home page</h1>
         </div>
-        <?php include_once '../components/modals.php'; ?>
+        <button onclick="showModal(this)">Click</button>
+        <?php include_once '../components/modals.php';
+        echo createModal("Hatdog", visible: true);
+        ?>
 
     </main>
 
