@@ -124,6 +124,7 @@ try {
         );
 
         if ($res) {
+            session_destroy();
             header('Location: ./login.php?success=deleteaccountsuccess');
             exit;
         } else {
