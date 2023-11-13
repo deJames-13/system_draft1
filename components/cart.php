@@ -184,8 +184,8 @@ try {
 
     <!-- Modal -->
 
-    <div class=" fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
+        <div class="flex items-center justify-center h-screen py-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity">
                 <div class="absolute inset-0 bg-gray-900 opacity-20" />
             </div>
@@ -193,9 +193,9 @@ try {
                 &#8203;
             </span>
 
-            <div class="h-full inline-block align-center py-4 transform transition-all align-middle w-full max-w-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div class="h-full inline-block align-center pt-4 transform transition-all align-middle w-full max-w-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
 
-                <form action="./cart_checkout.php" method="post" class="relative container flex flex-col space-y-2 rounded-lg overflow-y-auto h-full shadow-xl border border-accent30 bg-white pt-4">
+                <form action="./cart_checkout.php" method="post" class="animate-fall relative container flex flex-col space-y-2 rounded-lg overflow-y-auto h-full shadow-xl border border-accent30 bg-white pt-4">
 
                     <div class="flex px-4 pb-4 items-center justify-between border-b-2">
                         <h1 class="text-xl font-bold text-accent md:text-3xl">

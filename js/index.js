@@ -214,3 +214,10 @@ function checkOutCart(btn) {
     window.location.replace('./?page=cart&ids=' + ids);
   }
 }
+
+function showModal(btn) {
+  var modal = document.getElementById('modal');
+  modal.classList.toggle('hidden');
+
+  var content = document.getElementById('modal-content');
+}

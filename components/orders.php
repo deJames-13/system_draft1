@@ -316,7 +316,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
   <!-- Manage an Order -->
   <div class="<? $isItem ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
       <div class="fixed inset-0 transition-opacity">
         <div class="absolute inset-0 bg-gray-900 opacity-20" />
@@ -327,7 +327,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
       <div class="h-full inline-block align-center py-4 transform transition-all align-middle w-full max-w-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
 
-        <form method="post" action="./order_update.php?id=<?= $id ?>" class="pb-12 relative container flex flex-col justify-between rounded-lg overflow-y-auto h-full shadow-xl border border-accent30 bg-white pt-4">
+        <form method="post" action="./order_update.php?id=<?= $id ?>" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto h-full shadow-xl border border-accent30 bg-white pt-4">
 
           <div class="flex px-4 pb-4 items-center justify-between border-b-2">
             <h1 class="text-xl font-bold text-accent md:text-3xl">
@@ -497,7 +497,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
 
           <!-- BUTTONS -->
-          <div class="bottom-0 fixed md:bottom-3 bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
+          <div class="bottom-0 fixed bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
 
             <a class="cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" onclick="manageOrder(this)" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>"><i class=" fas fa-times"></i> Cancel Order</a>
 

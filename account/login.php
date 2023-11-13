@@ -24,7 +24,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
         <img src="../img/log-in-bg.png" alt="" />
     </div>
 
-    <?php include '../components/header.php'; ?>
+    <?php include_once '../components/header.php'; ?>
 
     <main>
         <div class="border mt-12 flex items-center justify-center p-6 h-48 bg-cover bg-opacity-50 bg-center bg-no-repeat drop-shadow-lg lg:hidden" style="background-image: url(../img/sign-in-bg.png)">

@@ -24,7 +24,7 @@ require_once "../scripts/db-config.php";
 
 <body class="relative text-accent">
   <!-- Header -->
-  <?php include '../components/header.php'; ?>
+  <?php include_once '../components/header.php'; ?>
 
   <main>
 

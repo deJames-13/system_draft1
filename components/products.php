@@ -26,6 +26,7 @@ try {
 
 <?php if (!empty($_GET['item_id']) && is_numeric($_GET['item_id'])) : ?>
 
+
     <?php
     session_start();
     $row = $result[0];
@@ -149,7 +150,7 @@ try {
     <?php if ($isOrder) : ?>
 
         <div class="fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
                 <div class="fixed inset-0 transition-opacity">
                     <div class="absolute inset-0 bg-gray-900 opacity-20" />
@@ -160,7 +161,7 @@ try {
 
                 <div class="h-full inline-block align-center overflow-y-auto py-2 transform transition-all align-middle w-full max-w-xl" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
 
-                    <form method="post" action="./order_add.php" class="container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl h-full border border-accent30 bg-white pt-4">
+                    <form method="post" action="./order_add.php" class="animate-fall container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl h-full border border-accent30 bg-white pt-4">
                         <h1 class="text-xl pb-4 font-bold text-accent border-b-2 md:text-3xl">
                             Create an Order
                         </h1>
@@ -331,12 +332,11 @@ try {
     <?php endif; ?>
 
 
-
 <?php else : ?>
 
 
     <!-- CARD LIST CONTAINER -->
-    <div class="max-h-screen container py-4 grid grid-col-1 gap-5 mb-4 mx-4  border-t-2 border-accent place-items-start overflow-scroll md:grid-cols-3 lg:grid-cols-4">
+    <div class="max-h-screen container p-4 grid grid-col-1 gap-5 pb-24 mb-8 mx-4 border border-t-2 border-accent place-items-start overflow-scroll rounded-t-xl md:grid-cols-3 lg:grid-cols-4">
 
         <?php foreach ($result as $row) : ?>
             <?php
@@ -348,10 +348,10 @@ try {
 
             ?>
 
-            <div id="item_<?= $itemId ?>" class="container bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2">
+            <div id="item_<?= $itemId ?>" class="w-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2">
 
                 <!-- Image -->
-                <div id="itemImg_<?= $itemId ?>"" onclick=" cardClicked(this)" class="mx-auto my-4 h-32 border bg-contain bg-white bg-no-repeat bg-center" style="background-image: url('<?= $itemImage ?>')">
+                <div id="itemImg_<?= $itemId ?>" onclick=" cardClicked(this)" class="my-4 h-32 border bg-contain bg-white bg-no-repeat bg-center" style="background-image: url('<?= $itemImage ?>')">
                 </div>
 
                 <div class="mx-4 pb-4">
@@ -370,8 +370,8 @@ try {
                     </div>
 
                     <!-- Actions -->
-                    <div class="my-2 flex items-end justify-between">
-                        <div class="flex flex-1 items-center justify-start space-x-4">
+                    <div class="my-2 flex items-end space-x-4 md:justify-between">
+                        <div class="flex items-center justify-start space-x-4">
 
                             <!-- Subtract Qty -->
                             <button onclick="setQty(this)" name="subBtn_<?= $itemId ?>" id="subBtn_<?= $itemId ?>" class="px-1 border border-accent hover:bg-secondary50">
