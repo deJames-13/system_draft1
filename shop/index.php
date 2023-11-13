@@ -85,7 +85,7 @@ require_once "../scripts/db-config.php";
         visible: true,
         message: "Item has been added to your cart",
         btnConfirm: "View Cart",
-        btnFunc: "()=>{window.location.href='./?page=cart'}"
+        btnFunc: "window.location.replace('./?page=cart')"
       );
       break;
     case 'confirmdelete':
@@ -133,7 +133,7 @@ require_once "../scripts/db-config.php";
         visible: true,
         message: "The item has not been able to move to cart. Please try again or contact us.",
         btnConfirm: "View Cart",
-        btnFunc: "()=>{window.location.href='./?page=cart'}"
+        btnFunc: "window.location.replace('./?page=cart')"
       );
       break;
     case 'ordersuccess':
@@ -180,8 +180,16 @@ require_once "../scripts/db-config.php";
         visible: true,
         message: "Are you sure you want to cancel this order?",
         btnConfirm: "Cancel Order",
-        btnFunc: "deleteOrder($id)"
+        btnFunc: "window.location.replace('./order_delete.php?id=' + $id)"
       ) : '';
+      break;
+    case 'signinsuccess':
+
+      echo createModal(
+        title: "Sign in success.",
+        visible: true,
+        message: "Thank you for signing in! Welcome to our shop!",
+      );
       break;
 
     default:

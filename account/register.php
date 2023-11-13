@@ -7,11 +7,11 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
     session_destroy();
 }
 
-if (!empty($_SESSION['userName'] && $_GE['viewprofile' != 1])) {
+if (!empty($_SESSION['userName'] && $_GET['viewprofile' != 1])) {
     header('Location: ../home/');
 }
-
-if (empty($_POST['action'])) {
+if (!empty($_GET['action'])) {
+} else if (empty($_POST['action'])) {
     header('Location: ../home/');
     exit;
 }
@@ -28,7 +28,7 @@ try {
         $isValidPass = $_POST['password'] == $_POST['confirmPass'];
 
         if (!$isValidPass) {
-            header('Location: ./signup.php?error=incorrectpassword');
+            header('Location: ./signup.php?res=incorrectpassword');
             exit;
         }
 
@@ -41,7 +41,7 @@ try {
         );
 
         if (count($res) > 0) {
-            header('Location: ./signup.php?error=accountexists');
+            header('Location: ./signup.php?res=accountexists');
             exit;
         }
 
@@ -77,10 +77,10 @@ try {
         if ($res) {
             $_SESSION['userId'] = $dbc->getConnection()->insert_id;
             $_SESSION['userName'] = $_SESSION['newUser']['username'];
-            header('Location: ../shop/');
+            header('Location: ../shop/?res=signinsuccess');
             exit;
         } else {
-            header('Location: ./signup.php?error=accountcreateerror');
+            header('Location: ./signup.php?res=accountcreateerror');
             exit;
         }
     } else if ($_POST['action'] == 'updateprofile') {
@@ -108,13 +108,13 @@ try {
             ]
         );
         if ($res) {
-            header('Location: ./profile.php?viewprofile=1&success=accountupdatesuccess');
+            header('Location: ./profile.php?viewprofile=1&res=accountupdatesuccess');
             exit;
         } else {
-            header('Location: ./profile.php?viewprofile=1&err=accountupdateerror');
+            header('Location: ./profile.php?viewprofile=1&res=accountupdateerror');
             exit;
         }
-    } else if ($_POST['action'] == 'deleteprofile') {
+    } else if ($_GET['action'] == 'deleteprofile') {
 
         $res = $dbc->delete_from(
             tableName: "customer",
@@ -125,10 +125,10 @@ try {
 
         if ($res) {
             session_destroy();
-            header('Location: ./login.php?success=deleteaccountsuccess');
+            header('Location: ./login.php?res=deleteaccountsuccess');
             exit;
         } else {
-            header('Location: ./profile.php?viewprofile=1&err=accountdeleteerror');
+            header('Location: ./profile.php?viewprofile=1&res=accountdeleteerror');
             exit;
         }
     }

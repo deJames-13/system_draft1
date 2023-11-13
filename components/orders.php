@@ -497,7 +497,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
 
           <!-- BUTTONS -->
-          <div class="bottom-0 fixed bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
+          <div class=" bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
 
             <a class="cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" href="./?page=orders&res=confirmordercancel&id=<?= $id ?>" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>"><i class=" fas fa-times"></i> Cancel Order</a>
 

@@ -193,7 +193,7 @@ if ($_SESSION['userId']) {
                     </div>
                     <div class="container flex space-x-8 items-center justify-center">
                         <!-- Btn Submit -->
-                        <button name="action" type="Submit" class="<?= $isViewProfile ? '' : 'hidden' ?> w-full md:w-2/3 lg:w-1/2 border-2 border-accent text-center rounded-md p-2 px-4 text-lg bg-red-400 hover:bg-secondary50 focus:bg-primary30" placeholder="SUBMIT" value="<?= $isViewProfile ? 'deleteprofile' : '' ?>">Delete</button>
+                        <a name="action" type="Submit" class="<?= $isViewProfile ? '' : 'hidden' ?> w-full md:w-2/3 lg:w-1/2 border-2 border-accent text-center rounded-md p-2 px-4 text-lg bg-red-400 hover:bg-secondary50 focus:bg-primary30" href="./profile.php?viewprofile=1&res=confirmdeleteprofile">Delete</a>
 
 
                         <button name="action" type="Submit" class="w-full md:w-2/3 lg:w-1/2 border-2 border-accent text-center rounded-md p-2 px-4 text-lg bg-green-400  hover:bg-secondary50 " placeholder="SUBMIT" value="<?= $isViewProfile ? 'updateprofile' : 'saveprofile' ?>">Save</button>
@@ -204,6 +204,52 @@ if ($_SESSION['userId']) {
 
         </div>
     </main>
+
+    <?php
+    include_once '../components/modals.php';
+
+    switch ($_GET['res']) {
+        case 'accountupdatesuccess':
+            echo createModal(
+                title: "Account update successfully.",
+                visible: true,
+                message: "Your profile information has been successfully update.",
+            );
+            break;
+        case 'accountupdateerror':
+            echo createModal(
+                title: "Error on updating account.",
+                visible: true,
+                message: "Cannot update your account right now.",
+            );
+            break;
+        case 'confirmdeleteprofile':
+            echo createModal(
+                title: "Confirm Delete.",
+                visible: true,
+                message: "Are you sure you want to delete your account?",
+                btnConfirm: "Yes. We will miss you.",
+                btnClose: "No.",
+                btnFunc: "window.location.replace('./register.php?action=deleteprofile')"
+            );
+            break;
+        case 'accountdeleteerror':
+            echo createModal(
+                title: "Error on deleting account.",
+                visible: true,
+                message: "Cannot delete your account right now.",
+            );
+            break;
+
+        default:
+            break;
+    }
+
+
+
+
+    ?>
+    <script src="../js/index.js"></script>
 </body>
 
 </html>

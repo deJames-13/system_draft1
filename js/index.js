@@ -23,9 +23,6 @@ function cardClicked(card) {
   window.location.replace('./?item_id=' + id);
 }
 
-function deleteOrder(id) {
-  window.location.replace('./order_delete.php?id=' + id);
-}
 function manageOrder(btn) {
   var [name, id, item_id] = btn.name.split('_');
 

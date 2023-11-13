@@ -98,7 +98,13 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
                 visible: true,
             );
             break;
-
+        case 'deleteaccountsuccess':
+            echo createModal(
+                title: "Account deleted.",
+                message: "We're sorry to see you go.",
+                visible: true,
+            );
+            break;
         default:
             break;
     }

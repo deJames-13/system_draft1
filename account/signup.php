@@ -63,6 +63,34 @@
             </div>
         </div>
     </main>
+    <?php
+    include_once '../components/modals.php';
+
+    switch ($_GET['res']) {
+        case 'incorrectpassword':
+            echo createModal(
+                title: "Incorrect Password.",
+                visible: true,
+                message: "The password you entered does not match.",
+            );
+            break;
+        case 'accountcreateerror':
+            echo createModal(
+                title: "Account Error.",
+                visible: true,
+                message: "There is an error while creating an account.",
+            );
+            break;
+
+        default:
+            # code...
+            break;
+    }
+
+
+
+
+    ?>
     <script src="../js/index.js"></script>
 </body>
 
