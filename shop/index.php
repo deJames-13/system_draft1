@@ -179,7 +179,6 @@ require_once "../scripts/db-config.php";
           ) : '';
           break;
         case 'signinsuccess':
-
           echo createModal(
             title: "Sign in success.",
             visible: true,
