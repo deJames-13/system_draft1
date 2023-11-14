@@ -42,7 +42,7 @@ function createModal($title = null, $message = null, $visible = false, $btnFunc 
 
                 <!-- option buttons -->
                 <div class="flex justify-end pt-2 space-x-4">
-                    <button class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" onclick="showModal(this)">$btnClose</button>
+                    <button class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" onclick="showModal()">$btnClose</button>
 
                     $btnConfirm
                 </div>

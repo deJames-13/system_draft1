@@ -81,6 +81,20 @@
                 message: "There is an error while creating an account.",
             );
             break;
+        case 'accountcreateerror':
+            echo createModal(
+                title: "Account Error.",
+                visible: true,
+                message: "There is an error while creating an account.",
+            );
+            break;
+        case 'accountexists':
+            echo createModal(
+                title: "Account Already Exists.",
+                visible: true,
+                message: "The account you are trying to create already exists. Please try again with another username or email.",
+            );
+            break;
 
         default:
             # code...

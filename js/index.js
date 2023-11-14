@@ -215,7 +215,7 @@ function checkOutCart(btn) {
   }
 }
 
-function showModal(btn) {
+function showModal() {
   var modal = document.getElementById('alert_modal');
   modal.classList.toggle('hidden');
   var content = document.getElementById('modal-content');

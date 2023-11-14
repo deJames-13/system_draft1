@@ -9,6 +9,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
 
 if (!empty($_SESSION['userName'] && $_GET['viewprofile' != 1])) {
     header('Location: ../home/');
+    exit;
 }
 if (!empty($_GET['action'])) {
 } else if (empty($_POST['action'])) {
@@ -122,19 +123,19 @@ try {
                 "id" => $_SESSION['userId']
             ]
         );
-
-        if ($res) {
-            session_destroy();
-            header('Location: ./login.php?res=deleteaccountsuccess');
-            exit;
-        } else {
-            header('Location: ./profile.php?viewprofile=1&res=accountdeleteerror');
-            exit;
-        }
+    }
+    if ($res) {
+        session_destroy();
+        header('Location: ./login.php?res=deleteaccountsuccess');
+        exit;
+    } else {
+        header('Location: ./profile.php?viewprofile=1&res=accountdeleteerror');
+        exit;
     }
 } catch (Exception $ex) {
     echo $dbc->getQuery();
     echo $ex->getMessage();
 }
 
+header('Location: ./signup.php');
 exit;

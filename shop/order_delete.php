@@ -55,6 +55,8 @@ try {
         header("Location: ./?page=orders&res=order_item_delete_failed");
         exit;
     }
+    header("Location: ./?page=orders");
+    exit;
 } catch (Exception $ex) {
     echo $dbc->getQuery();
     echo $ex->getMessage();
