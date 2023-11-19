@@ -10,6 +10,8 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
     session_destroy();
 }
 
+require_once '../scripts/db-config.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,32 +43,36 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
             <!-- Side Bar -->
             <!-- here --> <?php include_once './components/side-bar.php'; ?>
 
+            <div class="shop-panel-wrapper min-w-[600px] overflow-auto container p-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-start space-y-6">
+                <!-- Pages -->
+                <!-- here -->
+                <?php
 
-            <!-- Pages -->
-            <!-- here -->
-            <?php
+                if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                } else {
+                    $page = 'inventory';
+                }
+                switch ($page) {
+                    case 'inventory':
+                        include_once './pages/inventory.php';
+                        break;
+                    case 'orders':
+                        include_once './pages/orders.php';
+                        break;
+                    case 'employees':
+                        include_once './pages/employees.php';
+                        break;
+                    case 'payroll':
+                        include_once './pages/payroll.php';
+                        break;
 
-            if (isset($_GET['page'])) {
-                $page = $_GET['page'];
-            } else {
-                $page = 'inventory';
-            }
-            switch ($page) {
-                case 'inventory':
-                    break;
-                case 'orders':
-                    break;
-                case 'employees':
-                    break;
-                case 'payroll':
-                    break;
+                    default:
+                        break;
+                }
+                ?>
+            </div>
 
-                default:
-                    break;
-            }
-
-
-            ?>
         </div>
 
 

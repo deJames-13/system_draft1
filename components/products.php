@@ -65,11 +65,11 @@ try {
     <!-- CARD LIST CONTAINER -->
     <div class="container p-4 pb-24 px-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-center space-y-6 lg:items-start ">
 
-        <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 ">
+        <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 hover:scale-110 transform transition-all">
             <!-- Item Image -->
             <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center py-8">
 
-                <img src="<?= $itemImage ?>" alt="" class=" object-contain h-full w-full" />
+                <img src="<?= $itemImage ?>" alt="" class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
 
             </div>
 
@@ -348,10 +348,10 @@ try {
 
             ?>
 
-            <div id="item_<?= $itemId ?>" class="w-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2">
+            <div id="item_<?= $itemId ?>" class="w-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-105 transform transition-all">
 
                 <!-- Image -->
-                <div id="itemImg_<?= $itemId ?>" onclick=" cardClicked(this)" class="my-4 h-32 border bg-contain bg-white bg-no-repeat bg-center" style="background-image: url('<?= $itemImage ?>')">
+                <div id="itemImg_<?= $itemId ?>" onclick=" cardClicked(this)" class="my-4 h-32 border bg-contain bg-white bg-no-repeat bg-center " style="background-image: url('<?= $itemImage ?>')">
                 </div>
 
                 <div class="mx-4 pb-4">

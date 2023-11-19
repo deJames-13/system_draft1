@@ -10,14 +10,14 @@ session_start();
       </a>
 
       <div class="hidden space-x-8 p-2 items-center md:flex">
-        <a href="../home/" class="text-accent hover:text-secondary"> Home </a>
+        <a href="../home/" class="text-accent hover:text-secondary hover:scale-105 transform transition-all"> Home </a>
 
 
-        <a href="../shop/" class="text-accent hover:text-secondary"> Products </a>
+        <a href="../shop/" class="text-accent hover:text-secondary hover:scale-105 transform transition-all"> Products </a>
 
         <?php if ($_SESSION['userId']) : ?>
-          <div class="cursor-pointer flex space-x-2 items-center justify-center px-6 rounded-full bg-secondary75 p-2">
-            <a href="../account/profile.php?viewprofile=1" id="nav-cta" class="text-accent hover:text-white ">
+          <div class="cursor-pointer flex space-x-2 items-center justify-center px-6 rounded-full bg-secondary75 p-2 hover:scale-105 transform transition-all">
+            <a href="../account/profile.php?viewprofile=1" id="nav-cta" class="text-accent hover:text-white hover:scale-105 transform transition-all">
               <i class="fas fa-user"></i>
             </a>
           </div>
