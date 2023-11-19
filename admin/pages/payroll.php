@@ -36,27 +36,31 @@ try {
 
 
 ?>
+
 <!-- BUTTONS -->
-<div class="container flex justify-end space-x-4 px-4 text-sm">
-    <div class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
-        <i class="fas fa-plus">
-        </i>
-        <button class="">
-            Create New
+<div class="container flex items-center justify-between">
+    <h3>Selected Item: <span id="selectedItemId">_</span> </h3>
+    <div class="flex justify-end space-x-4 px-4 text-sm">
+        <button id="create_payroll" name="create_payroll" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            <i class="fas fa-plus">
+            </i>
+            <span>
+                Add New
+            </span>
         </button>
-    </div>
-    <div class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
-        <i class="fas fa-pen">
-        </i>
-        <button class="">
-            Edit
+        <button id="edit_payroll" name="edit_payroll" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            <i class="fas fa-pen">
+            </i>
+            <span>
+                Edit
+            </span>
         </button>
-    </div>
-    <div class="text-red-400 flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
-        <i class="fas fa-trash">
-        </i>
-        <button class="">
-            Delete
+        <button id="delete_payroll" name="delete_payroll" onclick="btnActionsClicked(this)" class="text-red-400 flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            <i class="fas fa-trash">
+            </i>
+            <span>
+                Delete
+            </span>
         </button>
     </div>
 </div>
@@ -92,7 +96,7 @@ try {
         <?php foreach ($users as $user) : ?>
 
 
-            <div name="user_<?= $user['id'] ?>" id="user_<?= $user['id'] ?>" class="flex items-center justify-around space-x-2 border-b  p-1 py-2 hover:bg-primary30 hover:border-b-2 hover:border-accent hover:scale-x-105 hover:font-bold transform transition-all">
+            <div onclick="rowClicked(this)" name="payroll_<?= $user['id'] ?>" id="payroll_<?= $user['id'] ?>" class="flex items-center justify-around space-x-2 border-b  p-1 py-2 hover:bg-primary30 hover:border-y-2 hover:border-accent hover:scale-x-105 hover:font-bold transform transition-all">
 
                 <!-- ID -->
                 <p class="w-1/6 text-center text-ellipsis font-light text-sm">
@@ -125,9 +129,9 @@ try {
                 </p>
 
                 <!-- View More -->
-                <p class="w-1/6 text-center font-light text-sm">
-                    <i class="fas fa-caret-right"></i>
-                </p>
+                <a name="viewItem" href="./?page=inventory&id=<?= $product['id'] ?>" class="w-1/6 z-10 text-center p-2 px-4 font-light text-sm relative">
+                    <i class="fas fa-caret-right hover:text-3xl hover:text-secondary transform transition-all"></i>
+                </a>
             </div>
         <?php endforeach; ?>
 

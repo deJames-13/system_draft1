@@ -11,6 +11,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
 }
 
 require_once '../scripts/db-config.php';
+include_once '../components/modals.php';
 
 ?>
 <!DOCTYPE html>
@@ -53,6 +54,7 @@ require_once '../scripts/db-config.php';
                 } else {
                     $page = 'inventory';
                 }
+
                 switch ($page) {
                     case 'inventory':
                         include_once './pages/inventory.php';
@@ -83,7 +85,7 @@ require_once '../scripts/db-config.php';
 
 
 
-    <?php include_once '../components/modals.php';
+    <?php
     switch ($_GET['res']) {
         case 'loginsuccess':
             echo createModal(

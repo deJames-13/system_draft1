@@ -1,10 +1,11 @@
 <?php
 
-function createModal($title = null, $message = null, $visible = false, $btnFunc = '', $btnClose = null, $btnConfirm = null)
+function createModal($title = null, $message = null, $visible = false, $btnFunc = '', $btnFunc2 = null, $btnClose = null, $btnConfirm = null)
 {
     $title = $title ?? "No title";
     $message = $message ?? "No message";
     $btnClose = $btnClose ?? "Close";
+    $btnFunc2 = $btnFunc2 ?? "showModal(this)";
     $hidden = $visible ? '' : 'hidden';
 
     if ($btnConfirm == null) {
@@ -42,7 +43,7 @@ function createModal($title = null, $message = null, $visible = false, $btnFunc 
 
                 <!-- option buttons -->
                 <div class="flex justify-end pt-2 space-x-4">
-                    <button name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" onclick="showModal(this)">$btnClose</button>
+                    <button name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" onclick="$btnFunc2">$btnClose</button>
 
                     $btnConfirm
                 </div>
