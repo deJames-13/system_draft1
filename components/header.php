@@ -12,9 +12,6 @@ session_start();
       <div class="hidden space-x-8 p-2 items-center md:flex">
         <a href="../home/" class="text-accent hover:text-secondary"> Home </a>
 
-        <!-- <a href="#" class="text-accent hover:text-secondary"> About Us </a> -->
-
-        <!-- <a href="#" class="text-accent hover:text-secondary"> Contacts </a> -->
 
         <a href="../shop/" class="text-accent hover:text-secondary"> Products </a>
 

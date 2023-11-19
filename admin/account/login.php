@@ -1,13 +1,14 @@
 <?php
 session_start();
-require_once '../scripts/db-config.php';
+require_once '../../scripts/db-config.php';
 
 
 
 if (empty($_POST['action'])) {
-    header("Location: ../shop/");
+    header("Location: ./");
     return;
 }
+
 
 $userName;
 $passWord;
@@ -25,15 +26,11 @@ if (empty($userName) || empty($passWord)) {
     exit();
 }
 
-
-
-
 try {
     $dbc = new DatabaseConfig();
 
-
     $result = $dbc->select(
-        tableName: 'customer',
+        tableName: 'login',
         columns: ['id', 'username', 'password'],
         where: [
             "username" => $userName,
@@ -43,18 +40,19 @@ try {
     echo $e->getMessage();
 }
 
+
 if (empty($result)) {
-    header("Location: ./login.php?res=wronguser");
+    header("Location: ./?res=wronguser");
 } else {
 
     // password_verify
     if (!password_verify($passWord, $result["password"])) {
-        header("Location: ./login.php?res=wrongpass");
+        header("Location: ./?res=wrongpass");
         exit();
     }
 
-    $_SESSION['userId'] = $result["id"];
-    $_SESSION['userName'] = $result["username"];
-    header("Location: ../shop/");
+    $_SESSION['adminId'] = $result["id"];
+    $_SESSION['adminName'] = $result["username"];
+    header("Location: ../?res=loginsuccess");
 }
 exit();

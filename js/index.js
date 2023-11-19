@@ -215,8 +215,12 @@ function checkOutCart(btn) {
   }
 }
 
-function showModal() {
+function showModal(btn) {
   var modal = document.getElementById('alert_modal');
+  if (btn.name == 'closeModal') {
+    window.location.replace(window.location.href.split('?')[0]);
+    return;
+  }
   modal.classList.toggle('hidden');
   var content = document.getElementById('modal-content');
 }

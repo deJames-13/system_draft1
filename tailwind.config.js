@@ -3,6 +3,7 @@ module.exports = {
   content: [
     './components/*.{html,js,php}',
     './account/*.{html,js,php}',
+    './admin/**/*.{html,js,php}',
     './home/*.{html,js,php}',
     './shop/*.{html,js,php}',
   ],
