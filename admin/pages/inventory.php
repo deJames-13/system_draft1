@@ -420,10 +420,10 @@ switch ($_GET['res']) {
         </span>
 
         <div class="h-full inline-block align-center py-8 transform transition-all align-middle w-full max-w-xl p-2">
-
             <div id="modal-content" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 border border-accent30 bg-white text-left h-full min-h-full">
-
                 <div class="container h-full max-h-full overflow-y-auto border">
+
+                    <!-- Title -->
                     <div class="flex items-center space-x-4 p-2 px-4 border-b-2 border-accent">
                         <i class="text-xl md:text-3xl text-accent fas fa-plus"></i>
                         <h1 class="text-xl md:text-3xl font-semibold text-accent hover:text-secondary">
@@ -431,35 +431,41 @@ switch ($_GET['res']) {
                         </h1>
                     </div>
 
-                    <div class="container p-2 px-4 flex flex-col space-y-4 border text-md">
+                    <form action="./inventory/add.php" method="post" class="container p-2 px-4 flex flex-col space-y-4 border text-md">
+
+                        <!-- Name Input -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
                             <span class="w-[40%]">Item Name: </span>
                             <input required type="text" name="item_name" id="item_name" placeholder="Add item name" class="w-full border rounded p-1 px-4">
                         </div>
 
-
+                        <!-- Item Price -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
                             <span class="w-[40%]">Item Price: </span>
-                            <input required="number" name="price" id="price" placeholder="0" class="w-full border rounded p-1 px-4">
+                            <input required type="number" name="price" id="price" placeholder="0" class="w-full border rounded p-1 px-4">
                         </div>
 
+                        <!-- Qty -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
                             <span class="w-[40%]">Stock Quantity: </span>
-                            <input required="number" name="stock_quantity" id="stock_quantity" placeholder="0" class="w-full border rounded p-1 px-4">
+                            <input required type="number" name="stock_quantity" id="stock_quantity" placeholder="0" class="w-full border rounded p-1 px-4">
                         </div>
 
+                        <!-- Brand -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
                             <span class="w-[40%]">Item Brand: </span>
-                            <input class="w-full border rounded p-1 px-4" list="item_brands" id="dropdown_brand" name="brand" value="">
+                            <input required class="w-full border rounded p-1 px-4" list="item_brands" id="dropdown_brand" name="brand" value="">
                             <datalist id="item_brands">
                                 <?php foreach ($brands as $brand) : ?>
                                     <option value="<?= $brand['brand'] ?>">
                                     <?php endforeach; ?>
                             </datalist>
                         </div>
+
+                        <!-- Supplier -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
                             <span class="w-[40%]">Item Supplier: </span>
-                            <select class="w-full border rounded p-1 px-4" id="dropdown_supplier" name="supplier">
+                            <select required class="w-full border rounded p-1 px-4" id="dropdown_supplier" name="supplier">
                                 <option value="" selected></option>
                                 <?php foreach ($suppliers as $s) : ?>
                                     <option value="<?= $s['id'] ?>"><?= $s['name'] ?></option>
@@ -467,10 +473,13 @@ switch ($_GET['res']) {
                             </select>
                         </div>
 
+                        <!-- Description -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-start md:justify-between md:flex-row md:space-x-2">
                             <span class="w-[40%]">Description: </span>
                             <textarea class="resize-none w-full border rounded p-1 px-4" name="description" id="productdesc" rows="3">Add description... </textarea>
                         </div>
+
+                        <!-- Images -->
                         <div class="w-full flex flex-col space-y-2 items-center">
                             <label for="images" class="w-full text-center rounded border border-accent p-2 hover:scale-105 hover:border-b-2 transition-all transform">
                                 <i class="fas fa-plus"></i> Add Images
@@ -478,23 +487,23 @@ switch ($_GET['res']) {
                             <input onchange="handleFileSelect(event)" type="file" name="images[]" id="images" class="hidden" multiple />
                         </div>
 
-                        <!-- make it so that when i upload images it will autmatically go here -->
 
+                        <!-- Image Display -->
                         <div id="imageDisplay" class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
-
                         </div>
 
 
-                    </div>
                 </div>
-
-                <!-- option buttons -->
-                <div class="border flex items-center justify-end space-x-4 w-full">
-                    <a name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" href="./?page=inventory">Close</a>
-                    <button name="confirmModal" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="">Save</button>
-                </div>
-
             </div>
+
+            <!-- option buttons -->
+            <div class="border flex items-center justify-end space-x-4 w-full">
+                <a name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" href="./?page=inventory">Close</a>
+
+                <button type="submit" name="confirmModal" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="">Save</button>
+            </div>
+
         </div>
     </div>
+</div>
 </div>

@@ -230,7 +230,7 @@ function btnlog(btn) {
 function showModal(btn) {
   var modal = document.getElementById('alert_modal');
   if (btn.name == 'closeModal') {
-    window.location.replace(window.location.href.split('&res')[0]);
+    window.location.replace(window.location.href.split('res')[0]);
     return;
   }
   modal.classList.toggle('hidden');
