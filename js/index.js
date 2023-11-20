@@ -258,11 +258,13 @@ function rowClicked(row) {
 function btnActionsClicked(btn) {
   var [name, page] = btn.name.split('_');
   var id = document.getElementById('selectedItemId').innerText;
-
-  console.log(btn);
-
   id = parseInt(id);
-  if (id) {
+
+  if (name == 'create') {
+    window.location.replace(`./?page=${page}&mode=create`);
+  } else if (name == 'delete' && id) {
+    window.location.replace(`./?page=${page}&res=deleteconfirm&id=${id}`);
+  } else if (id) {
     window.location.replace(`./?page=${page}&id=${id}`);
   }
 }

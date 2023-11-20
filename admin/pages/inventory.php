@@ -491,19 +491,18 @@ switch ($_GET['res']) {
                         <!-- Image Display -->
                         <div id="imageDisplay" class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
                         </div>
-
+                    </form>
 
                 </div>
+
+                <!-- option buttons -->
+                <div class="border flex items-center justify-end space-x-4 w-full">
+                    <a name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" href="./?page=inventory">Close</a>
+
+                    <button type="submit" name="confirmModal" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="">Save</button>
+                </div>
+
             </div>
-
-            <!-- option buttons -->
-            <div class="border flex items-center justify-end space-x-4 w-full">
-                <a name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" href="./?page=inventory">Close</a>
-
-                <button type="submit" name="confirmModal" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="">Save</button>
-            </div>
-
         </div>
     </div>
-</div>
 </div>

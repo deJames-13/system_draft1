@@ -94,6 +94,16 @@ include_once '../components/modals.php';
                 visible: true
             );
             break;
+        case 'deleteconfirm':
+            $id = $_GET['id'];
+            echo createModal(
+                title: "Confirm Delete.",
+                message: "Are you sure you want to delete this item?",
+                visible: true,
+                btnConfirm: "Delete",
+                btnFunc: "window.location.replace('./inventory/delete.php?id=$id')"
+            );
+            break;
         default:
             break;
     }
