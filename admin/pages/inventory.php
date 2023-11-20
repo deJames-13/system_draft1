@@ -14,6 +14,7 @@ s.name as supplier
 FROM
 product as p
 INNER JOIN supplier as s ON s.id = p.supplier_id
+ORDER BY p.id DESC
 
 SQL;
 
@@ -72,9 +73,9 @@ try {
                     <a href="./?page=inventory&id=<?= $id ?>&mode=edit" class="w-full text-center rounded border border-accent p-2 bg-primary50 hover:scale-110 hover:border-b-2 transition-all transform">
                         Edit Information
                     </a>
-                    <button class="w-full rounded border border-accent p-2 bg-red-300 hover:scale-110 hover:border-b-2 transition-all transform">
+                    <a href="./?page=inventory&id=<?= $id ?>&res=deleteconfirm" class="text-center w-full rounded border border-accent p-2 bg-red-300 hover:scale-110 hover:border-b-2 transition-all transform">
                         Delete
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -391,11 +392,39 @@ switch ($_GET['res']) {
             message: "Product Item information has successfully update!"
         );
         break;
+    case 'additemsuccess':
+        echo createModal(
+            visible: true,
+            title: "Item Added.",
+            message: "Product Item has been added to the inventory!"
+        );
+        break;
+    case 'deleteitemsuccess':
+        echo createModal(
+            visible: true,
+            title: "Item Deleted.",
+            message: "Product Item has been deleted from the inventory!"
+        );
+        break;
     case 'updateitemerror':
         echo createModal(
             visible: true,
             title: "Update Error.",
             message: "There was an error while updating an item!"
+        );
+        break;
+    case 'additemfailed':
+        echo createModal(
+            visible: true,
+            title: "Item Add Failed.",
+            message: "There was an error while adding an item!"
+        );
+        break;
+    case 'deleteitemfailed':
+        echo createModal(
+            visible: true,
+            title: "Item Delete Failed.",
+            message: "There was an error while deleting an item!"
         );
         break;
 
@@ -420,8 +449,8 @@ switch ($_GET['res']) {
         </span>
 
         <div class="h-full inline-block align-center py-8 transform transition-all align-middle w-full max-w-xl p-2">
-            <div id="modal-content" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 border border-accent30 bg-white text-left h-full min-h-full">
-                <div class="container h-full max-h-full overflow-y-auto border">
+            <form action="./inventory/add.php" method="post" id="modal-content" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 border border-accent30 bg-white text-left h-full min-h-full">
+                <div class="container h-full max-h-full overflow-y-auto">
 
                     <!-- Title -->
                     <div class="flex items-center space-x-4 p-2 px-4 border-b-2 border-accent">
@@ -431,7 +460,7 @@ switch ($_GET['res']) {
                         </h1>
                     </div>
 
-                    <form action="./inventory/add.php" method="post" class="container p-2 px-4 flex flex-col space-y-4 border text-md">
+                    <div class="container p-2 px-4 flex flex-col space-y-4  text-md">
 
                         <!-- Name Input -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
@@ -442,7 +471,7 @@ switch ($_GET['res']) {
                         <!-- Item Price -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
                             <span class="w-[40%]">Item Price: </span>
-                            <input required type="number" name="price" id="price" placeholder="0" class="w-full border rounded p-1 px-4">
+                            <input required type="number" step="any" name="price" id="price" placeholder="0" class="w-full border rounded p-1 px-4">
                         </div>
 
                         <!-- Qty -->
@@ -491,18 +520,17 @@ switch ($_GET['res']) {
                         <!-- Image Display -->
                         <div id="imageDisplay" class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
                         </div>
-                    </form>
+                    </div>
 
                 </div>
 
                 <!-- option buttons -->
-                <div class="border flex items-center justify-end space-x-4 w-full">
+                <div class="flex items-center justify-end space-x-4 w-full">
                     <a name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" href="./?page=inventory">Close</a>
 
                     <button type="submit" name="confirmModal" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="">Save</button>
                 </div>
-
-            </div>
+            </form>
         </div>
     </div>
 </div>
