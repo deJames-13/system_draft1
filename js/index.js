@@ -265,7 +265,7 @@ function btnActionsClicked(btn) {
   } else if (name == 'delete' && id) {
     window.location.replace(`./?page=${page}&res=deleteconfirm&id=${id}`);
   } else if (id) {
-    window.location.replace(`./?page=${page}&id=${id}`);
+    window.location.replace(`./?page=${page}&id=${id}&mode=edit`);
   }
 }
 

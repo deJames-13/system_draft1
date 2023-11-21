@@ -58,7 +58,7 @@ try {
         </div>
 
         <div class="flex-1 flex space-x-4 w-full h-full rounded">
-            <div class="flex flex-col items-center space-y-4 max-w-sm w-full h-screen border">
+            <div class="flex flex-col items-center space-y-4 max-w-sm w-full h-screen">
 
                 <!-- Images -->
                 <div class="p-4 flex flex-col items-center justify-center space-y-4 border border-accent rounded w-full">
@@ -87,7 +87,7 @@ try {
                     <h3 class="text-md font-medium">Product Information</h3>
                 </div>
 
-                <div class="w-full flex-col space-y-4 items-center border">
+                <div class="w-full flex-col space-y-4 items-center">
 
                     <!-- Id -->
                     <div class="flex justify-between">

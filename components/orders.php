@@ -116,7 +116,6 @@ $groupedResult = [];
       $shipAmount = $row['shipping_fee'];
 
       // Groups the items based on order id
-
       if ($prevId != $id) {
         $info = [
           'id' => $id,
@@ -327,7 +326,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
       <div class="h-full inline-block align-center py-4 transform transition-all align-middle w-full max-w-2xl">
 
-        <form method="post" action="./order_update.php?id=<?= $id ?>" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto h-full shadow-xl border border-accent30 bg-white pt-4">
+        <form method="post" action="./order_update.php?id=<?= $id ?>" class="animate-fall relative container flex flex-col justify-between rounded-lg  h-full shadow-xl border border-accent30 bg-white pt-4">
 
           <div class="flex px-4 pb-4 items-center justify-between border-b-2">
             <h1 class="text-xl font-bold text-accent md:text-3xl">
@@ -336,7 +335,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
             <a class="px-2 rounded border-red-600 border hover:bg-red-300 mr-2" href="./?page=orders" name="closeModal" id="closeModal_<?= $itemId ?>"><i class=" fas fa-times"></i></a>
           </div>
 
-          <div class="py-3 px-6 text-left flex flex-col space-y-4">
+          <div class="overflow-y-auto h-full py-3 px-6 text-left flex flex-col space-y-4">
             <!-- Order Details -->
             <!-- Customer Info -->
             <div class="flex justify-between items-center">
