@@ -236,7 +236,7 @@ try {
                     </div>
 
                     <!-- Brand -->
-                    exit;
+
                     <div class="flex justify-between">
                         <label for="dropdown_brand">Select Brand:</label>
                         <input class="text-right" list="opt_brands" id="dropdown_brand" name="brand" value="<?= $product['brand'] ?>">
@@ -245,7 +245,6 @@ try {
                                 <option value="<?= $brand['brand'] ?>">
                                 <?php endforeach; ?>
                         </datalist>
-
                     </div>
 
                     <!-- Supplier -->
