@@ -269,6 +269,14 @@ function btnActionsClicked(btn) {
   }
 }
 
+function updateOrderStatus(type, id) {
+  if (type == 'delete') {
+    window.location.replace('./orders/delete.php?id=' + id);
+  } else {
+    window.location.replace('./orders/update.php?status=' + type + '&id=' + id);
+  }
+}
+
 // IMAGE DYNAMIC LOADING
 function handleFileSelect(event) {
   const files = event.target.files;

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 $status = $_GET['status'];
@@ -60,37 +59,37 @@ $groupedResult = [];
 
 
 
-<div class="flex container flex-col space-y-4">
+<div class="flex container flex-col space-y-4 h-full overflow-y-hidden">
 
     <!-- BUTTONS -->
     <div class="container flex items-center justify-between">
         <h3>Selected Item: <span id="selectedItemId">_</span> </h3>
         <div class="flex justify-end space-x-4 px-4 text-sm">
-            <button id="create_orders" name="create_orders" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            <a class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
                 <i class="fas fa-boxes-packing">
                 </i>
                 <span>
                     Ship Order
                 </span>
-            </button>
-            <button id="edit_orders" name="edit_orders" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            </a>
+            <a class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
                 <i class="fas fa-check-to-slot">
                 </i>
                 <span>
                     Delivered
                 </span>
-            </button>
-            <button id="delete_orders" name="delete_orders" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-red-400 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            </a>
+            <a class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-red-400 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
                 <i class="fas fa-ban">
                 </i>
                 <span>
                     Cancel
                 </span>
-            </button>
+            </a>
         </div>
     </div>
 
-    <div class="container border-t-2 border-accent ">
+    <div class="h-[90%] relative overflow-y-auto  container border-t-2 border-accent ">
         <div class="w-full flex flex-col">
 
             <!-- Header  -->
@@ -228,6 +227,7 @@ $groupedResult = [];
                         <i class="fas fa-caret-right hover:text-3xl hover:text-secondary transform transition-all"></i>
                     </a>
                 </div>
+                <?php $prevId = $id ?>
             <?php endforeach; ?>
 
         </div>
@@ -245,7 +245,6 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
     <?php
     $id = $_GET['id'];
     $order = $groupedResult["order_$id"];
-    print_r($order);
     $tax = 0.12;
     $customerName = $order['customer_name'];
     $customerAddress = $order['address'];
@@ -257,9 +256,14 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
     $accSubtotal = 0;
     $total = 0;
+
+    // echo '<pre>';
+    // print_r($order);
+    // echo '</pre>';
+    // exit;
     ?>
     <!-- Manage an Order -->
-    <div class="<? $id ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
+    <div class="<? $id ? '' : 'hidden' ?>  fixed z-10 top-0 w-full left-0  overflow-y-auto" id="modal">
         <div class="flex items-center justify-center h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
             <div class="fixed inset-0 transition-opacity">
@@ -271,7 +275,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
             <div class="h-full inline-block align-center py-4 transform transition-all align-middle w-full max-w-2xl">
 
-                <form method="post" action="./order_update.php?id=<?= $id ?>" class="animate-fall relative container flex flex-col justify-between rounded-lg h-full shadow-xl border border-accent30 bg-white pt-4">
+                <div class="animate-fall relative container flex flex-col justify-between rounded-lg h-full shadow-xl border border-accent30 bg-white pt-4">
 
                     <div class="flex px-4 pb-4 items-center justify-between border-b-2">
                         <h1 class="text-xl font-bold text-accent md:text-3xl">
@@ -439,27 +443,102 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
                     <!-- BUTTONS -->
 
-                    <div class="<?= strtolower($orderStatus) == 'pending' ? '' : 'hidden' ?> bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
+                    <div class="<?= strtolower($orderStatus) == 'pending' ? '' : 'flex justify-center' ?> bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
 
-                        <a href="" class="cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>">
+                        <a href="./?page=orders&res=confirmorderdelete&order_id=<?= $id ?>" class=" cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>">
+
+                            <i class=" fas fa-times"></i>
+                            Delete Order
+
+                        </a>
+
+                        <a href="./?page=orders&res=confirmordercancel&order_id=<?= $id ?>" class="<?= strtolower($orderStatus) == 'pending' ? '' : 'hidden' ?> cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" name="btnCancelOrder_<?= $id ?>" id="btnCancelOrder_<?= $id ?>">
 
                             <i class=" fas fa-times"></i>
                             Cancel Order
 
                         </a>
 
-                        <button onclick="" name="btnUpdateOrder_<?= $id ?>" id="btnUpdateOrder_<?= $id ?>" type="submit" class="py-2 px-4 border border-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Ship</button>
+                        <a href="./?page=orders&res=confirmordership&order_id=<?= $id ?>" name="btnUpdateOrder_<?= $id ?>" id="btnShipOrder_<?= $id ?>" type="submit" class="<?= strtolower($orderStatus) == 'pending' ? '' : 'hidden' ?> py-2 px-4 border border-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Ship</a>
 
-                        <button onclick="" name="btnUpdateOrder_<?= $id ?>" id="btnUpdateOrder_<?= $id ?>" type="submit" class="py-2 px-4 border border-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Delivered</button>
+                        <a href="./?page=orders&res=confirmorderdeliver&order_id=<?= $id ?>" name="btnDeliverOrder_<?= $id ?>" id="btnDeliverOrder_<?= $id ?>" type="submit" class="<?= strtolower($orderStatus) == 'pending' ? '' : 'hidden' ?> py-2 px-4 border border-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Delivered</a>
 
 
                     </div>
 
-                </form>
+                </div>
 
 
             </div>
         </div>
     </div>
 
+
 <?php endif; ?>
+
+
+<?php
+include_once '../../components/modals.php';
+if (!empty($_GET['res']) && !empty($_GET['order_id'])) {
+    $orderId = $_GET['order_id'];
+    switch ($_GET['res']) {
+        case 'orderupdatesuccess':
+            echo createModal(
+                visible: true,
+                title: "Order Updated Successfully",
+                message: "The information has been updated for ORDER: $orderId STATUS: " . $_GET['type'],
+            );
+            break;
+        case 'orderdeletesuccess':
+            echo createModal(
+                visible: true,
+                title: "Order Deleted Successfully",
+                message: "Order Info has successfully deleted",
+            );
+            break;
+        case 'confirmorderdelete':
+            echo createModal(
+                visible: true,
+                title: "Confirm Order Delete",
+                message: "Are you sure you want to delete this item?",
+                btnConfirm: "Confirm",
+                btnFunc: "updateOrderStatus('delete', $orderId)",
+
+            );
+            break;
+        case 'confirmordercancel':
+            echo createModal(
+                visible: true,
+                title: "Confirm Order Cancel",
+                message: "Are you sure you want to cancel this item?",
+                btnConfirm: "Confirm",
+                btnFunc: "updateOrderStatus('cancelled', $orderId)",
+
+            );
+            break;
+        case 'confirmordership':
+            echo createModal(
+                visible: true,
+                title: "Confirm Order Ship",
+                message: "Are you sure you want to ship this item?",
+                btnConfirm: "Confirm",
+                btnFunc: "updateOrderStatus('shipping', $orderId)",
+
+            );
+            break;
+        case 'confirmorderdeliver':
+            echo createModal(
+                visible: true,
+                title: "Confirm Order Deliver",
+                message: "Are you sure you want to deliver this item?",
+                btnConfirm: "Confirm",
+                btnFunc: "updateOrderStatus('delivered', $orderId)",
+
+            );
+            break;
+        default:
+            break;
+    }
+}
+
+?>

@@ -65,11 +65,33 @@ try {
     <!-- CARD LIST CONTAINER -->
     <div class="container p-4 pb-24 px-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-center space-y-6 lg:items-start ">
 
-        <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 hover:scale-110 transform transition-all">
+        <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 hover:scale-95 transform transition-all">
             <!-- Item Image -->
-            <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center py-8">
+            <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center justify-between space-x-2 py-8">
+                <!-- images container -->
+                <?php if (json_decode($itemImage)) : ?>
+                    <span id="imagePrev" class="hover:text-secondary hover:scale-110 transform transition-all ">
+                        <i class="px-4 fas fa-arrow-left"></i>
+                    </span>
+                    <div id="imageContainer" class="p-3">
+                        <?php
+                        $images = json_decode($imagePath, true);
+                        $c = 0;
+                        ?>
+                        <?php foreach ($images as $i) : ?>
+                            <img src="<?= $i['path'] ?>" alt="<?= $i['name'] ?>" class="<?= $c === 0 ? '' : 'hidden' ?> object-contain h-full w-full hover:scale[.95] transform transition-all" />
+                            <?php $c += 1; ?>
+                        <?php endforeach; ?>
+                        <?php $c = 0; ?>
 
-                <img src="<?= $itemImage ?>" alt="" class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+                    </div>
+                    <span id="imageNext" class="hover:text-secondary hover:scale-110 transform transition-all ">
+                        <i class="px-4 fas fa-arrow-right"></i>
+                    </span>
+                <?php else : ?>
+                    <img src="<?= $itemImage ?>" alt="" class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+                <?php endif; ?>
+
 
             </div>
 

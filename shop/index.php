@@ -209,6 +209,7 @@ require_once "../scripts/db-config.php";
 
   <!-- Footer -->
   <script src="../js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
 </body>
 

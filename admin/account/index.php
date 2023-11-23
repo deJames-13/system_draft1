@@ -2,6 +2,12 @@
 
 session_start();
 
+
+if (isset($_SESSION['adminId'])) {
+    header('Location: ../');
+    exit();
+}
+
 if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
     session_destroy();
 }
@@ -42,7 +48,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
                         </div>
 
                         <div>
-                            <button type="submit" name="action" value="login" id="username" class="w-full border font-semibold border-accent rounded p-1 px-4"> Log in</button>
+                            <button type="submit" name="action" value="login" id="username" class="w-full border font-semibold border-accent rounded p-1 px-4 transition-all hover:scale-110 hover:border-b-2 hover:bg-primary50"> Log in</button>
                         </div>
 
 
@@ -73,7 +79,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
         case 'usernotfound':
             echo createModal(
                 title: "Sign in first",
-                message: "Please sign up or log in to an existing account to have transactions on our shop.",
+                message: "Please sign up or log in to an existing account login as admin.",
                 visible: true,
             );
             break;

@@ -1,9 +1,19 @@
 <?php
-
 session_start();
 require_once '../../scripts/db-config.php';
+require_once '../../scripts/handle-images.php';
 
 
+echo '<pre>';
+print_r($_POST);
+print_r($_FILES);
+$images = handleImageUpload('../../img/try', $_FILES['images']);
+print_r($images);
+
+echo '</pre>';
+
+
+exit;
 if (empty($_POST) || empty($_SESSION['adminId'])) {
     header('Location: ./');
     exit;

@@ -2,7 +2,7 @@
 session_start();
 
 if (empty($_SESSION['adminId'])) {
-    header("./account");
+    header("Location: ./account/");
     exit;
 }
 
@@ -44,7 +44,7 @@ include_once '../components/modals.php';
             <!-- Side Bar -->
             <!-- here --> <?php include_once './components/side-bar.php'; ?>
 
-            <div class="shop-panel-wrapper min-w-[600px] overflow-auto container p-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-start space-y-6">
+            <div class="shop-panel-wrapper min-w-[600px] container p-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-start space-y-6">
                 <!-- Pages -->
                 <!-- here -->
                 <?php
@@ -92,16 +92,6 @@ include_once '../components/modals.php';
                 title: "Login Success.",
                 message: "Welcome! Your account has successfully login.",
                 visible: true
-            );
-            break;
-        case 'deleteconfirm':
-            $id = $_GET['id'];
-            echo createModal(
-                title: "Confirm Delete.",
-                message: "Are you sure you want to delete this item?",
-                visible: true,
-                btnConfirm: "Delete",
-                btnFunc: "window.location.replace('./inventory/delete.php?id=$id')"
             );
             break;
         default:

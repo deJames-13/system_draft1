@@ -79,8 +79,10 @@ if ($_SESSION['userId']) {
                     </div>
                     <div class="flex flex-col space-y-2 items-center">
 
-                        <input name="profile_image" id="profile_image" type="file" class="w-full border border-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Add Image" />
-                        <label class="text-light" for="first_name">Select Profile Picture</label>
+                        <label for="image" class="w-full text-center rounded border border-accent p-2 hover:scale-105 hover:border-b-2 transition-all transform">
+                            Select Profile Picture
+                        </label>
+                        <input onchange="handleFileSelect(event)" type="file" name="image" id="image" class="hidden" />
                     </div>
                 </div>
 

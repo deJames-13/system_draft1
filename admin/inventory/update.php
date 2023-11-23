@@ -12,6 +12,7 @@ if (empty($_SESSION['adminId']) || empty($_POST['action'])) {
 
 try {
     require_once '../../scripts/db-config.php';
+
     $id = $_POST['item_id'];
     $dbc = new DatabaseConfig();
     $res = $dbc->update_into(
@@ -34,6 +35,9 @@ try {
         header("Location: ../?page=inventory&id=$id&res=updateitemerror");
     }
 } catch (Exception $ex) {
+    print_r($_POST);
+    print_r($dbc->getQuery());
+    exit;
     echo $ex->getMessage();
 }
 exit;

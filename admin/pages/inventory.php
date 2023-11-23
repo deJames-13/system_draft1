@@ -4,27 +4,21 @@ session_start();
 
 $query = <<<SQL
 SELECT 
-p.id,
-p.item_name,
-p.price,
-p.stock_quantity,
-p.brand,
-p.description,
+p.*,
 s.name as supplier
 FROM
 product as p
 INNER JOIN supplier as s ON s.id = p.supplier_id
-ORDER BY p.id DESC
 
 SQL;
 
 $id = $_GET['id'];
 
-if (is_integer($id) && $id > -1) {
-    $query .= "WHERE id=$id";
+if (!empty($_GET['id']) && $id > -1) {
+    $query .= "WHERE p.id = '$id'";
+} else {
+    $query .= "ORDER BY p.id DESC";
 }
-
-
 
 try {
 
@@ -212,7 +206,8 @@ try {
                     <!-- Id -->
                     <div class="flex justify-between">
                         <p>Item Id:</p>
-                        <input type="number" class="text-right text-xl font-light" name="item_id" id="item_id_<?= $id ?>" value="<?= $product['id'] ?>" disabled />
+                        <input type="number" class="text-right text-xl font-light" name="item_id" id="item_id_<?= $id ?>" value="<?= $product['id'] ?>" hidden />
+                        <input type="number" class="text-right text-xl font-light" name="" value="<?= $product['id'] ?>" disabled />
                     </div>
 
 
@@ -272,7 +267,7 @@ try {
 <?php else : ?>
 
 
-    <div class="container flex flex-col space-y-4">
+    <div class="container flex flex-col space-y-4 h-full overflow-y-hidden">
 
         <!-- BUTTONS -->
         <div class="flex items-center justify-between">
@@ -302,7 +297,7 @@ try {
             </div>
         </div>
 
-        <div class="relative container border-t-2 border-accent ">
+        <div class="h-[90%] relative overflow-y-auto container border-t-2 border-accent ">
             <div class="w-full flex flex-col">
 
                 <!-- Header  -->
@@ -398,6 +393,16 @@ switch ($_GET['res']) {
             message: "Product Item has been added to the inventory!"
         );
         break;
+    case 'deleteconfirm':
+        $id = $_GET['id'];
+        echo createModal(
+            title: "Confirm Delete.",
+            message: "Are you sure you want to delete this item?",
+            visible: true,
+            btnConfirm: "Delete",
+            btnFunc: "window.location.replace('./inventory/delete.php?id=$id')"
+        );
+        break;
     case 'deleteitemsuccess':
         echo createModal(
             visible: true,
@@ -448,7 +453,7 @@ switch ($_GET['res']) {
         </span>
 
         <div class="h-full inline-block align-center py-8 transform transition-all align-middle w-full max-w-xl p-2">
-            <form action="./inventory/add.php" method="post" id="modal-content" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 border border-accent30 bg-white text-left h-full min-h-full">
+            <form enctype="multipart/form-data" action="./inventory/add.php" method="post" id="modal-content" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 border border-accent30 bg-white text-left h-full min-h-full">
                 <div class="container h-full max-h-full overflow-y-auto">
 
                     <!-- Title -->

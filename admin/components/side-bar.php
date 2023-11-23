@@ -52,7 +52,7 @@ $inactive = 'bg-primary30';
         </div>
 
         <!-- Logout -->
-        <a href="./login.php?fromLogout=1" class="text-accent container border-accent p-4 pl-4 bg-primary30 rounded-l-full md:flex md:items-center md:space-x-2 hover:drop-shadow-lg  ">
+        <a href="./account/?fromLogout=1" class="text-accent container border-accent p-4 pl-4 bg-primary30 rounded-l-full md:flex md:items-center md:space-x-2 hover:drop-shadow-lg  ">
 
             <i class="fas fa-right-from-bracket"></i>
             <span class=" hidden md:block"> logout </span>
