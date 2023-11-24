@@ -12,6 +12,9 @@ if (empty($_SESSION['adminId']) || empty($_POST['action'])) {
 
 try {
     require_once '../../scripts/db-config.php';
+    require_once '../../scripts/handle-images.php';
+
+    $images = handleImageUpload('../../img/product', $_FILES['images']);
 
     $id = $_POST['item_id'];
     $dbc = new DatabaseConfig();
@@ -23,6 +26,7 @@ try {
             "stock_quantity" => $_POST['quantity'],
             "brand" => $_POST['brand'],
             "supplier_id" => $_POST['supplier'],
+            "image_dir" => $images
         ],
         where: [
             "id" => $id

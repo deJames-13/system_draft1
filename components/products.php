@@ -66,16 +66,13 @@ try {
     <div class="container p-4 pb-24 px-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-center space-y-6 lg:items-start ">
 
         <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 hover:scale-95 transform transition-all">
+
+
             <!-- Item Image -->
             <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center justify-between space-x-2 py-8">
+
                 <!-- images container -->
                 <?php if (json_decode($itemImage)) : ?>
-
-                    <!-- BTN PREV -->
-                    <span id="imagePrev" class="hidden hover:text-secondary hover:scale-110 transform transition-all ">
-                        <i class="px-4 fas fa-arrow-left"></i>
-                    </span>
-
 
                     <!-- IMAGE CONTAIN -->
                     <div id="imageContainer" class="w-full relative p-8">
@@ -87,9 +84,7 @@ try {
                         <div class="max-w-full h-full overflow-scroll p-4 slider flex transition-all transform">
 
                             <?php foreach ($images as $i) : ?>
-                                <?php //echo $i['name']; 
-                                ?>
-                                <img src="../img/product/<?= $i['name'] ?>" alt="" class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+                                <img src="../img/product/<?= $i['name'] ?>" alt=" " class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
 
                                 <?php $c += 1; ?>
                             <?php endforeach; ?>
@@ -99,30 +94,9 @@ try {
                     </div>
 
 
-                    <!-- BTN NEXT -->
-                    <span id="imageNext" class="hidden hover:text-secondary hover:scale-110 transform transition-all ">
-                        <i class="px-4 fas fa-arrow-right"></i>
-                    </span>
-
-
-                    <script>
-                        $(document).ready(function() {
-                            var interval = 3000; // 3 seconds
-
-                            function slideImages() {
-                                var container = $('#imageContainer');
-                                var slider = container.find('.slider');
-
-                                slider.find('.slide:first').appendTo(slider);
-                                slider.css('transform', 'translate(0)');
-                            }
-                            setInterval(slideImages, interval);
-                        });
-                    </script>
-
 
                 <?php else : ?>
-                    <img src="<?= $itemImage ?>" alt="" class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+                    <img src="<?= $itemImage ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
                 <?php endif; ?>
 
 

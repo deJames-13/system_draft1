@@ -63,7 +63,7 @@ try {
                 <div class="p-4 flex flex-col items-center justify-center space-y-4 border border-accent rounded w-full">
                     <h3 class="w-full">Employee Image</h3>
                     <div class="flex items-center justify-center aspect-square w-full border border-accent rounded p-4">
-                        <img src="../img/user/user_39.jpg" alt="" class="object-contain aspect-square">
+                        <img src="../img/user/user_39.jpg" alt=" " class="object-contain aspect-square">
                     </div>
                 </div>
 
@@ -199,7 +199,7 @@ try {
                 <div class="p-4 flex flex-col items-center justify-center space-y-4 border border-accent rounded w-full">
                     <h3 class="w-full">Employee Image</h3>
                     <div class="flex items-center justify-center aspect-square w-full border border-accent rounded p-4">
-                        <img src="../img/user/user_39.jpg" alt="" class="object-contain aspect-square">
+                        <img src="../img/user/user_39.jpg" alt=" " class="object-contain aspect-square">
                     </div>
                     <div class="flex flex-col space-y-4">
                         <label for="images" class="w-full text-center rounded border border-accent p-2 bg-primary50 hover:scale-110 hover:border-b-2 transition-all transform">

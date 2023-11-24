@@ -39,13 +39,13 @@ function handleImageUpload($uploadDir, $files)
                     'name' => $uniqueFilename,
                     'path' => $targetFilePath,
                 );
-                echo "File {$fileName} has been uploaded successfully.<br>";
+                //echo "File {$fileName} has been uploaded successfully.<br>";
             } else {
                 error_log("Error uploading {$fileName}.");
-                echo "Error uploading {$fileName}. Please try again later.<br>";
+                //echo "Error uploading {$fileName}. Please try again later.<br>";
             }
         } else {
-            echo "Error: {$fileName} has an upload error (Error code: {$fileError}).<br>";
+            //echo "Error: {$fileName} has an upload error (Error code: {$fileError}).<br>";
         }
     }
     return json_encode($uploadedFiles);

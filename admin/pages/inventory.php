@@ -58,7 +58,38 @@ try {
                 <div class="p-4 flex flex-col items-center justify-center space-y-4 border border-accent rounded w-full">
                     <h3 class="w-full">Item Image</h3>
                     <div class="flex items-center justify-center aspect-square w-full border border-accent rounded p-4">
-                        <img src="../img/product/product_<?= $id ?>.jpg" alt="" class="object-contain aspect-square">
+
+
+                        <!-- images container -->
+                        <?php if (json_decode($itemImage)) : ?>
+
+                            <!-- IMAGE CONTAIN -->
+                            <div id="imageContainer" class="w-full relative p-8">
+                                <?php
+                                $images = json_decode($itemImage, true);
+                                $c = 0;
+                                ?>
+
+                                <div class="max-w-full h-full overflow-scroll p-4 slider flex transition-all transform">
+
+                                    <?php foreach ($images as $i) : ?>
+                                        <img src="../img/product/<?= $i['name'] ?>" alt=" " class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+
+                                        <?php $c += 1; ?>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <?php $c = 0; ?>
+                            </div>
+
+
+
+                        <?php else : ?>
+                            <img src="<?= $itemImage ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+                        <?php endif; ?>
+
+
+
                     </div>
                 </div>
 
@@ -166,7 +197,7 @@ try {
                 <div class="p-4 flex flex-col items-center justify-center space-y-4 border border-accent rounded w-full">
                     <h3 class="w-full">Item Image</h3>
                     <div class="flex items-center justify-center aspect-square w-full border border-accent rounded p-4">
-                        <img src="../img/product/product_<?= $id ?>.jpg" alt="" class="object-contain aspect-square">
+                        <img src="../img/product/product_<?= $id ?>.jpg" alt=" " class="object-contain aspect-square">
                     </div>
                 </div>
 

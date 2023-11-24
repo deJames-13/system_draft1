@@ -76,7 +76,7 @@ if ($_SESSION['userId']) {
                 <!-- IMAGE -->
                 <div class="flex flex-col space-y-8 items-center justify-center py-8">
                     <div class="max-w-xs aspect-square flex items-center justify-center shadow-xl ">
-                        <img src="../img/customer/customer_1.jpg" alt="" class=" max-w-xs object-contain aspect-square  shadow-lg">
+                        <img src="../img/customer/customer_1.jpg" alt=" " class=" max-w-xs object-contain aspect-square  shadow-lg">
                     </div>
                     <div class="flex flex-col space-y-2 items-center">
 

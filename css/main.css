@@ -1120,6 +1120,10 @@ html {
   border-top-width: 2px;
 }
 
+.border-none {
+  border-style: none;
+}
+
 .border-accent {
   --tw-border-opacity: 1;
   border-color: rgb(11 41 45 / var(--tw-border-opacity));
@@ -1267,10 +1271,6 @@ html {
 
 .p-2 {
   padding: 0.5rem;
-}
-
-.p-3 {
-  padding: 0.75rem;
 }
 
 .p-4 {
