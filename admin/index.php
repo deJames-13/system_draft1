@@ -1,4 +1,6 @@
 <?php
+require_once '../scripts/db-config.php';
+include_once '../components/modals.php';
 session_start();
 
 if (empty($_SESSION['adminId'])) {
@@ -10,8 +12,6 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
     session_destroy();
 }
 
-require_once '../scripts/db-config.php';
-include_once '../components/modals.php';
 
 ?>
 <!DOCTYPE html>

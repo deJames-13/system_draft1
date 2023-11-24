@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ERROR | E_PARSE);
 session_start();
 if (empty($_SESSION['newUser']) && empty($_SESSION['userName'])) {
     header('Location: ./signup.php');

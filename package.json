@@ -1,7 +1,6 @@
 {
   "name": "system_draft1",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "build": "npx tailwind build -i ./css/style.css -o ./css/main.css",
@@ -10,7 +9,7 @@
   "author": "jamesE",
   "license": "ISC",
   "devDependencies": {
-    "daisyui": "^3.9.4",
     "tailwindcss": "^3.3.5"
-  }
+  },
+  "description": ""
 }
