@@ -4,16 +4,9 @@ require_once '../../scripts/db-config.php';
 require_once '../../scripts/handle-images.php';
 
 
-echo '<pre>';
-print_r($_POST);
-print_r($_FILES);
-$images = handleImageUpload('../../img/try', $_FILES['images']);
-print_r($images);
-
-echo '</pre>';
 
 
-exit;
+
 if (empty($_POST) || empty($_SESSION['adminId'])) {
     header('Location: ./');
     exit;
@@ -21,6 +14,7 @@ if (empty($_POST) || empty($_SESSION['adminId'])) {
 
 try {
     $dbc = new DatabaseConfig();
+    $images = handleImageUpload('../../img/product', $_FILES['images']);
 
     $res = $dbc->insert_into(
         tableName: "product",
@@ -35,16 +29,17 @@ try {
             "created_by" => $_SESSION['adminName'],
             "last_modified_at" => date('Y-m-d H:i:s'),
             "last_modified_by" => $_SESSION['adminName'],
+            "image_dir" => $images,
         ]
     );
 
     if ($res) {
         header('Location: ../?page=inventory&res=additemsuccess');
         exit;
-    } else {
-        header('Location: ../?page=inventory&res=additemfailed');
-        exit;
     }
 } catch (Exception $ex) {
     echo $ex->getMessage();
 }
+header('Location: ../?page=inventory&res=additemfailed');
+
+exit;
