@@ -45,10 +45,10 @@ try {
 <?php elseif ($_GET['mode'] == 'edit' && $_GET['id'] > 0) : ?>
 <?php else : ?>
 
-    <div class="flex container flex-col space-y-4 h-full overflow-y-hidden">
+    <div class="relative flex container flex-col space-y-4 h-full overflow-y-auto">
 
         <!-- BUTTONS -->
-        <div class="h-[90%] relative overflow-y-auto  container flex items-center justify-between">
+        <div class="container flex items-center justify-between">
             <h3>Selected Item: <span id="selectedItemId">_</span> </h3>
             <div class="flex justify-end space-x-4 px-4 text-sm">
                 <button id="create_payroll" name="create_payroll" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
@@ -73,6 +73,8 @@ try {
                     </span>
                 </button>
             </div>
+
+
         </div>
 
         <div class="container border-t-2 border-accent ">
@@ -147,6 +149,8 @@ try {
 
             </div>
         </div>
+
+
     </div>
 
 
@@ -156,7 +160,7 @@ try {
 
 <!-- CREATE NEW PAYROLL -->
 
-<div class="<?= $_GET['mode'] == 'create' ? '' : '' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+<div class="<?= $_GET['mode'] == 'create' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 transition-opacity">
             <div class="absolute inset-0 bg-gray-900 opacity-20" />

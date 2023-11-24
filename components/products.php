@@ -78,16 +78,18 @@ try {
 
 
                     <!-- IMAGE CONTAIN -->
-                    <div id="imageContainer" class="w-full overflow-hidden relative p-3">
+                    <div id="imageContainer" class="w-full relative p-8">
                         <?php
-                        $images = json_decode($imagePath, true);
+                        $images = json_decode($itemImage, true);
                         $c = 0;
                         ?>
 
-                        <div class="slider flex transition-all transform">
+                        <div class="max-w-full h-full overflow-scroll p-4 slider flex transition-all transform">
 
                             <?php foreach ($images as $i) : ?>
-                                <img src="<?= $i['path'] ?>" alt="<?= $i['name'] ?>" class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+                                <?php //echo $i['name']; 
+                                ?>
+                                <img src="../img/product/<?= $i['name'] ?>" alt="" class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
 
                                 <?php $c += 1; ?>
                             <?php endforeach; ?>

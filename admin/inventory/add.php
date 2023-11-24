@@ -4,9 +4,6 @@ require_once '../../scripts/db-config.php';
 require_once '../../scripts/handle-images.php';
 
 
-
-
-
 if (empty($_POST) || empty($_SESSION['adminId'])) {
     header('Location: ./');
     exit;

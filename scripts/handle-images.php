@@ -36,7 +36,7 @@ function handleImageUpload($uploadDir, $files)
         if ($fileError === 0) {
             if (move_uploaded_file($fileTmpName, $targetFilePath)) {
                 $uploadedFiles[] = array(
-                    'name' => $fileName,
+                    'name' => $uniqueFilename,
                     'path' => $targetFilePath,
                 );
                 echo "File {$fileName} has been uploaded successfully.<br>";
