@@ -11,8 +11,14 @@ if ($_GET['viewprofile'] != 1) {
     exit;
 }
 
-$userName = $_SESSION['newUser']['username'];
-$email = $_SESSION['newUser']['email'];
+$userName = null;
+$email  = null;
+if (isset($_SESSION['newUser'])) {
+    $userName = $_SESSION['newUser']['username'];
+    $email = $_SESSION['newUser']['email'];
+}
+
+
 $isViewProfile = !empty($_SESSION['userId']) && $_GET['viewprofile'] == 1;
 require_once '../scripts/db-config.php';
 if ($_SESSION['userId']) {
@@ -29,8 +35,9 @@ if ($_SESSION['userId']) {
     $region = $address[1];
     $country = $address[2];
     $zip_code = $address[3];
-    $$birthdate = $result['birthdate'];
+    $birthdate = $result['birthdate'];
     $age = $result['age'];
+    $itemImage = $result['image_dir'];
 }
 
 
@@ -68,23 +75,67 @@ if ($_SESSION['userId']) {
             <h1 class="hidden pb-8 text-accent font-semibold hover:text-secondary lg:text-6xl lg:block">
                 <?php echo $_SESSION['newUser'] ? 'SET UP ' : '' ?>
                 YOUR PROFILE
+                <?php
+
+
+                ?>
             </h1>
 
             <!-- MAIN FORM -->
-            <form method="post" action="./register.php" enctype="multipart/form-data" class="border border-t-2 border-accent rounded mx-auto container flex flex-col space-y-6 items-center justify-center p-4 py-12 lg:flex-row lg:space-x-12 lg:px-12">
+            <form method="post" action="./register.php" enctype="multipart/form-data" class="border border-t-2 border-accent rounded mx-auto  flex flex-col space-y-6 items-center justify-center p-4 py-12 lg:px-12">
 
                 <!-- IMAGE -->
-                <div class="flex flex-col space-y-8 items-center justify-center py-8">
+                <div class="container max-w-lg flex flex-col space-y-8 items-center justify-center py-8">
                     <div class="max-w-xs aspect-square flex items-center justify-center shadow-xl ">
-                        <img src="../img/customer/customer_1.jpg" alt=" " class=" max-w-xs object-contain aspect-square  shadow-lg">
+
+                        <!-- IMAGE CONTAIN -->
+                        <div class="w-full relative">
+                            <div id="imageDisplay" class="max-w-full h-full  overflow-auto p-4 slider flex space-x-4 transition-all transform aspect-square">
+                                <!-- images container -->
+                                <?php if (json_decode($itemImage)) : ?>
+
+                                    <?php
+                                    $images = json_decode($itemImage, true);
+                                    $c = 0;
+                                    ?>
+                                    <?php foreach ($images as $i) : ?>
+                                        <?php
+                                        $img = "../img/customer/" . $i['name'];
+                                        ?>
+
+
+                                        <img src="<?= file_exists($img) ? $img : '../img/user/default.jpg' ?>" alt=" " class="border object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+
+
+                                        <?php $c += 1; ?>
+                                    <?php endforeach; ?>
+                                    <?php $c = 0; ?>
+                                <?php else : ?>
+
+                                    <img src="<?= file_exists($itemImage) ? $itemImage : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+
+                                <?php endif; ?>
+
+                            </div>
+                        </div>
+
                     </div>
+
+
+
                     <div class="flex flex-col space-y-2 items-center">
 
-                        <label for="image" class="w-full text-center rounded border border-accent p-2 hover:scale-105 hover:border-b-2 transition-all transform">
+                        <label id="selectImageClicked" for="images" class="w-full text-center rounded border border-accent p-2 hover:scale-105 hover:border-b-2 transition-all transform">
                             Select Profile Picture
                         </label>
-                        <input onchange="handleFileSelect(event)" type="file" name="image" id="image" class="hidden" />
+
+                        <input type="file" name="images[]" id="images" class="hidden" accept="image/*" onchange="handleFileSelect(event)" multiple />
                     </div>
+
+                    <!-- Image Display -->
+                    <!-- <div id="imageDisplay" class="hidden border border-accent w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+                    </div> -->
+
                 </div>
 
                 <!-- DETAILS -->
@@ -122,14 +173,14 @@ if ($_SESSION['userId']) {
                             <label class="text-light" for="username">Username</label>
 
                             <!-- username -->
-                            <input name="username" id="username" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $userName ?>" />
+                            <input name="username" id="username" <?= isset($_SESSION['newUser']) ? 'disabled' : '' ?> type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $userName ?>" />
                         </div>
 
                         <div class="w-full md:w-2/3 lg:container flex flex-col space-y-2 items-start">
                             <label class="text-light" for="email">Email</label>
 
                             <!-- email -->
-                            <input name="email" id="email" type="email" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $email ?>" />
+                            <input name="email" id="email" <?= isset($_SESSION['newUser']) ? 'disabled' : '' ?> type="email" class=" w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $email ?>" />
                         </div>
                     </div>
 
@@ -170,10 +221,10 @@ if ($_SESSION['userId']) {
                         </div>
 
                         <div class="w-full md:w-2/3 lg:container flex flex-col space-y-2 items-start">
-                            <label class="text-light" for="contact_number">Contact Number</label>
+                            <label class="text-light" for="phone_number">Contact Number</label>
 
-                            <!-- contact_number -->
-                            <input name="contact_number" id="contact_number" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $phoneNumber ?>" />
+                            <!-- phone_number -->
+                            <input name="phone_number" id="phone_number" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $phoneNumber ?>" />
                         </div>
                     </div>
 
@@ -185,13 +236,16 @@ if ($_SESSION['userId']) {
                             <label class="text-light" for="birthdate">Birthdate</label>
 
                             <!-- birthdate -->
-                            <input name="birthdate" id="birthdate" type="date" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $birthdate ?>" />
+                            <input onchange="onBirthdateChange(this)" name="birthdate" id="birthdate" type="date" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $birthdate ?>" />
                         </div>
+
+
+
                         <div class="h-full w-full md:w-2/3 lg:container flex flex-col space-y-2 items-start">
                             <label class="text-light" for="age">Age</label>
 
                             <!-- age -->
-                            <input name="age" id="age" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $age ?>" />
+                            <input disabled name="age" id="age" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" value="<?= $age ?>" />
                         </div>
                     </div>
                     <div class="container flex space-x-8 items-center justify-center">
@@ -217,6 +271,13 @@ if ($_SESSION['userId']) {
                 title: "Account update successfully.",
                 visible: true,
                 message: "Your profile information has been successfully update.",
+            );
+            break;
+        case 'usernameexists':
+            echo createModal(
+                title: "Username Exists.",
+                message: "The username you entered is already taken. Please try another one.",
+                visible: true
             );
             break;
         case 'accountupdateerror':

@@ -11,6 +11,7 @@ include_once "../../scripts/db-config.php";
 
 
 try {
+
     $status = $_GET["status"];
     $id = $_GET["id"];
     $dbc = new DatabaseConfig();

@@ -7,11 +7,11 @@ if (empty($_SESSION['adminId']) || empty($_POST['action'])) {
 }
 
 require_once '../../scripts/db-config.php';
+require_once '../../scripts/handle-images.php';
 
 try {
     $dbc = new DatabaseConfig();
-
-    // create new user
+    $images = handleImageUpload('../../img/user', $_FILES['images']);
     $res = $dbc->insert_into(
         'user',
         [
@@ -26,6 +26,7 @@ try {
             'phone_number' => $_POST['phone_number'],
             'birthdate' => $_POST['birthdate'],
             'age' => $_POST['age'],
+            'image_dir' => $images ?? ''
         ]
     );
 

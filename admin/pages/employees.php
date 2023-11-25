@@ -24,6 +24,12 @@ ON u.department_id = d.id
 
 
 SQL;
+
+if (!empty($_GET['id']) && $id > -1) {
+    $query .= "WHERE u.id = '$id'";
+} else {
+    $query .= "ORDER BY u.id DESC";
+}
 try {
 
     $dbc = new DatabaseConfig();
@@ -44,6 +50,8 @@ try {
 <?php if (!empty($_GET['id']) && $id > -1 && $_GET['mode'] != 'edit') : ?>
     <?php
     $user = $users[0];
+    $itemImage = $user['image_dir'];
+
     ?>
 
     <div class="container flex flex-col space-y-4 h-full">
@@ -64,29 +72,41 @@ try {
                     <h3 class="w-full">Employee Image</h3>
 
                     <div class="flex items-center justify-center aspect-square w-full border border-accent rounded p-4">
-                        <!-- images container -->
-                        <?php if (json_decode($itemImage)) : ?>
 
-                            <?php
-                            $images = json_decode($itemImage, true);
-                            $c = 0;
-                            ?>
 
-                            <!-- IMAGE CONTAIN -->
-                            <div id="imageContainer" class="w-full relative p-8">
-                                <div class="max-w-full h-full overflow-scroll p-4 slider flex transition-all transform">
+
+                        <!-- IMAGE CONTAIN -->
+                        <div class="w-full relative">
+                            <div id="imageDisplay" class="max-w-full h-full  overflow-auto slider flex space-x-4 transition-all transform aspect-square">
+                                <!-- images container -->
+                                <?php if (json_decode($itemImage)) : ?>
+
+                                    <?php
+                                    $images = json_decode($itemImage, true);
+                                    $c = 0;
+                                    ?>
                                     <?php foreach ($images as $i) : ?>
-                                        <img src="../img/product/<?= $i['name'] ?>" alt=" " class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+                                        <?php
+                                        $img = "../img/user/" . $i['name'];
+                                        ?>
+
+
+                                        <img src="<?= file_exists($img) ? $img : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+
 
                                         <?php $c += 1; ?>
                                     <?php endforeach; ?>
-                                </div>
+                                    <?php $c = 0; ?>
+                                <?php else : ?>
+
+                                    <img src="<?= file_exists($itemImage) ? $itemImage : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+
+                                <?php endif; ?>
 
                             </div>
-                            <?php $c = 0; ?>
-                        <?php else : ?>
-                            <img src="<?= $itemImage ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
-                        <?php endif; ?>
+                        </div>
+
+
                     </div>
 
                 </div>
@@ -184,9 +204,9 @@ try {
                         <div class="flex justify-between items-center w-full">
                             <div class="flex flex-col">
                                 <label class="text-sm text-gray-400" for="birthday">Birthday</label>
-                                <input disabled class=" text-lg" type="date" name="birthdate" id="birthdate" value="<?= $user['birthdate'] ?>">
+                                <input disabled class=" text-lg" type="date" name="birthdate" id="birthdate" value="<?= $user['birthdate'] ?>" onchange="onBirthdateChange(this)">
                             </div>
-                            <div class="flex flex-col">
+                            <div class=" flex flex-col">
                                 <label class="text-sm text-gray-400" for="age">Age</label>
                                 <input disabled class="text-lg" type="number" name="age" id="age" value="<?= $user['age'] ?>">
                             </div>
@@ -204,6 +224,8 @@ try {
 
     <?php
     $user = $users[0];
+    $itemImage = $user['image_dir'];
+
     ?>
 
     <div class="container flex flex-col space-y-4 h-full">
@@ -216,20 +238,57 @@ try {
             </h1>
         </div>
 
-        <form enctype="multipart/form-data" method="post" action="./employee/update.php?id=<?= $user ?>" class="container flex space-x-4  h-full rounded">
+        <form enctype="multipart/form-data" method="post" action="./employee/update.php" class="container flex space-x-4  h-full rounded">
             <div class="w-1/3 flex flex-col items-center space-y-4 h-screen">
 
                 <!-- Images -->
                 <div class="p-4 flex flex-col items-center justify-center space-y-4 border border-accent rounded w-full">
                     <h3 class="w-full">Employee Image</h3>
                     <div class="flex items-center justify-center aspect-square w-full border border-accent rounded p-4">
-                        <img src="../img/user/user_39.jpg" alt=" " class="object-contain aspect-square">
+
+
+
+
+
+                        <!-- IMAGE CONTAIN -->
+                        <div class="w-full relative">
+                            <div id="imageDisplay" class="max-w-full h-full  overflow-auto slider flex space-x-4 transition-all transform aspect-square">
+                                <!-- images container -->
+                                <?php if (json_decode($itemImage)) : ?>
+
+                                    <?php
+                                    $images = json_decode($itemImage, true);
+                                    $c = 0;
+                                    ?>
+                                    <?php foreach ($images as $i) : ?>
+                                        <?php
+                                        $img = "../img/user/" . $i['name'];
+                                        ?>
+
+
+                                        <img src="<?= file_exists($img) ? $img : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+
+
+                                        <?php $c += 1; ?>
+                                    <?php endforeach; ?>
+                                    <?php $c = 0; ?>
+                                <?php else : ?>
+
+                                    <img src="<?= file_exists($itemImage) ? $itemImage : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+
+                                <?php endif; ?>
+
+                            </div>
+                        </div>
+
+
+
                     </div>
                     <div class="flex flex-col space-y-4">
                         <label for="images" class="w-full text-center rounded border border-accent p-2 bg-primary50 hover:scale-110 hover:border-b-2 transition-all transform">
                             Upload Image
                         </label>
-                        <input type="file" name="images[]" id="images" class="hidden" multiple accept="image/*" />
+                        <input type="file" name="images[]" id="images" class="hidden" multiple accept="image/*" onchange="handleFileSelect(event)" />
                     </div>
                 </div>
 
@@ -328,7 +387,7 @@ try {
                         <div class="flex justify-between items-center w-full">
                             <div class="flex flex-col">
                                 <label class="text-sm text-gray-400" for="birthday">Birthday</label>
-                                <input class=" text-lg" type="date" name="birthdate" id="birthdate" value="<?= $user['birthdate'] ?>">
+                                <input class=" text-lg" type="date" name="birthdate" id="birthdate" value="<?= $user['birthdate'] ?>" onchange="onBirthdateChange(this)">
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-sm text-gray-400" for="age">Age</label>
@@ -590,7 +649,7 @@ switch ($_GET['res']) {
                             <label for="images" class="w-full text-center rounded border border-accent p-2 hover:scale-105 hover:border-b-2 transition-all transform">
                                 <i class="fas fa-plus"></i> Add Images
                             </label>
-                            <input onchange="handleFileSelect(event)" type="file" name="images[]" id="images" class="hidden" multiple />
+                            <input onchange="handleFileSelect(event)" type="file" name="images[]" id="images" class="hidden" multiple accept="image/*" />
                         </div>
 
 

@@ -69,19 +69,19 @@ try {
 
 
             <!-- Item Image -->
-            <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center justify-between space-x-2 py-8">
+            <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center justify-between space-x-2 p-2">
 
                 <!-- images container -->
                 <?php if (json_decode($itemImage)) : ?>
 
                     <!-- IMAGE CONTAIN -->
-                    <div id="imageContainer" class="w-full relative p-8">
+                    <div id="imageContainer" class="w-full relative p-8 aspect-square">
                         <?php
                         $images = json_decode($itemImage, true);
                         $c = 0;
                         ?>
 
-                        <div class="max-w-full h-full overflow-scroll p-4 slider flex transition-all transform">
+                        <div class="max-w-full h-full overflow-auto p-4 slider flex transition-all transform">
 
                             <?php foreach ($images as $i) : ?>
                                 <img src="../img/product/<?= $i['name'] ?>" alt=" " class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
@@ -380,6 +380,14 @@ try {
             <div id="item_<?= $itemId ?>" class="w-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-105 transform transition-all">
 
                 <!-- Image -->
+                <?php
+
+                if (json_decode($itemImage)) {
+                    $images = json_decode($itemImage, true);
+                    $itemImage = "../img/product/" . $images[0]['name'];
+                }
+
+                ?>
                 <div id="itemImg_<?= $itemId ?>" onclick=" cardClicked(this)" class="my-4 h-32 border bg-contain bg-white bg-no-repeat bg-center " style="background-image: url('<?= $itemImage ?>')">
                 </div>
 

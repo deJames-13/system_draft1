@@ -26,6 +26,9 @@ $js_dir = $relativePath . '/js';
 
 <!-- (Optional) Use CSS or JS implementation -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js" integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Include simplebar CSS and JS (check for the latest version) -->
+<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
 
 <!-- tailwind -->
 <link rel="preconnect" href="https://fonts.googleapis.com">

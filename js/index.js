@@ -259,6 +259,8 @@ function btnActionsClicked(btn) {
   var [name, page] = btn.name.split('_');
   var id = document.getElementById('selectedItemId').innerText;
   id = parseInt(id);
+  var status = document.getElementById('orders_status_' + id) ?? null;
+  var status = status ? status.innerText.toLowerCase() : null;
 
   if (name == 'create') {
     window.location.replace(`./?page=${page}&mode=create`);
@@ -266,6 +268,18 @@ function btnActionsClicked(btn) {
     window.location.replace(`./?page=${page}&res=deleteconfirm&id=${id}`);
   } else if (name == 'view') {
     window.location.replace(`./?page=${page}&id=${id}&mode=view`);
+  } else if (name == 'ordership' && id && status == 'pending') {
+    window.location.replace(
+      `./?page=${page}&res=confirmordership&order_id=${id}`
+    );
+  } else if (name == 'orderdeliver' && id && status == 'shipping') {
+    window.location.replace(
+      `./?page=${page}&res=confirmorderdeliver&order_id=${id}`
+    );
+  } else if (name == 'ordercancel' && id && status == 'pending') {
+    window.location.replace(
+      `./?page=${page}&res=confirmordercancel&order_id=${id}`
+    );
   } else if (id) {
     window.location.replace(`./?page=${page}&id=${id}&mode=edit`);
   }
@@ -293,14 +307,28 @@ function handleFileSelect(event) {
       const imgElement = document.createElement('img');
       imgElement.src = e.target.result;
       imgElement.alt = file.name;
+      imgElement.className =
+        ' object-contain h-full w-full hover:scale[.95] transform transition-all box-border';
 
-      const imageContainer = document.createElement('div');
-      imageContainer.className = 'relative overflow-hidden aspect-square';
-      imageContainer.appendChild(imgElement);
-
-      document.getElementById('imageDisplay').appendChild(imageContainer);
+      document.getElementById('imageDisplay').appendChild(imgElement);
     };
 
     reader.readAsDataURL(file);
   }
+}
+
+// age
+function onBirthdateChange(date) {
+  var age = calculateAge(date.value);
+  document.getElementById('age').value = age;
+}
+
+function calculateAge(birthdate) {
+  var today = new Date();
+  var birthDate = new Date(birthdate);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+
+  return age;
 }

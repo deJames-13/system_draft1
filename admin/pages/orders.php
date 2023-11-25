@@ -65,27 +65,27 @@ $groupedResult = [];
     <div class="container flex items-center justify-between">
         <h3>Selected Item: <span id="selectedItemId">_</span> </h3>
         <div class="flex justify-end space-x-4 px-4 text-sm">
-            <a class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            <button name="ordership_orders" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
                 <i class="fas fa-boxes-packing">
                 </i>
                 <span>
                     Ship Order
                 </span>
-            </a>
-            <a class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            </button>
+            <button name="orderdeliver_orders" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
                 <i class="fas fa-check-to-slot">
                 </i>
                 <span>
                     Delivered
                 </span>
-            </a>
-            <a class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-red-400 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
+            </button>
+            <button name="ordercancel_orders" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-red-400 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
                 <i class="fas fa-ban">
                 </i>
                 <span>
                     Cancel
                 </span>
-            </a>
+            </button>
         </div>
     </div>
 
@@ -186,7 +186,7 @@ $groupedResult = [];
 
                 ?>
 
-                <div onclick="orderClicked(this)" name="orders_<?= $order['id'] ?>" id="orders_<?= $order['id'] ?>" class="flex items-center justify-around space-x-2 border-b p-1 py-2 hover:bg-primary30 hover:border-y-2 hover:border-accent hover:scale-x-105 hover:font-bold transform transition-all">
+                <div onclick="rowClicked(this)" name="orders_<?= $order['id'] ?>" id="orders_<?= $order['id'] ?>" class="flex items-center justify-around space-x-2 border-b p-1 py-2 hover:bg-primary30 hover:border-y-2 hover:border-accent hover:scale-x-105 hover:font-bold transform transition-all">
 
                     <!-- ID -->
                     <p class="w-[10%] px-4 text-left text-ellipsis font-light text-sm">
@@ -218,7 +218,7 @@ $groupedResult = [];
                         <?= $order['cost'] ?>
                     </p>
                     <!-- Status -->
-                    <p class="w-1/6 text-center text-ellipsis font-light text-sm">
+                    <p class="w-1/6 text-center text-ellipsis font-light text-sm" id="orders_status_<?= $order['id'] ?>">
                         <?= $order['status'] ?>
                     </p>
 
@@ -307,7 +307,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
                         <h1 class="font-bold">Products Ordered</h1>
 
-                        <div class="container overflow-y-scroll flex flex-col space-y-2">
+                        <div class="container  flex flex-col space-y-2">
 
                             <div class="hidden sm:grid grid-cols-1 gap-5 text-left  md:grid-cols-4 md:grid border-b-2 border-accent">
                                 <!-- Item ID -->
@@ -366,24 +366,24 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
                         <!-- Shipping -->
                         <div class="my-2 text-left">
-                            <p class="self-start text-sm font-light"> Choose shipping mode: <?= empty($shippingType) ?></p>
+                            <p class="self-start text-sm font-light"> Choose shipping mode: </p>
 
                             <div class="flex items-center space-x-8 px-4 p-2">
 
                                 <div id="std" onclick="" class="flex  space-x-4 items-center cursor-pointer">
-                                    <div name="chkstd" id="chkStd" class="<?= $shippingType == 'Standard' ? 'chkChecked bg-primary' : '' ?> border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary ">
-                                        <i class="<?= $shippingType == 'Standard' ? '' : 'hidden' ?> fas fa-check"></i>
+                                    <div name="chkstd" id="chkStd" class="<?= strtolower($shippingType) == 'standard' ? 'chkChecked bg-primary' : '' ?> border-b-2 flex items-center justify-center w-6 h-6 aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary ">
+                                        <i class="<?= strtolower($shippingType) == 'standard' ? '' : 'hidden' ?> fas fa-check"></i>
                                     </div>
 
                                     <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Standard</span>
                                 </div>
                                 <div id="exp" onclick="" class="flex space-x-4 items-center cursor-pointer">
-                                    <div name="chkexp" id="chkExp" class="<?= $shippingType == 'Express' ? 'chkChecked bg-primary' : '' ?> w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="<?= $shippingType == 'Express' ? 'bg-primary' : 'hidden' ?> fas fa-check"></i></div>
+                                    <div name="chkexp" id="chkExp" class="<?= strtolower($shippingType) == 'express' ? 'chkChecked bg-primary' : '' ?> w-6 h-6 flex items-center justify-center aspect-square border border-accent rounded hover:transform hover:transition-all hover:bg-secondary "><i class="<?= strtolower($shippingType) == 'express' ? 'bg-primary' : 'hidden' ?> fas fa-check"></i></div>
 
                                     <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Express</span>
                                 </div>
                                 <div id="prt" onclick="" class="flex space-x-4 items-center cursor-pointer">
-                                    <div name="chkprt" id="chkPrt" class="<?= $shippingType == 'Priority' ? 'chkChecked bg-primary' : '' ?> w-6 h-6 aspect-square border border-accent flex items-center justify-center rounded hover:transform hover:transition-all hover:bg-secondary "><i class="<?= $shippingType == 'Priority' ? 'bg-primary' : 'hidden' ?> fas fa-check"></i></div>
+                                    <div name="chkprt" id="chkPrt" class="<?= strtolower($shippingType) == 'priority' ? 'chkChecked bg-primary' : '' ?> w-6 h-6 aspect-square border border-accent flex items-center justify-center rounded hover:transform hover:transition-all hover:bg-secondary "><i class="<?= strtolower($shippingType) == 'priority' ? 'bg-primary' : 'hidden' ?> fas fa-check"></i></div>
                                     <span class="text-sm font-md border-accent hover:transform hover:transition-all hover:border-b-2 cursor-pointer">Priority</span>
                                 </div>
                             </div>
@@ -445,7 +445,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
                     <div class="<?= strtolower($orderStatus) == 'pending' ? '' : 'flex justify-center' ?> bg-opacity-80 border-t border-accent rounded-b-md right-0 w-full bg-gray-200 md:px-4 py-3 text-right ">
 
-                        <a href="./?page=orders&res=confirmorderdelete&order_id=<?= $id ?>" class=" cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>">
+                        <a href="./?page=orders&res=confirmorderdelete&order_id=<?= $id ?>" class="<?= strtolower($orderStatus) == 'pending' ? '' : 'hidden' ?> cursor-pointer py-2 px-4 border border-red-600 rounded hover:bg-red-300 mr-2" name="btnDeleteOrder_<?= $id ?>" id="btnDeleteOrder_<?= $id ?>">
 
                             <i class=" fas fa-times"></i>
                             Delete Order
@@ -461,7 +461,7 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
                         <a href="./?page=orders&res=confirmordership&order_id=<?= $id ?>" name="btnUpdateOrder_<?= $id ?>" id="btnShipOrder_<?= $id ?>" type="submit" class="<?= strtolower($orderStatus) == 'pending' ? '' : 'hidden' ?> py-2 px-4 border border-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Ship</a>
 
-                        <a href="./?page=orders&res=confirmorderdeliver&order_id=<?= $id ?>" name="btnDeliverOrder_<?= $id ?>" id="btnDeliverOrder_<?= $id ?>" type="submit" class="<?= strtolower($orderStatus) == 'pending' ? '' : 'hidden' ?> py-2 px-4 border border-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Delivered</a>
+                        <a href="./?page=orders&res=confirmorderdeliver&order_id=<?= $id ?>" name="btnDeliverOrder_<?= $id ?>" id="btnDeliverOrder_<?= $id ?>" type="submit" class="<?= strtolower($orderStatus) == 'shipping' ? '' : 'hidden' ?> py-2 px-4 border border-primary rounded hover:bg-blue-400 hover:text-accent mr-2"><i class="fas fa-check"></i> Delivered</a>
 
 
                     </div>

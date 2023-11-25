@@ -13,6 +13,7 @@ try {
     $dbc = new DatabaseConfig();
     $images = handleImageUpload('../../img/product', $_FILES['images']);
 
+
     $res = $dbc->insert_into(
         tableName: "product",
         data: [
@@ -26,7 +27,8 @@ try {
             "created_by" => $_SESSION['adminName'],
             "last_modified_at" => date('Y-m-d H:i:s'),
             "last_modified_by" => $_SESSION['adminName'],
-            "image_dir" => $images,
+            'image_dir' => $images ?? 'img/default.jpg',
+
         ]
     );
 

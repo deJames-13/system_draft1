@@ -7,6 +7,9 @@ function handleImageUpload($uploadDir, $files)
         }
     }
 
+
+
+
     if (!is_array($files['name'])) {
         $files = array($files);
     }
@@ -22,12 +25,14 @@ function handleImageUpload($uploadDir, $files)
 
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         if (!in_array($fileType, $allowedTypes)) {
-            die("Error: Invalid file type for {$fileName}.");
+            // die("Error: Invalid file type for {$fileName}.");
+            return null;
         }
 
         $maxFileSize = 5 * 1024 * 1024; // 5 MB
         if ($fileSize > $maxFileSize) {
-            die("Error: File size exceeds the maximum limit for {$fileName}.");
+            // die("Error: File size exceeds the maximum limit for {$fileName}.");
+            return null;
         }
 
         $uniqueFilename = time() . '_' . uniqid() . '_' . $fileName;
@@ -43,8 +48,10 @@ function handleImageUpload($uploadDir, $files)
             } else {
                 error_log("Error uploading {$fileName}.");
                 //echo "Error uploading {$fileName}. Please try again later.<br>";
+                return null;
             }
         } else {
+            return null;
             //echo "Error: {$fileName} has an upload error (Error code: {$fileError}).<br>";
         }
     }

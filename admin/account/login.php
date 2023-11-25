@@ -33,7 +33,7 @@ try {
 
     $result = $dbc->select(
         tableName: 'login',
-        columns: ['id', 'username', 'password'],
+        columns: ['id', 'username', 'password', 'role_id'],
         where: [
             "username" => $userName,
         ]
@@ -53,8 +53,20 @@ if (empty($result)) {
         exit();
     }
 
+    // get user role
+
+    $role = $dbc->select(
+        tableName: 'role',
+        columns: ['id', 'name'],
+        where: [
+            "id" => $result["role_id"],
+        ]
+    )[0];
+
     $_SESSION['adminId'] = $result["id"];
     $_SESSION['adminName'] = $result["username"];
+    $_SESSION['userRoleId'] = $role['id'];
+
     header("Location: ../?res=loginsuccess");
 }
 exit();

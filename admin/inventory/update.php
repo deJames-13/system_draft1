@@ -1,9 +1,5 @@
 <?php
 
-// echo '<pre>';
-// print_r($_POST);
-// echo '</pre>';
-// exit;
 
 session_start();
 if (empty($_SESSION['adminId']) || empty($_POST['action'])) {
@@ -14,10 +10,19 @@ try {
     require_once '../../scripts/db-config.php';
     require_once '../../scripts/handle-images.php';
 
-    $images = handleImageUpload('../../img/product', $_FILES['images']);
-
-    $id = $_POST['item_id'];
     $dbc = new DatabaseConfig();
+    $id = $_POST['item_id'];
+    $currimages = $dbc->select('product', ['image_dir'], ['id' => $id])[0]['image_dir'];
+
+    $newimages = handleImageUpload('../../img/product', $_FILES['images']);
+    if (json_decode($currimages)) {
+        $images = $newimages ? array_merge(json_decode($currimages, true), json_decode($newimages, true)) : json_decode($currimages, true);
+        $newimages = json_encode($images);
+    } else if (file_exists($currimages)) {
+        unlink("$currimages");
+    }
+
+
     $res = $dbc->update_into(
         tableName: 'product',
         data: [
@@ -26,7 +31,7 @@ try {
             "stock_quantity" => $_POST['quantity'],
             "brand" => $_POST['brand'],
             "supplier_id" => $_POST['supplier'],
-            "image_dir" => $images
+            "image_dir" => $newimages ?? ''
         ],
         where: [
             "id" => $id

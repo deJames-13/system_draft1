@@ -2,22 +2,21 @@
 
 session_start();
 
-require_once '../../scripts/db-config.php';
 
 if (empty($_GET['id']) || empty($_SESSION['adminId'])) {
     header('Location: ./');
     exit;
 }
 
+require_once '../../scripts/db-config.php';
+require_once '../../scripts/handle-images.php';
 try {
     $dbc = new DatabaseConfig();
 
-    // get image and delete from path
 
-    $image_dir = $dbc->select('product', ['image'], ['id' => $_GET['id']])[0]['image_dir'];
-
+    $image_dir = $dbc->select('product', ['image_dir'], ['id' => $_GET['id']])[0]['image_dir'];
     if (json_decode($image_dir) !== null) {
-        $images = json_decode($image_dir);
+        $images = json_decode($image_dir, true);
         foreach ($images as $image) {
             $path = $image['path'];
             if (file_exists($path)) {
@@ -27,7 +26,6 @@ try {
     } else if (file_exists($image_dir)) {
         unlink("$image_dir");
     }
-
 
     $res = $dbc->delete_from(
         tableName: "product",

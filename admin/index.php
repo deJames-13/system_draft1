@@ -3,14 +3,16 @@ require_once '../scripts/db-config.php';
 include_once '../components/modals.php';
 session_start();
 
+if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
+    print_r($_GET);
+    session_destroy();
+    header("Location: ./account/");
+}
 if (empty($_SESSION['adminId'])) {
     header("Location: ./account/");
     exit;
 }
 
-if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
-    session_destroy();
-}
 
 
 ?>
@@ -64,6 +66,9 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
                         break;
                     case 'employees':
                         include_once './pages/employees.php';
+                        if ($_SESSION['userRoleId'] == 4) {
+                            header("Location: ./?page=employees&id=" . $_SESSION['adminId']);
+                        }
                         break;
                     case 'payroll':
                         include_once './pages/payroll.php';
@@ -93,6 +98,13 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
             echo createModal(
                 title: "Login Success.",
                 message: "Welcome! Your account has successfully login.",
+                visible: true
+            );
+            break;
+        case 'usernameexists':
+            echo createModal(
+                title: "Username Exists.",
+                message: "The username you entered is already taken. Please try another one.",
                 visible: true
             );
             break;
