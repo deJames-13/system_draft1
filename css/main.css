@@ -744,6 +744,10 @@ html {
   height: 100vh;
 }
 
+.h-auto {
+  height: auto;
+}
+
 .max-h-60 {
   max-height: 15rem;
 }
@@ -1531,12 +1535,6 @@ html {
   transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
-}
-
-/* remove scroll bar for all */
-
-::-webkit-scrollbar {
-  display: none;
 }
 
 /* general styles */

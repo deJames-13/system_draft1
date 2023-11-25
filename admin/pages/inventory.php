@@ -39,6 +39,7 @@ try {
 
     <?php
     $product = $products[0];
+    $itemImage = $product['image_dir'];
     ?>
 
     <div class="container flex flex-col space-y-4 h-full">
@@ -63,15 +64,14 @@ try {
                         <!-- images container -->
                         <?php if (json_decode($itemImage)) : ?>
 
+                            <?php
+                            $images = json_decode($itemImage, true);
+                            $c = 0;
+                            ?>
+
                             <!-- IMAGE CONTAIN -->
                             <div id="imageContainer" class="w-full relative p-8">
-                                <?php
-                                $images = json_decode($itemImage, true);
-                                $c = 0;
-                                ?>
-
                                 <div class="max-w-full h-full overflow-scroll p-4 slider flex transition-all transform">
-
                                     <?php foreach ($images as $i) : ?>
                                         <img src="../img/product/<?= $i['name'] ?>" alt=" " class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
 
@@ -79,10 +79,10 @@ try {
                                     <?php endforeach; ?>
                                 </div>
 
-                                <?php $c = 0; ?>
                             </div>
 
 
+                            <?php $c = 0; ?>
 
                         <?php else : ?>
                             <img src="<?= $itemImage ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
@@ -92,6 +92,7 @@ try {
 
                     </div>
                 </div>
+
 
                 <!-- Action buttons -->
                 <div class="p-4 w-full h-1/4 flex flex-col space-y-4 ">
@@ -409,7 +410,7 @@ try {
 
 <!-- MODALS -->
 <?php
-switch ($_GET['res']) {
+switch (isset($_GET['res'])) {
     case 'updateitemsuccess':
         echo createModal(
             visible: true,

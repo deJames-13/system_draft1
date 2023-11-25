@@ -19,4 +19,4 @@ $result = $conn->query($sql);
 $result2 = $conn->query($sql2);
 $result3 = $conn->query($sql3);
 
-header("Location: view.php?");
+header("Location: ../?page=payroll&res=deleteitemsuccess");

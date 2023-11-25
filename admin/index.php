@@ -70,6 +70,8 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
                         break;
 
                     default:
+                        $_GET['page'] = 'inventory';
+                        include_once './pages/inventory.php';
                         break;
                 }
                 ?>

@@ -1,6 +1,6 @@
 <?php
 require_once "config.php";
-
+$id = $_GET['id'];
 $sql = "UPDATE salary AS s
             JOIN user_has_salary AS uhs ON s.id = uhs.salary_id
             JOIN user AS u ON u.id = uhs.user_id
@@ -20,4 +20,4 @@ $result = $conn->query($sql);
 $result2 = $conn->query($sql2);
 $result3 = $conn->query($sql3);
 
-header("Location: ../?page=payroll");
+header("Location: ../?page=payroll&id=$id&mode=view&res=payrolladdsuccess");

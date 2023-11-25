@@ -1,6 +1,4 @@
 <?php
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'espinosa_lacao_lim_database_081323';
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once "../../scripts/db-config.php";
+$dbc = new DatabaseConfig();
+$conn = $dbc->getConnection();

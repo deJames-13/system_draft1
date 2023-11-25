@@ -10,11 +10,6 @@
   }
 }
 
-/* remove scroll bar for all */
-::-webkit-scrollbar {
-  display: none;
-}
-
 /* general styles */
 * {
   box-sizing: border-box;

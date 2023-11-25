@@ -264,6 +264,8 @@ function btnActionsClicked(btn) {
     window.location.replace(`./?page=${page}&mode=create`);
   } else if (name == 'delete' && id) {
     window.location.replace(`./?page=${page}&res=deleteconfirm&id=${id}`);
+  } else if (name == 'view') {
+    window.location.replace(`./?page=${page}&id=${id}&mode=view`);
   } else if (id) {
     window.location.replace(`./?page=${page}&id=${id}&mode=edit`);
   }
