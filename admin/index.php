@@ -66,9 +66,6 @@ if (empty($_SESSION['adminId'])) {
                         break;
                     case 'employees':
                         include_once './pages/employees.php';
-                        if ($_SESSION['userRoleId'] == 4) {
-                            header("Location: ./?page=employees&id=" . $_SESSION['adminId']);
-                        }
                         break;
                     case 'payroll':
                         include_once './pages/payroll.php';

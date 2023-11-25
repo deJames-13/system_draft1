@@ -2,7 +2,8 @@
 
 session_start();
 
-$id = $_GET['id'];
+$isEmp = $_SESSION['userRoleId'] == 4;
+$_GET['id'] = isset($_GET['id']) ? $_GET['id'] : $_SESSION['adminId'];
 
 
 $query = <<<SQL
@@ -50,6 +51,8 @@ try {
 <?php if (!empty($_GET['id']) && $id > -1 && $_GET['mode'] != 'edit') : ?>
     <?php
     $user = $users[0];
+    $userRole = $dbc->select('role', where: ['id' => $user['role_id']])[0];
+    $userDept = $dbc->select('department', where: ['id' => $user['department_id']])[0];
     $itemImage = $user['image_dir'];
 
     ?>
@@ -112,7 +115,7 @@ try {
                 </div>
 
                 <!-- Action buttons -->
-                <div class="p-4 w-full h-1/4 flex flex-col space-y-4 ">
+                <div class="<?= $isEmp ? 'hidden' : '' ?> p-4 w-full h-1/4 flex flex-col space-y-4 ">
                     <a href="./?page=employees&id=<?= $id ?>&mode=edit" class="w-full text-center rounded border border-accent p-2 bg-primary50 hover:scale-110 hover:border-b-2 transition-all transform">
                         Edit Information
                     </a>
@@ -174,6 +177,7 @@ try {
                         <div class="w-1/2 pr-8 flex flex-col space-y-1">
                             <label class="text-sm text-gray-400" for="role">Role</label>
                             <select disabled class="py-2" id="role" name="role">
+                                <option selected value="<?= $userRole['id'] ?>"> <?= $userRole['name'] ?></option>
                                 <?php foreach ($roles as $r) : ?>
                                     <option value="<?= $r['id'] ?>"><?= $r['name'] ?></option>
                                 <?php endforeach; ?>
@@ -183,6 +187,7 @@ try {
                         <div class="w-1/2 pr-8 flex flex-col space-y-1">
                             <label class="text-sm text-gray-400" for="role">Department</label>
                             <select disabled class="py-2" id="role" name="department">
+                                <option selected value="<?= $userDept['id'] ?>"><?= $userDept['name'] ?></option>
                                 <?php foreach ($departments as $d) : ?>
                                     <option value="<?= $d['id'] ?>"><?= $d['name'] ?></option>
                                 <?php endforeach; ?>
@@ -219,7 +224,7 @@ try {
     </div>
 
 
-<?php elseif (!empty($_GET['id']  && $id > -1) && $_GET['mode'] == 'edit') : ?>
+<?php elseif (!empty($_GET['id']  && $id > -1) && $_GET['mode'] == 'edit' && !$isEmp) : ?>
 
 
     <?php
@@ -403,7 +408,7 @@ try {
 
 
 
-<?php else : ?>
+<?php elseif (!$isEmp) : ?>
 
     <div class="h-full overflow-y-hidden flex container flex-col space-y-4">
 
@@ -572,7 +577,7 @@ switch ($_GET['res']) {
 <!-- CREATE MODAL -->
 
 
-<div class="<?= $_GET['mode'] == 'create' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+<div class="<?= $_GET['mode'] == 'create' && !$isEmp ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <div class="fixed inset-0 transition-opacity">

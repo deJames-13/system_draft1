@@ -33,7 +33,14 @@ try {
 
     $result = $dbc->select(
         tableName: 'login',
-        columns: ['id', 'username', 'password', 'role_id'],
+        columns: ['id', 'username', 'password'],
+        where: [
+            "username" => $userName,
+        ]
+    )[0];
+    $role_id = $dbc->select(
+        tableName: 'user',
+        columns: ['role_id'],
         where: [
             "username" => $userName,
         ]
@@ -41,7 +48,6 @@ try {
 } catch (Exception $e) {
     echo $e->getMessage();
 }
-
 
 if (empty($result)) {
     header("Location: ./?res=wronguser");
@@ -59,7 +65,7 @@ if (empty($result)) {
         tableName: 'role',
         columns: ['id', 'name'],
         where: [
-            "id" => $result["role_id"],
+            "id" => $role_id["role_id"],
         ]
     )[0];
 
