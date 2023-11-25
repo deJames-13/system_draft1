@@ -10,8 +10,16 @@
   }
 }
 
+/* remove scroll bar for all */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* general styles */
 * {
-  color: inherit;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .sign-up-bg {
