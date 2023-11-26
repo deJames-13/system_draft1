@@ -208,8 +208,8 @@ require_once "../scripts/db-config.php";
   </main>
 
   <!-- Footer -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script src="../js/index.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
 </body>
 

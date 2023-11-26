@@ -316,7 +316,20 @@ function handleFileSelect(event) {
     reader.readAsDataURL(file);
   }
 }
+var swiper = new Swiper('.swiper-container', {
+  slidesPerView: 1,
+  spaceBetween: 10,
+  navigation: {},
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+  },
+  autoplay: {
+    delay: 1000,
+  },
+});
 
+// ####################
 // age
 function onBirthdateChange(date) {
   var age = calculateAge(date.value);
@@ -332,3 +345,5 @@ function calculateAge(birthdate) {
 
   return age;
 }
+
+// ####################

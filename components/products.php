@@ -60,45 +60,19 @@ try {
         die;
     }
 
+    include_once "../components/image-container.php";
     ?>
 
     <!-- CARD LIST CONTAINER -->
     <div class="container p-4 pb-24 px-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-center space-y-6 lg:items-start ">
 
-        <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 hover:scale-95 transform transition-all">
+        <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 transform transition-all">
 
 
             <!-- Item Image -->
-            <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center justify-between space-x-2 p-2">
+            <div class="container border border-accent rounded-md h-80 max-w-sm flex items-center">
 
-                <!-- images container -->
-                <?php if (json_decode($itemImage)) : ?>
-
-                    <!-- IMAGE CONTAIN -->
-                    <div id="imageContainer" class="w-full relative p-8 aspect-square">
-                        <?php
-                        $images = json_decode($itemImage, true);
-                        $c = 0;
-                        ?>
-
-                        <div class="max-w-full h-full overflow-auto p-4 slider flex transition-all transform">
-
-                            <?php foreach ($images as $i) : ?>
-                                <img src="../img/product/<?= $i['name'] ?>" alt=" " class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
-
-                                <?php $c += 1; ?>
-                            <?php endforeach; ?>
-                        </div>
-
-                        <?php $c = 0; ?>
-                    </div>
-
-
-
-                <?php else : ?>
-                    <img src="<?= $itemImage ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
-                <?php endif; ?>
-
+                <?php showImageContainer($itemImage, "product") ?>
 
             </div>
 
@@ -365,75 +339,95 @@ try {
 
 
     <!-- CARD LIST CONTAINER -->
-    <div class="max-h-screen container p-4 grid grid-col-1 gap-5 pb-24 mb-8 mx-4 border border-t-2 border-accent place-items-start overflow-scroll rounded-t-xl md:grid-cols-3 lg:grid-cols-4">
-
-        <?php foreach ($result as $row) : ?>
-            <?php
-            $itemId = $row['id'];
-            $itemName = $row['item_name'];
-            $itemPrice = $row['price'];
-            $itemQuantity = $row['stock_quantity'];
-            $itemImage = $row['image_dir'];
-
-            ?>
-
-            <div id="item_<?= $itemId ?>" class="w-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-105 transform transition-all">
-
-                <!-- Image -->
+    <div class="h-auto mb-20 container border border-t-2 border-accent rounded-t-xl flex flex-col">
+        <!-- pagination -->
+        <!-- <div class="w-full overflow-auto flex space-x-4 justify-center items-center text-accent text-lg p-4">
+            <span class="cursor-pointer inline-block items-center" id="page_prev"><i class="fas fa-angle-left"></i></span>
+            <span class="cursor-pointer inline-block items-center" id="page_prev">
                 <?php
+                $pageCount = ceil(count($result) / 25);
+                $pageIndex = isset($_GET['pidx']) && $_GET['pidx'] > 0 ?  $_GET['pidx'] : 1;
+                echo $pageIndex;
+                ?>
+            </span>
 
-                if (json_decode($itemImage)) {
-                    $images = json_decode($itemImage, true);
-                    $itemImage = "../img/product/" . $images[0]['name'];
-                }
+            <span id="page_next"><i class="cursor-pointer fas fa-angle-right"></i></span>
+        </div> -->
+
+        <div class="max-h-screen grid grid-col-1 gap-5 pb-24 mb-8 m-4   place-items-start overflow-auto  md:grid-cols-3 lg:grid-cols-4">
+            <?php foreach ($result as $row) : ?>
+                <?php
+                $itemId = $row['id'];
+                $itemName = $row['item_name'];
+                $itemPrice = $row['price'];
+                $itemQuantity = $row['stock_quantity'];
+                $itemImage = $row['image_dir'];
 
                 ?>
-                <div id="itemImg_<?= $itemId ?>" onclick=" cardClicked(this)" class="my-4 h-32 border bg-contain bg-white bg-no-repeat bg-center " style="background-image: url('<?= $itemImage ?>')">
-                </div>
 
-                <div class="mx-4 pb-4">
-                    <!-- Product Info -->
+                <div id="item_<?= $itemId ?>" class="flex flex-col justify-between w-full h-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-105 transform transition-all">
 
-                    <div id="itemInfo_<?= $itemId ?>" onclick="cardClicked(this)">
-                        <h1 class="overflow-auto scroll whitespace-nowrap text-1xl text-bold text-accent hover:text-secondary">
-                            <?= $itemName  ?>
-                        </h1>
-                        <h2 class="text-lg">
-                            ₱<?= $itemPrice ?>
-                        </h2>
-                        <h3 class="text-sm">
-                            <span class="fontlight">Stock: </span><?= $itemQuantity ?>
-                        </h3>
+                    <!-- Image -->
+                    <?php
+
+                    if (json_decode($itemImage)) {
+                        $images = json_decode($itemImage, true);
+                        $itemImage = "../img/product/" . $images[0]['name'];
+                    }
+
+                    ?>
+                    <div id="itemImg_<?= $itemId ?>" onclick=" cardClicked(this)" class="my-4 h-32 border bg-contain bg-white bg-no-repeat bg-center " style="background-image: url('<?= $itemImage ?>')">
                     </div>
 
-                    <!-- Actions -->
-                    <div class="my-2 flex items-end space-x-4 md:justify-between">
-                        <div class="flex items-center justify-start space-x-4">
+                    <div class="mx-4 pb-4">
+                        <!-- Product Info -->
 
-                            <!-- Subtract Qty -->
-                            <button onclick="setQty(this)" name="subBtn_<?= $itemId ?>" id="subBtn_<?= $itemId ?>" class="px-1 border border-accent hover:bg-secondary50">
-                                <i class="fas fa-minus"></i>
-                            </button>
-
-                            <!-- Card Qty -->
-                            <span name="setQty_<?= $itemId ?>" id="setQty_<?= $itemId ?>">1</span>
-
-                            <!-- Add Qty -->
-                            <button onclick="setQty(this)" name="addBtn_<?= $itemId ?>" id="addBtn_<?= $itemId ?>" class="px-1 border border-accent hover:bg-secondary50">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                        <div id="itemInfo_<?= $itemId ?>" onclick="cardClicked(this)">
+                            <h1 class="overflow-auto whitespace-nowrap text-1xl text-bold text-accent hover:text-secondary">
+                                <?= $itemName  ?>
+                            </h1>
+                            <h2 class="text-lg">
+                                ₱<?= $itemPrice ?>
+                            </h2>
+                            <h3 class="text-sm">
+                                <span class="fontlight">Stock: </span><?= $itemQuantity ?>
+                            </h3>
                         </div>
-                        <div>
-                            <!-- Add to Cart -->
-                            <button onclick="addToCart(this)" id="addToCart_<?= $itemId ?>" class="p-2 border-accent hover:bg-secondary50 h-10 w-10 border">
-                                <i class="fas fa-cart-shopping"></i>
-                            </button>
+
+                        <!-- Actions -->
+                        <div class="my-2 flex items-end space-x-4 md:justify-between">
+                            <div class="flex items-center justify-start space-x-4">
+
+                                <!-- Subtract Qty -->
+                                <button onclick="setQty(this)" name="subBtn_<?= $itemId ?>" id="subBtn_<?= $itemId ?>" class="px-1 border border-accent hover:bg-secondary50">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+
+                                <!-- Card Qty -->
+                                <span name="setQty_<?= $itemId ?>" id="setQty_<?= $itemId ?>">1</span>
+
+                                <!-- Add Qty -->
+                                <button onclick="setQty(this)" name="addBtn_<?= $itemId ?>" id="addBtn_<?= $itemId ?>" class="px-1 border border-accent hover:bg-secondary50">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <!-- Add to Cart -->
+                                <button onclick="addToCart(this)" id="addToCart_<?= $itemId ?>" class="p-2 border-accent hover:bg-secondary50 h-10 w-10 border">
+                                    <i class="fas fa-cart-shopping"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+
+        </div>
+
+
     </div>
+
+
 
 
 

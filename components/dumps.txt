@@ -1,0 +1,24 @@
+<!-- images container -->
+                                <?php if (json_decode($itemImage)) : ?>
+
+                                    <?php
+                                    $images = json_decode($itemImage, true);
+                                    $c = 0;
+                                    ?>
+                                    <?php foreach ($images as $i) : ?>
+                                        <?php
+                                        $img = "../img/customer/" . $i['name'];
+                                        ?>
+
+
+                                        <img src="<?= file_exists($img) ? $img : '../img/user/default.jpg' ?>" alt=" " class="border object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
+
+
+                                        <?php $c += 1; ?>
+                                    <?php endforeach; ?>
+                                    <?php $c = 0; ?>
+                                <?php else : ?>
+
+                                    <img src="<?= file_exists($itemImage) ? $itemImage : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+
+                                <?php endif; ?>

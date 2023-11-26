@@ -4,7 +4,6 @@ include_once '../components/modals.php';
 session_start();
 
 if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
-    print_r($_GET);
     session_destroy();
     header("Location: ./account/");
 }
@@ -109,6 +108,7 @@ if (empty($_SESSION['adminId'])) {
             break;
     }
     ?>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="../js/index.js"></script>
 </body>
 

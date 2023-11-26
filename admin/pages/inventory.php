@@ -33,6 +33,7 @@ try {
     }
 } catch (Exception $ex) {
 }
+include_once '../components/image-container.php';
 
 ?>
 
@@ -61,34 +62,7 @@ try {
                     <div class="flex items-center justify-center aspect-square w-full border border-accent rounded p-4">
 
 
-                        <!-- images container -->
-                        <?php if (json_decode($itemImage)) : ?>
-
-                            <?php
-                            $images = json_decode($itemImage, true);
-                            $c = 0;
-                            ?>
-
-                            <!-- IMAGE CONTAIN -->
-                            <div id="imageContainer" class="w-full relative">
-                                <div class="max-w-full h-full overflow-auto p-4 slider flex transition-all transform">
-                                    <?php foreach ($images as $i) : ?>
-                                        <?php
-                                        $img = "../img/product/" . $i['name'];
-                                        ?>
-                                        <img src="<?= file_exists($img) ? $img : '../img/default.jpg' ?>" alt=" " class="object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
-                                        <?php $c += 1; ?>
-                                    <?php endforeach; ?>
-                                </div>
-
-                            </div>
-
-
-                            <?php $c = 0; ?>
-
-                        <?php else : ?>
-                            <img src="<?= file_exists($itemImage) ? $itemImage : '../img/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
-                        <?php endif; ?>
+                        <?php showImageContainer($itemImage, "product"); ?>
 
 
 
@@ -177,7 +151,7 @@ try {
     </div>
 
 
-<?php elseif (!empty($_GET['id']  && $id > -1) && $_GET['mode'] == 'edit' && $_SESSION['userRoleId'] != 4) : ?>
+<?php elseif (!empty($_GET['id']  && $id > -1) && $_GET['mode'] == 'edit') : ?>
 
     <?php
     $product = $products[0];
@@ -207,31 +181,8 @@ try {
                         <!-- IMAGE CONTAIN -->
                         <div class="w-full relative">
                             <div id="imageDisplay" class="max-w-full h-full  overflow-auto slider flex space-x-4 transition-all transform aspect-square">
-                                <!-- images container -->
-                                <?php if (json_decode($itemImage)) : ?>
 
-                                    <?php
-                                    $images = json_decode($itemImage, true);
-                                    $c = 0;
-                                    ?>
-                                    <?php foreach ($images as $i) : ?>
-                                        <?php
-                                        $img = "../img/product/" . $i['name'];
-                                        ?>
-
-
-                                        <img src="<?= file_exists($img) ? $img : '../img/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
-
-
-                                        <?php $c += 1; ?>
-                                    <?php endforeach; ?>
-                                    <?php $c = 0; ?>
-                                <?php else : ?>
-
-                                    <img src="<?= file_exists($itemImage) ? $itemImage : '../img/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
-
-                                <?php endif; ?>
-
+                                <?php showImageContainer($itemImage, "product") ?>
                             </div>
                         </div>
 
@@ -343,7 +294,7 @@ try {
         <!-- BUTTONS -->
         <div class="flex items-center justify-between">
             <h3>Selected Item: <span id="selectedItemId">_</span> </h3>
-            <div class="<?= $_SESSION['userRoleId'] != 4 ? '' : 'hidden' ?>  flex justify-end space-x-4 px-4 text-sm">
+            <div class="flex justify-end space-x-4 px-4 text-sm">
                 <button id="create_inventory" name="create_inventory" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
                     <i class="fas fa-plus">
                     </i>
@@ -513,7 +464,7 @@ switch ($_GET['res']) {
 <!-- CREATE MODAL -->
 
 
-<div class="<?= $_GET['mode'] == 'create' && $_SESSION['userRoleId'] != 4 ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+<div class="<?= $_GET['mode'] == 'create' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <div class="fixed inset-0 transition-opacity">

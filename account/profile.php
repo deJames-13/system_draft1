@@ -62,6 +62,7 @@ if ($_SESSION['userId']) {
 <body class="relative text-accent">
 
     <?php include_once '../components/header.php'; ?>
+    <?php include_once '../components/image-container.php'; ?>
 
     <main>
         <div class="border p-6 my-12 flex items-center justify-center h-48 bg-cover bg-opacity-50 bg-center bg-no-repeat drop-shadow-lg lg:hidden" style="background-image: url(../img/sign-in-bg.png)">
@@ -90,31 +91,10 @@ if ($_SESSION['userId']) {
 
                         <!-- IMAGE CONTAIN -->
                         <div class="w-full relative">
-                            <div id="imageDisplay" class="max-w-full h-full  overflow-auto p-4 slider flex space-x-4 transition-all transform aspect-square">
-                                <!-- images container -->
-                                <?php if (json_decode($itemImage)) : ?>
+                            <div id="imageDisplay" class="max-w-full h-full   flex transition-all transform aspect-square">
 
-                                    <?php
-                                    $images = json_decode($itemImage, true);
-                                    $c = 0;
-                                    ?>
-                                    <?php foreach ($images as $i) : ?>
-                                        <?php
-                                        $img = "../img/customer/" . $i['name'];
-                                        ?>
+                                <?php showImageContainer($itemImage, "customer") ?>
 
-
-                                        <img src="<?= file_exists($img) ? $img : '../img/user/default.jpg' ?>" alt=" " class="border object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
-
-
-                                        <?php $c += 1; ?>
-                                    <?php endforeach; ?>
-                                    <?php $c = 0; ?>
-                                <?php else : ?>
-
-                                    <img src="<?= file_exists($itemImage) ? $itemImage : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
-
-                                <?php endif; ?>
 
                             </div>
                         </div>
@@ -131,10 +111,6 @@ if ($_SESSION['userId']) {
 
                         <input type="file" name="images[]" id="images" class="hidden" accept="image/*" onchange="handleFileSelect(event)" multiple />
                     </div>
-
-                    <!-- Image Display -->
-                    <!-- <div id="imageDisplay" class="hidden border border-accent w-full grid grid-cols-1 md:grid-cols-3 gap-4">
-                    </div> -->
 
                 </div>
 
@@ -313,6 +289,7 @@ if ($_SESSION['userId']) {
 
 
     ?>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="../js/index.js"></script>
 </body>
 

@@ -1,10 +1,12 @@
 <?php
 
 session_start();
-
 $isEmp = $_SESSION['userRoleId'] == 4;
-$_GET['id'] = isset($_GET['id']) ? $_GET['id'] : $_SESSION['adminId'];
-
+if ($isEmp) {
+    $_GET['id'] = isset($_GET['id']) ? $_GET['id'] : $_SESSION['adminId'];
+} else {
+    $id = $_GET['id'];
+}
 
 $query = <<<SQL
 
@@ -44,7 +46,7 @@ try {
     echo $ex->getMessage();
 }
 
-
+include_once '../components/image-container.php';
 ?>
 
 
@@ -81,30 +83,8 @@ try {
                         <!-- IMAGE CONTAIN -->
                         <div class="w-full relative">
                             <div id="imageDisplay" class="max-w-full h-full  overflow-auto slider flex space-x-4 transition-all transform aspect-square">
-                                <!-- images container -->
-                                <?php if (json_decode($itemImage)) : ?>
 
-                                    <?php
-                                    $images = json_decode($itemImage, true);
-                                    $c = 0;
-                                    ?>
-                                    <?php foreach ($images as $i) : ?>
-                                        <?php
-                                        $img = "../img/user/" . $i['name'];
-                                        ?>
-
-
-                                        <img src="<?= file_exists($img) ? $img : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale[.95] transform transition-all box-border" />
-
-
-                                        <?php $c += 1; ?>
-                                    <?php endforeach; ?>
-                                    <?php $c = 0; ?>
-                                <?php else : ?>
-
-                                    <img src="<?= file_exists($itemImage) ? $itemImage : '../img/user/default.jpg' ?>" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
-
-                                <?php endif; ?>
+                                <?php showImageContainer($itemImage, "user") ?>
 
                             </div>
                         </div>
