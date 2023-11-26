@@ -1,9 +1,8 @@
 <?php
-session_start();
 
-$status = $_GET['status'];
+$status = isset($_GET['status']) ? $_GET['status'] : null;
+$id = isset($_GET['id']) ? $_GET['id'] : null;
 
-$id = $_GET['id'];
 $query = <<<SQL
   SELECT
     o.id,
@@ -180,7 +179,6 @@ $groupedResult = [];
                     $groupedResult["order_$id"]['items']["item_$itemId"] = $item;
                 }
 
-                $index = $i + 1;
                 $accSubtotal += $subtotal;
 
 
@@ -478,67 +476,67 @@ $isValid = !empty($_GET['id']) && is_numeric($_GET['id']);
 
 
 <?php
-include_once '../../components/modals.php';
-if (!empty($_GET['res']) && !empty($_GET['order_id'])) {
-    $orderId = $_GET['order_id'];
-    switch ($_GET['res']) {
-        case 'orderupdatesuccess':
-            echo createModal(
-                visible: true,
-                title: "Order Updated Successfully",
-                message: "The information has been updated for ORDER: $orderId STATUS: " . $_GET['type'],
-            );
-            break;
-        case 'orderdeletesuccess':
-            echo createModal(
-                visible: true,
-                title: "Order Deleted Successfully",
-                message: "Order Info has successfully deleted",
-            );
-            break;
-        case 'confirmorderdelete':
-            echo createModal(
-                visible: true,
-                title: "Confirm Order Delete",
-                message: "Are you sure you want to delete this item?",
-                btnConfirm: "Confirm",
-                btnFunc: "updateOrderStatus('delete', $orderId)",
 
-            );
-            break;
-        case 'confirmordercancel':
-            echo createModal(
-                visible: true,
-                title: "Confirm Order Cancel",
-                message: "Are you sure you want to cancel this item?",
-                btnConfirm: "Confirm",
-                btnFunc: "updateOrderStatus('cancelled', $orderId)",
+$res = isset($_GET['res']) ? $_GET['res'] : null;
+$orderId = isset($_GET['order_id']) ?  $_GET['order_id'] : null;
+switch ($res) {
+    case 'orderupdatesuccess':
+        echo createModal(
+            visible: true,
+            title: "Order Updated Successfully",
+            message: "The information has been updated for ORDER: $orderId STATUS: " . $_GET['type'],
+        );
+        break;
+    case 'orderdeletesuccess':
+        echo createModal(
+            visible: true,
+            title: "Order Deleted Successfully",
+            message: "Order Info has successfully deleted",
+        );
+        break;
+    case 'confirmorderdelete':
+        echo createModal(
+            visible: true,
+            title: "Confirm Order Delete",
+            message: "Are you sure you want to delete this item?",
+            btnConfirm: "Confirm",
+            btnFunc: "updateOrderStatus('delete', $orderId)",
 
-            );
-            break;
-        case 'confirmordership':
-            echo createModal(
-                visible: true,
-                title: "Confirm Order Ship",
-                message: "Are you sure you want to ship this item?",
-                btnConfirm: "Confirm",
-                btnFunc: "updateOrderStatus('shipping', $orderId)",
+        );
+        break;
+    case 'confirmordercancel':
+        echo createModal(
+            visible: true,
+            title: "Confirm Order Cancel",
+            message: "Are you sure you want to cancel this item?",
+            btnConfirm: "Confirm",
+            btnFunc: "updateOrderStatus('cancelled', $orderId)",
 
-            );
-            break;
-        case 'confirmorderdeliver':
-            echo createModal(
-                visible: true,
-                title: "Confirm Order Deliver",
-                message: "Are you sure you want to deliver this item?",
-                btnConfirm: "Confirm",
-                btnFunc: "updateOrderStatus('delivered', $orderId)",
+        );
+        break;
+    case 'confirmordership':
+        echo createModal(
+            visible: true,
+            title: "Confirm Order Ship",
+            message: "Are you sure you want to ship this item?",
+            btnConfirm: "Confirm",
+            btnFunc: "updateOrderStatus('shipping', $orderId)",
 
-            );
-            break;
-        default:
-            break;
-    }
+        );
+        break;
+    case 'confirmorderdeliver':
+        echo createModal(
+            visible: true,
+            title: "Confirm Order Deliver",
+            message: "Are you sure you want to deliver this item?",
+            btnConfirm: "Confirm",
+            btnFunc: "updateOrderStatus('delivered', $orderId)",
+
+        );
+        break;
+    default:
+        break;
 }
+error_reporting(E_ALL);
 
 ?>

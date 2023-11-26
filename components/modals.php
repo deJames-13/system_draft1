@@ -17,7 +17,7 @@ function createModal($title = null, $message = null, $visible = false, $btnFunc 
     }
 
     $modal = <<<HTML
-<div class="${$hidden} fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+<div class="{$hidden} fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <div class="fixed inset-0 transition-opacity">

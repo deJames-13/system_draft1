@@ -1,34 +1,27 @@
 <?php
 
-session_start();
 $isEmp = $_SESSION['userRoleId'] == 4;
 if ($isEmp) {
     $_GET['id'] = isset($_GET['id']) ? $_GET['id'] : $_SESSION['adminId'];
-} else {
-    $id = $_GET['id'];
 }
-
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$mode = isset($_GET['mode']) ? $_GET['mode'] : null;
 $query = <<<SQL
-
 SELECT 
 u.*,
 CONCAT(u.first_name, ' ', u.middle_name,' ', u.last_name) as 'name',
 r.name as 'role',
 d.name as 'department'
-
 FROM 
 user as u
-
 INNER JOIN `role` as r
 ON u.role_id = r.id
-
 INNER JOIN department as d
 ON u.department_id = d.id
 
-
 SQL;
 
-if (!empty($_GET['id']) && $id > -1) {
+if (isset($_GET['id']) && $id > -1) {
     $query .= "WHERE u.id = '$id'";
 } else {
     $query .= "ORDER BY u.id DESC";
@@ -50,7 +43,7 @@ include_once '../components/image-container.php';
 ?>
 
 
-<?php if (!empty($_GET['id']) && $id > -1 && $_GET['mode'] != 'edit') : ?>
+<?php if (isset($_GET['id']) && $id > -1 && $mode != 'edit') : ?>
     <?php
     $user = $users[0];
     $userRole = $dbc->select('role', where: ['id' => $user['role_id']])[0];
@@ -204,7 +197,7 @@ include_once '../components/image-container.php';
     </div>
 
 
-<?php elseif (!empty($_GET['id']  && $id > -1) && $_GET['mode'] == 'edit' && !$isEmp) : ?>
+<?php elseif (isset($_GET['id'])  && $id > -1 && $mode == 'edit' && !$isEmp) : ?>
 
 
     <?php
@@ -505,9 +498,8 @@ include_once '../components/image-container.php';
 
 <!-- Create Modal -->
 <?php
-include_once '../../components/modals.php';
-
-switch ($_GET['res']) {
+$res = isset($_GET['res']) ? $_GET['res'] : null;
+switch ($res) {
     case 'employeeupdatesuccess':
         echo createModal(
             visible: true,
@@ -557,7 +549,7 @@ switch ($_GET['res']) {
 <!-- CREATE MODAL -->
 
 
-<div class="<?= $_GET['mode'] == 'create' && !$isEmp ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+<div class="<?= $mode == 'create' && !$isEmp ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <div class="fixed inset-0 transition-opacity">

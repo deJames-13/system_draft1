@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 if ($_SESSION['userRoleId'] == 4) {
     header("Location: ./?page=employees&id=" . $_SESSION['adminId']);
 }
@@ -14,7 +13,8 @@ INNER JOIN supplier as s ON s.id = p.supplier_id
 
 SQL;
 
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$mode = isset($_GET['mode']) ? $_GET['mode'] : null;
 
 if (!empty($_GET['id']) && $id > -1) {
     $query .= "WHERE p.id = '$id'";
@@ -27,7 +27,7 @@ try {
     $dbc = new DatabaseConfig();
     $products = $dbc->executeQuery($query);
 
-    if ($_GET['mode'] == 'edit' || $_GET['mode'] == 'create') {
+    if ($mode == 'edit' || $mode == 'create') {
         $brands = $dbc->executeQuery("SELECT brand FROM product GROUP BY brand");
         $suppliers = $dbc->executeQuery("SELECT id, `name` FROM supplier");
     }
@@ -37,7 +37,7 @@ include_once '../components/image-container.php';
 
 ?>
 
-<?php if (!empty($_GET['id']) && $id > -1 && $_GET['mode'] != 'edit') : ?>
+<?php if (isset($_GET['id']) && $id > -1 && $mode != 'edit') : ?>
     <?php
     $product = $products[0];
     $itemImage = $product['image_dir'];
@@ -151,7 +151,7 @@ include_once '../components/image-container.php';
     </div>
 
 
-<?php elseif (!empty($_GET['id']  && $id > -1) && $_GET['mode'] == 'edit') : ?>
+<?php elseif (isset($_GET['id'])  && $id > -1 && $mode == 'edit') : ?>
 
     <?php
     $product = $products[0];
@@ -400,7 +400,8 @@ include_once '../components/image-container.php';
 
 <!-- MODALS -->
 <?php
-switch ($_GET['res']) {
+$res = isset($_GET['res']) ? $_GET['res'] : null;
+switch ($res) {
     case 'updateitemsuccess':
         echo createModal(
             visible: true,
@@ -464,7 +465,7 @@ switch ($_GET['res']) {
 <!-- CREATE MODAL -->
 
 
-<div class="<?= $_GET['mode'] == 'create' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+<div class="<?= isset($_GET['mode']) && $_GET['mode'] == 'create' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <div class="fixed inset-0 transition-opacity">

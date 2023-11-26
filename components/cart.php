@@ -1,7 +1,7 @@
 <?php
 
-$userName = $_SESSION['userName'];
-$customerId = $_SESSION['userID'];
+$userName = isset($_SESSION['userName']) ? $_SESSION['userName'] : null;
+$customerId = isset($_SESSION['userID']) ? $_SESSION['userID'] : null;
 
 $query = <<<SQL
 SELECT 

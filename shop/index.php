@@ -1,6 +1,7 @@
 <?php
 session_start();
 $_SESSION['currentItemID'] = null;
+$userId = isset($_SESSION['userId']) ? $_SESSION['userId'] : null;
 
 require_once "../scripts/db-config.php";
 
@@ -72,8 +73,8 @@ require_once "../scripts/db-config.php";
       <!-- Modals -->
       <?php
       include_once '../components/modals.php';
-
-      switch ($_GET['res']) {
+      $res = isset($_GET['res']) ? $_GET['res'] : null;
+      switch ($res) {
         case 'cartAdded':
           echo createModal(
             title: "Item Added",

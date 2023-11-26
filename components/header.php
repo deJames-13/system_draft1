@@ -1,7 +1,3 @@
-<?php
-session_start();
-?>
-
 <header>
   <nav class="relative mx-auto p-4 drop-shadow-md">
     <div class="flex items-center justify-between">
@@ -15,7 +11,7 @@ session_start();
 
         <a href="../shop/" class="text-accent hover:text-secondary hover:scale-105 transform transition-all"> Products </a>
 
-        <?php if ($_SESSION['userId']) : ?>
+        <?php if (isset($_SESSION['userId'])) : ?>
           <div class="cursor-pointer flex space-x-2 items-center justify-center px-6 rounded-full bg-secondary75 p-2 hover:scale-105 transform transition-all">
             <a href="../account/profile.php?viewprofile=1" id="nav-cta" class="text-accent hover:text-white hover:scale-105 transform transition-all">
               <i class="fas fa-user"></i>

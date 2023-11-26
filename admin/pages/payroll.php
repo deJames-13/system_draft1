@@ -1,8 +1,10 @@
 <?php
 
-session_start();
 
-$status = $_GET['status'];
+$status = isset($_GET['status']) ? $_GET['status'] : null;
+$isEmp = $_SESSION['userRoleId'] == 4;
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$mode = isset($_GET['mode']) ? $_GET['mode'] : null;
 $query = <<<SQL
 
 SELECT 
@@ -22,12 +24,19 @@ SELECT
 
 FROM
     user as u
-
     INNER JOIN user_has_salary as uhs ON u.id = uhs.user_id
     INNER JOIN salary as s ON s.id = uhs.salary_id
     INNER JOIN benefits as b ON b.id = s.benefits_id
 
 SQL;
+
+if ($isEmp) {
+    $query .= " WHERE u.id = {$_SESSION['adminId']}";
+} else {
+    $query .= " ORDER BY u.id ASC";
+}
+
+
 try {
 
     $dbc = new DatabaseConfig();
@@ -51,7 +60,7 @@ $selected_payroll = [];
 <div class="relative flex container flex-col space-y-4 h-full overflow-y-auto">
 
     <!-- BUTTONS -->
-    <div class="container flex items-center justify-between">
+    <div class="<?= $isEmp ? 'hidden' : '' ?> container flex items-center justify-between">
         <h3>Selected Item: <span id="selectedItemId">_</span> </h3>
         <div class="flex justify-end space-x-4 px-4 text-sm">
             <button id="create_payroll" name="create_payroll" onclick="btnActionsClicked(this)" class="flex items-center justify-center space-x-2 border border-accent p-2 rounded hover:bg-primary50 hover:border-b-2 hover:shadow-md hover:scale-[.95] transform transition-all">
@@ -110,8 +119,8 @@ $selected_payroll = [];
 
             <?php foreach ($users as $user) : ?>
 
-                <?php if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    if ($_GET['id'] == $user['id']) {
+                <?php if (isset($id) && $id > 0) {
+                    if ($id == $user['id']) {
                         $selected_payroll = $user;
                     }
                 } else {
@@ -180,7 +189,6 @@ $selected_payroll = [];
             );
             break;
         case 'deleteconfirm':
-            $id = $_GET['id'];
             echo createModal(
                 title: "Confirm Delete.",
                 message: "Are you sure you want to delete this item?",
@@ -224,7 +232,7 @@ $selected_payroll = [];
     ?>
 
 
-<?php elseif ($_GET['id'] > 0 && $selected_payroll && $_GET['mode'] === 'view') : ?>
+<?php elseif ($id > 0 && $selected_payroll && $mode  === 'view') : ?>
     <?php
     print_r($selected_payroll);
     $p = $selected_payroll;
@@ -233,7 +241,7 @@ $selected_payroll = [];
 
     <!-- View PAYROLL -->
 
-    <div class="<?= $_GET['mode'] == 'view' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+    <div class="<?= $mode == 'view' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity">
                 <div class="absolute inset-0 bg-gray-900 opacity-20" />
@@ -335,7 +343,7 @@ $selected_payroll = [];
 
     <!-- CREATE NEW PAYROLL -->
 
-    <div class="<?= $_GET['mode'] == 'create' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+    <div class="<?= $mode == 'create' ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity">
                 <div class="absolute inset-0 bg-gray-900 opacity-20" />

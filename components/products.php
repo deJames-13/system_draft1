@@ -28,7 +28,6 @@ try {
 
 
     <?php
-    session_start();
     $row = $result[0];
     $itemId = $row['id'];
     $description = $row['description'];
@@ -50,14 +49,15 @@ try {
         $customer = $dbc->select(
             tableName: "customer",
             where: [
-                "id" => $_SESSION['userId'],
+                "id" => $userId,
             ]
-        )[0];
-
-        $customerName =  $customer['first_name'] . " " . $customer['middle_name'] . " " . $customer['last_name'];
-        $customerAddress = $customer['address'];
+        );
+        $customer = isset($customer[0]) ? $customer[0] : null;
+        if ($customer) {
+            $customerName =  $customer['first_name'] . " " . $customer['middle_name'] . " " . $customer['last_name'];
+            $customerAddress = $customer['address'];
+        }
     } catch (Exception $e) {
-        die;
     }
 
     include_once "../components/image-container.php";
@@ -354,7 +354,7 @@ try {
             <span id="page_next"><i class="cursor-pointer fas fa-angle-right"></i></span>
         </div> -->
 
-        <div class="max-h-screen grid grid-col-1 gap-5 pb-24 mb-8 m-4   place-items-start overflow-auto  md:grid-cols-3 lg:grid-cols-4">
+        <div class="max-h-screen grid grid-col-1 gap-5 pb-24 mb-8 m-4   place-items-start overflow-scroll  md:grid-cols-3 lg:grid-cols-4">
             <?php foreach ($result as $row) : ?>
                 <?php
                 $itemId = $row['id'];
@@ -365,7 +365,7 @@ try {
 
                 ?>
 
-                <div id="item_<?= $itemId ?>" class="flex flex-col justify-between w-full h-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-105 transform transition-all">
+                <div id="item_<?= $itemId ?>" class="flex flex-col justify-between w-full h-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-95 transform transition-all">
 
                     <!-- Image -->
                     <?php

@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $isUser = isset($_SESSION['userId']);
 

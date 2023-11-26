@@ -58,8 +58,8 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
         </div>
     </main>
     <?php include_once '../../components/modals.php';
-
-    switch ($_GET['res']) {
+    $res = isset($_GET['res']) ? $_GET['res'] : '';
+    switch ($res) {
         case 'wronguser':
             echo createModal(
                 title: "Unknown username.",

@@ -1,6 +1,7 @@
 <?php
 require_once '../scripts/db-config.php';
 include_once '../components/modals.php';
+
 session_start();
 
 if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
@@ -89,7 +90,8 @@ if (empty($_SESSION['adminId'])) {
 
 
     <?php
-    switch ($_GET['res']) {
+    $res = isset($_GET['res']) ? $_GET['res'] : null;
+    switch ($res) {
         case 'loginsuccess':
             echo createModal(
                 title: "Login Success.",
