@@ -8,7 +8,7 @@ final class DatabaseConfig extends DatabaseManager
     const HOST = "localhost";
     const USER = "root";
     const PASS = "";
-    const DATABASE = "deh_system_db";
+    const DATABASE = "DEHTech_EspinosaLacaoLim_IMSPROJECT";
 
     public function __construct()
     {
