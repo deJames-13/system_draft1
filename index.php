@@ -1,5 +1,7 @@
 <?php
 
 // $root = $_SERVER['DOCUMENT_ROOT'] . $_SERVER['PHP_SELF'];
-
-header("Location: ./shop/");
+//fsfdsf
+//sdfdsfds
+//fdsfdsf
+header("Location: ./shop/"); // fsdfkjdsfnsd f

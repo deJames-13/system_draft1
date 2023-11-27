@@ -87,16 +87,16 @@ if (isset($_SESSION['newUser'])) {
             break;
         case 'passwordtooshort':
             echo createModal(
-                title: "Incorrect Password.",
+                title: "Password too short.",
                 visible: true,
-                message: "The password you entered does not match.",
+                message: "The password you entered is invalid. Please enter password with 8 - 15 chracters.",
             );
             break;
         case 'passwordtoolong':
             echo createModal(
-                title: "Incorrect Password.",
+                title: "Password too long.",
                 visible: true,
-                message: "The password you entered does not match.",
+                message: "The password you entered is invalid. Please enter password with 8 - 15 chracters.",
             );
             break;
         case 'accountcreateerror':

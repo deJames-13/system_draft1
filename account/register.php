@@ -33,10 +33,10 @@ try {
         }
 
         // 2 check if pass is 8 - 15 characters
-        if (count($_POST['password']) < 8) {
+        if (strlen($_POST['password']) < 8) {
             header('Location: ./signup.php?res=passwordtooshort');
             exit;
-        } elseif (count($_POST['password']) > 8) {
+        } elseif (strlen($_POST['password']) > 8) {
             header('Location: ./signup.php?res=passwordtoolong');
             exit;
         }
