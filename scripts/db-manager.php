@@ -115,6 +115,7 @@ class DatabaseManager
      */
     public function prepareStatement(string $query, array $params = []): mysqli_stmt
     {
+        error_reporting(E_ALL ^ E_WARNING);
 
         if (!$this->connection) {
             throw new Exception("No connection to database");
@@ -152,7 +153,7 @@ class DatabaseManager
         if (!mysqli_stmt_execute($this->statement)) {
             throw new Exception("Could not execute statement: " . mysqli_error($this->connection));
         }
-
+        error_reporting(E_ALL);
         return $this->statement;
     }
 
@@ -244,6 +245,7 @@ class DatabaseManager
         string $groupBy = "",
         int $limit = 0
     ): array {
+        error_reporting(E_ERROR | E_PARSE);
 
         $query = "SELECT " . ($columns ? implode(', ', array_map([$this->connection, 'real_escape_string'], $columns)) : '*') . " FROM " . $this->connection->real_escape_string($tableName);
 
@@ -271,6 +273,7 @@ class DatabaseManager
             $query .= " LIMIT " . (int) $limit;
         }
 
+        error_reporting(E_ALL);
         return $this->executeQuery($query);
     }
 

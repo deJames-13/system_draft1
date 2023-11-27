@@ -85,10 +85,6 @@ if (empty($_SESSION['adminId'])) {
     </main>
 
 
-
-
-
-
     <?php
     $res = isset($_GET['res']) ? $_GET['res'] : null;
     switch ($res) {
@@ -103,6 +99,13 @@ if (empty($_SESSION['adminId'])) {
             echo createModal(
                 title: "Username Exists.",
                 message: "The username you entered is already taken. Please try another one.",
+                visible: true
+            );
+            break;
+        case 'searchnotfound':
+            echo createModal(
+                title: "Query not found.",
+                message: "The query you entered is not found. Please try another one.",
                 visible: true
             );
             break;

@@ -1,27 +1,41 @@
 <?php
 
-$dbc = new DatabaseConfig();
+$searchVal = isset($_GET['search']) ? $_GET['search'] : null;
+if ($searchVal) {
+
+    $query = <<<SQL
+    SELECT * FROM product 
+    WHERE 
+    item_name LIKE CONCAT('%', ?, '%') OR 
+    description LIKE CONCAT('%', ?, '%')
+    SQL;
+}
+
 try {
-    $result = $dbc->select(
-        tableName: "product",
-        columns: [
-            "id",
-            "item_name",
-            "description",
-            "price",
-            "stock_quantity",
-            "image_dir"
-        ],
-        where: [
-            "id" => !empty($_GET['item_id']) && is_numeric($_GET['item_id']) ? $_GET['item_id'] : [">", 0]
-        ]
-    );
+    $dbc = new DatabaseConfig();
+    $result =
+        $searchVal
+        ? $dbc->executeQuery($query, [$searchVal, $searchVal])
+        : $dbc->select(
+            tableName: "product",
+            columns: [
+                "id",
+                "item_name",
+                "description",
+                "price",
+                "stock_quantity",
+                "image_dir"
+            ],
+            where: [
+                "id" => !empty($_GET['item_id']) && is_numeric($_GET['item_id']) ? $_GET['item_id'] : [">", 0]
+            ]
+        );
 } catch (Exception $e) {
     echo $e->getMessage();
 }
 
-?>
 
+?>
 
 
 <?php if (!empty($_GET['item_id']) && is_numeric($_GET['item_id'])) : ?>
@@ -64,7 +78,7 @@ try {
     ?>
 
     <!-- CARD LIST CONTAINER -->
-    <div class="container p-4 pb-24 px-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-center space-y-6 lg:items-start ">
+    <div class=" container p-4 pb-24 px-6 mb-8 mx-4 border border-t-2 border-accent rounded-t-xl flex flex-col items-center space-y-6 lg:items-start ">
 
         <div class="container  py-4 flex flex-col justify-between items-center lg:flex-row lg:space-x-6 transform transition-all">
 
@@ -339,7 +353,10 @@ try {
 
 
     <!-- CARD LIST CONTAINER -->
-    <div class="h-auto mb-20 container border border-t-2 border-accent rounded-t-xl flex flex-col">
+    <div class="h-screen mb-20 container border border-t-2 border-accent rounded-t-xl flex flex-col">
+
+
+
         <!-- pagination -->
         <!-- <div class="w-full overflow-auto flex space-x-4 justify-center items-center text-accent text-lg p-4">
             <span class="cursor-pointer inline-block items-center" id="page_prev"><i class="fas fa-angle-left"></i></span>
@@ -354,7 +371,7 @@ try {
             <span id="page_next"><i class="cursor-pointer fas fa-angle-right"></i></span>
         </div> -->
 
-        <div class="max-h-screen grid grid-col-1 gap-5 pb-24 mb-8 m-4   place-items-start overflow-scroll  md:grid-cols-3 lg:grid-cols-4">
+        <div class="max-h-screen grid grid-col-1 gap-5 pb-24 mb-8 m-4 p-4 px-2   place-items-start overflow-auto  md:grid-cols-3 lg:grid-cols-4">
             <?php foreach ($result as $row) : ?>
                 <?php
                 $itemId = $row['id'];
@@ -365,7 +382,7 @@ try {
 
                 ?>
 
-                <div id="item_<?= $itemId ?>" class="flex flex-col justify-between w-full h-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-95 transform transition-all">
+                <div id="item_<?= $itemId ?>" class="flex flex-col justify-between w-full h-full bg-primary10 border border-accent rounded-lg hover:bg-primary30 hover:border-2 hover:scale-105 transform transition-all">
 
                     <!-- Image -->
                     <?php
@@ -431,4 +448,10 @@ try {
 
 
 
+<?php endif; ?>
+
+<?php if (empty($result)) : ?>
+    <script>
+        window.location.replace("./?page=shop&res=searchnotfound");
+    </script>
 <?php endif; ?>

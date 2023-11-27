@@ -347,3 +347,56 @@ function calculateAge(birthdate) {
 }
 
 // ####################
+
+// ============================== SEARCH ============================== //
+
+function searchFunction() {
+  // Get the input value
+  var inputValue = document.getElementById('searchInput').value;
+  console.log('Search for: ' + inputValue);
+
+  var pageValue = getPageParameter();
+
+  console.log("Value of 'page' parameter:", pageValue);
+  handlePage(pageValue, inputValue);
+}
+
+// Handle Search which Tab
+function handlePage(pageValue, inputValue) {
+  switch (pageValue) {
+    case 'inventory':
+      window.location.replace('./?page=inventory&search=' + inputValue);
+      break;
+    case 'employees':
+      window.location.replace('./?page=employees&search=' + inputValue);
+      break;
+
+    case 'orders':
+      window.location.replace('./?page=orders&search=' + inputValue);
+      break;
+
+    case 'employees':
+      break;
+
+    case 'payroll':
+      window.location.replace('./?page=payroll&search=' + inputValue);
+      break;
+
+    default: // Products to?
+      window.location.replace('./?search=' + inputValue);
+      break;
+  }
+}
+
+// Get Parameter From Url
+function getPageParameter() {
+  var searchParams = new URLSearchParams(window.location.search);
+  var pageValue = searchParams.get('page');
+
+  // Remove trailing ampersand if present
+  if (pageValue && pageValue.endsWith('&')) {
+    pageValue = pageValue.slice(0, -1);
+  }
+
+  return pageValue;
+}

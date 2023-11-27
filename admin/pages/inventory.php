@@ -15,8 +15,11 @@ SQL;
 
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 $mode = isset($_GET['mode']) ? $_GET['mode'] : null;
+$searchVal = isset($_GET['search']) ? $_GET['search'] : null;
 
-if (!empty($_GET['id']) && $id > -1) {
+if ($searchVal) {
+    $query .= " WHERE p.item_name LIKE '%$searchVal%' OR p.brand LIKE '%$searchVal%' OR s.name LIKE '%$searchVal%' OR p.description LIKE '%$searchVal%' or p.id LIKE '%$searchVal%'";
+} elseif (!empty($_GET['id']) && $id > -1) {
     $query .= "WHERE p.id = '$id'";
 } else {
     $query .= "ORDER BY p.id DESC";
@@ -397,7 +400,6 @@ include_once '../components/image-container.php';
 
 
 
-
 <!-- MODALS -->
 <?php
 $res = isset($_GET['res']) ? $_GET['res'] : null;
@@ -561,3 +563,9 @@ switch ($res) {
         </div>
     </div>
 </div>
+
+<?php if (empty($products)) : ?>
+    <script>
+        window.location.replace("./?page=inventory&res=searchnotfound");
+    </script>
+<?php endif; ?>

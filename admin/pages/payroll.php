@@ -5,6 +5,7 @@ $status = isset($_GET['status']) ? $_GET['status'] : null;
 $isEmp = $_SESSION['userRoleId'] == 4;
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 $mode = isset($_GET['mode']) ? $_GET['mode'] : null;
+$searchVal = isset($_GET['search']) ? $_GET['search'] : null;
 $query = <<<SQL
 
 SELECT 
@@ -30,7 +31,9 @@ FROM
 
 SQL;
 
-if ($isEmp) {
+if ($searchVal) {
+    $query .= " WHERE u.username LIKE '%$searchVal%' OR CONCAT(u.first_name, ' ', u.middle_name, ' ', u.last_name) LIKE '%$searchVal%' OR s.id LIKE '%$searchVal%'";
+} elseif ($isEmp) {
     $query .= " WHERE u.id = {$_SESSION['adminId']}";
 } else {
     $query .= " ORDER BY u.id ASC";
@@ -438,4 +441,11 @@ $selected_payroll = [];
     </div>
 
     <!-- END -->
+<?php endif; ?>
+
+
+<?php if (empty($users)) : ?>
+    <script>
+        window.location.replace("./?page=payroll&res=searchnotfound");
+    </script>
 <?php endif; ?>

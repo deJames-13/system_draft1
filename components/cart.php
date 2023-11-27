@@ -162,7 +162,7 @@ try {
 
 <!-- CART CHECK OUT MODAL -->
 
-<?php if ($_GET['ids']) : ?>
+<?php if (isset($_GET['ids'])) : ?>
 
     <?php
     $customerName = $result[0]['customer_name'];

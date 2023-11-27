@@ -6,6 +6,8 @@ if ($isEmp) {
 }
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 $mode = isset($_GET['mode']) ? $_GET['mode'] : null;
+$searchVal = isset($_GET['search']) ? $_GET['search'] : null;
+
 $query = <<<SQL
 SELECT 
 u.*,
@@ -21,7 +23,9 @@ ON u.department_id = d.id
 
 SQL;
 
-if (isset($_GET['id']) && $id > -1) {
+if ($searchVal) {
+    $query .= "WHERE u.id  LIKE '%$searchVal%' OR  u.first_name LIKE '%$searchVal%' OR u.middle_name LIKE '%$searchVal%' OR u.last_name LIKE '%$searchVal%' OR u.username LIKE '%$searchVal%' OR u.email LIKE '%$searchVal%' OR d.name LIKE '%$searchVal%' ORDER BY u.id DESC";
+} elseif ($id > -1) {
     $query .= "WHERE u.id = '$id'";
 } else {
     $query .= "ORDER BY u.id DESC";
@@ -647,3 +651,9 @@ switch ($res) {
         </div>
     </div>
 </div>
+
+<?php if (empty($users)) : ?>
+    <script>
+        window.location.replace("./?page=payroll&res=searchnotfound");
+    </script>
+<?php endif; ?>

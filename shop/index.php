@@ -30,7 +30,13 @@ require_once "../scripts/db-config.php";
   <main>
 
     <!-- Top Bar -->
-    <!-- here --> <?php include_once '../components/top-bar.php'; ?>
+    <!-- here -->
+    <?php
+    $page = isset($_GET['page']) ? $_GET['page'] : null;
+    if ($page == 'shop') {
+      include_once '../components/top-bar.php';
+    }
+    ?>
 
 
     <!-- Main Shop -->
@@ -46,11 +52,7 @@ require_once "../scripts/db-config.php";
       <!-- here -->
       <?php
 
-      if (isset($_GET['page'])) {
-        $page = $_GET['page'];
-      } else {
-        $page = 'shop';
-      }
+      $page = isset($_GET['page']) ? $_GET['page'] : null;
       switch ($page) {
         case 'shop':
           include_once '../components/products.php';
@@ -195,6 +197,12 @@ require_once "../scripts/db-config.php";
             btnFunc: "window.location.replace('../account/')"
           );
           break;
+        case 'searchnotfound':
+          echo createModal(
+            title: "No results found.",
+            visible: true,
+            message: "No results found for your search. Please try again.",
+          );
           break;
 
         default:

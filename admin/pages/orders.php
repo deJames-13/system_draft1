@@ -2,6 +2,8 @@
 
 $status = isset($_GET['status']) ? $_GET['status'] : null;
 $id = isset($_GET['id']) ? $_GET['id'] : null;
+$searchVal = isset($_GET['search']) ? $_GET['search'] : null;
+
 
 $query = <<<SQL
   SELECT
@@ -37,8 +39,13 @@ $query = <<<SQL
   INNER JOIN shipping_info as s
   ON o.shipping_type = s.`type`
   
-  ORDER BY o.id DESC
+  
 SQL;
+if ($searchVal) {
+    $query .= "WHERE o.id LIKE '%$searchVal%' OR ohp.product_id LIKE '%$searchVal%' OR ohp.quantity LIKE '%$searchVal%' OR p.item_name LIKE '%$searchVal%' OR p.price LIKE '%$searchVal%' OR o.shipping_type LIKE '%$searchVal%' OR o.ship_date LIKE '%$searchVal%' OR o.create_date LIKE '%$searchVal%' OR s.amount LIKE '%$searchVal%' OR `o`.`status` LIKE '%$searchVal%' OR CONCAT(c.first_name, ' ', c.last_name) LIKE '%$searchVal%' OR c.address LIKE '%$searchVal%' ";
+} else {
+    $query .= "ORDER BY o.id DESC";
+}
 
 
 try {
@@ -540,3 +547,9 @@ switch ($res) {
 error_reporting(E_ALL);
 
 ?>
+
+<?php if (empty($orders)) : ?>
+    <script>
+        window.location.replace("./?page=orders&res=searchnotfound");
+    </script>
+<?php endif; ?>
