@@ -9,7 +9,6 @@ function showImageContainer($itemImage, $type)
         $images = json_decode($itemImage, true);
 
         $imgDisplay = '';
-
         foreach ($images as $i) {
             $path = "../img/$type/" . $i['name'];
             $src = file_exists($path) ? $path : "../img/$type/default.jpg";
@@ -22,24 +21,27 @@ function showImageContainer($itemImage, $type)
 
             $imgDisplay .= $imgDiv;
         }
-        $mainElement = <<<HTML
-        <div id="imageContainer" class="flex items-center justify-center w-full h-full relative p-4">
-            <div class="swiper-container max-w-full h-full overflow-hidden space-x-4 flex transition-all transform">
-                <div class="swiper-wrapper">
-                    {$imgDisplay}
-                </div>
-
-                <div class="swiper-pagination"></div>
-            </div>
-        </div>
-        HTML;
     } else {
         $itemImage = $itemImage != null && file_exists($itemImage) ? $itemImage : "../img/$type/default.jpg";
 
-        $mainElement = <<<HTML
+        $imgDisplay = <<<HTML
+        <div class="swiper-slide">
             <img src="{$itemImage}" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />
+        </div>
+        
         HTML;
     }
+
+    $mainElement = <<<HTML
+    <div id="imageContainer" class="flex items-center justify-center w-full h-full relative p-4">
+        <div class="swiper-container max-w-full h-full overflow-hidden flex transition-all transform">
+            <div id="swiper-wrapper" class="swiper-wrapper px-2">
+                {$imgDisplay}
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    HTML;
 
     echo $mainElement;
 }

@@ -179,7 +179,7 @@ try {
         }
     }
     $post_ids = implode(",", $selected_cart_ids);
-    $accSubTotal;
+    $accSubTotal = 0;
     ?>
 
     <!-- Modal -->

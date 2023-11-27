@@ -90,8 +90,8 @@ if ($_SESSION['userId']) {
                     <div class="max-w-xs aspect-square flex items-center justify-center shadow-xl ">
 
                         <!-- IMAGE CONTAIN -->
-                        <div class="w-full relative">
-                            <div id="imageDisplay" class="max-w-full h-full   flex transition-all transform aspect-square">
+                        <div class="w-full relative ">
+                            <div id="imageDisplay" class="overflow-auto max-w-full h-full flex transition-all transform aspect-square">
 
                                 <?php showImageContainer($itemImage, "customer") ?>
 

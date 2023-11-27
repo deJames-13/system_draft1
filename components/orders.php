@@ -2,7 +2,6 @@
 $userName = $_SESSION['userName'];
 $customerId = $_SESSION['userId'];
 $type = $_GET['type'] ?? 'pending';
-
 $query = <<<SQL
   SELECT
     ohp.order_id as id,
@@ -73,7 +72,7 @@ $groupedResult = [];
     <!-- Menu Category -->
     <div id="ordertype" class=" space-x-2 items-center hidden md:flex">
       <a href="?page=orders&type=pending" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'pending' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Pending</a>
-      <a href="?page=orders&type=shipped" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'shipped' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Shipped</a>
+      <a href="?page=orders&type=shipping" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'shipping' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Shipped</a>
       <a href="?page=orders&type=delivered" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'delivered' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Delivered</a>
       <a href="?page=orders&type=cancelled" class="p-2 rounded border-accent text-sm font-semibold <?= $type == 'cancelled' ? 'bg-primary30 border border-b-2' : 'bg-none' ?>  hover:bg-secondary50">Cancelled</a>
     </div>

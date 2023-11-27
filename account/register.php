@@ -31,7 +31,7 @@ try {
         if (strlen($_POST['password']) < 8) {
             header('Location: ./signup.php?res=passwordtooshort');
             exit;
-        } elseif (strlen($_POST['password']) > 8) {
+        } elseif (strlen($_POST['password']) > 15) {
             header('Location: ./signup.php?res=passwordtoolong');
             exit;
         }
