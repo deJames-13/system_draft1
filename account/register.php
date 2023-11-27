@@ -1,14 +1,19 @@
 <?php
 
 session_start();
-
 if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
     session_destroy();
 }
 
+// Pre-save account
+$_SESSION['newUser'] = [
+    'username' => $_POST['username'],
+    'email' => $_POST['email'],
+];
+
+
 require_once '../scripts/db-config.php';
 require_once '../scripts/handle-images.php';
-
 try {
 
 
@@ -17,13 +22,28 @@ try {
 
     if ($_POST['action'] == 'signup') {
 
-        $isValidPass = $_POST['password'] == $_POST['confirmPass'];
+        // Form Validation
 
+
+        // 1 check if same pass
+        $isValidPass = $_POST['password'] == $_POST['confirmPass'];
         if (!$isValidPass) {
             header('Location: ./signup.php?res=incorrectpassword');
             exit;
         }
 
+        // 2 check if pass is 8 - 15 characters
+        if (count($_POST['password']) < 8) {
+            header('Location: ./signup.php?res=passwordtooshort');
+            exit;
+        } elseif (count($_POST['password']) > 8) {
+            header('Location: ./signup.php?res=passwordtoolong');
+            exit;
+        }
+
+
+
+        // 3 checks username availability
         $res = $dbc->executeQuery(
             query: "SELECT * FROM customer WHERE username = ? OR email = ?",
             params: [
@@ -37,11 +57,8 @@ try {
             exit;
         }
 
-        $_SESSION['newUser'] = [
-            'username' => $_POST['username'],
-            'email' => $_POST['email'],
-            'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-        ];
+
+        $_SESSION['newUser']['password'] =  password_hash($_POST['password'], PASSWORD_DEFAULT);
         header('Location: ./profile.php?viewprofile=1&mode=accountsetup');
         exit;
     } else if ($_POST['action'] == 'saveprofile') {

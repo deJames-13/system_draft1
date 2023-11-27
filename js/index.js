@@ -400,3 +400,34 @@ function getPageParameter() {
 
   return pageValue;
 }
+
+// Dunamic Form Validation
+
+// password length validation,  < 8 = tooshort, > 15 = toolong
+function validatePasswordLength(event) {
+  event.preventDefault();
+
+  console.log('asda');
+  var password = document.getElementById('password').value;
+  var passwordLength = password.length;
+  const submitButton = document.getElementById('btnSubmit');
+
+  if (passwordLength < 8) {
+    document.getElementById('passwordLength').innerHTML =
+      'Password is too short';
+    document.getElementById('passwordLength').style.color = 'red';
+    submitButton.disabled = true;
+    submitButton.style.opacity = 0.5;
+  } else if (passwordLength > 15) {
+    document.getElementById('passwordLength').innerHTML =
+      'Password is too long';
+    document.getElementById('passwordLength').style.color = 'red';
+    submitButton.style.opacity = 0.5;
+    submitButton.disabled = true;
+  } else {
+    document.getElementById('passwordLength').innerHTML = '';
+    document.getElementById('passwordLength').style.color = 'gray';
+    submitButton.style.opacity = 1;
+    submitButton.disabled = false;
+  }
+}

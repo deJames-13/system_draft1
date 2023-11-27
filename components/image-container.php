@@ -1,10 +1,11 @@
 <?php
+error_reporting(E_ERROR | E_PARSE);
 
 function showImageContainer($itemImage, $type)
 {
 
     $mainElement = '';
-    if (json_decode($itemImage)) {
+    if ($itemImage != null && json_decode($itemImage)) {
         $images = json_decode($itemImage, true);
 
         $imgDisplay = '';
@@ -33,7 +34,7 @@ function showImageContainer($itemImage, $type)
         </div>
         HTML;
     } else {
-        $itemImage = file_exists($itemImage) ? $itemImage : "../img/$type/default.jpg";
+        $itemImage = $itemImage != null && file_exists($itemImage) ? $itemImage : "../img/$type/default.jpg";
 
         $mainElement = <<<HTML
             <img src="{$itemImage}" alt=" " class=" object-contain h-full w-full hover:scale-[.95] transform transition-all" />

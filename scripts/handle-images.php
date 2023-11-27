@@ -1,6 +1,8 @@
 <?php
 function handleImageUpload($uploadDir, $files)
 {
+    error_reporting(E_ERROR | E_PARSE);
+
     if (!is_dir($uploadDir)) {
         if (!mkdir($uploadDir, 0777, true)) {
             // die("Error: Unable to create the upload directory.");
@@ -55,5 +57,6 @@ function handleImageUpload($uploadDir, $files)
             continue;
         }
     }
+
     return json_encode($uploadedFiles);
 }

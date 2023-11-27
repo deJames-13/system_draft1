@@ -1,6 +1,5 @@
 <?php
 
-
 $status = isset($_GET['status']) ? $_GET['status'] : null;
 $isEmp = $_SESSION['userRoleId'] == 4;
 $id = isset($_GET['id']) ? $_GET['id'] : null;

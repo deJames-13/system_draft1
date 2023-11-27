@@ -1,5 +1,13 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
+$username = null;
+$email = null;
+if (isset($_SESSION['newUser'])) {
+    $username = $_SESSION['newUser']['username'];
+    $email = $_SESSION['newUser']['email'];
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,12 +40,12 @@ error_reporting(E_ERROR | E_PARSE);
                     <i class="fas fa-pen-to-square"></i>
                     Sign in
                 </h1>
-                <input name="email" id="email" type="email" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Email" required />
-                <input name="username" id="username" type="text" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Username" required />
+                <input name="email" id="email" type="email" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Email" required value="<?= $email ?? '' ?>" />
+                <input name="username" id="username" type="text" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Username" required value="<?= $username ?? '' ?>" />
 
                 <div class="w-2/3 flex space-x-4 items-center border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100">
 
-                    <input id="password" name="password" type="password" class="w-full bg-transparent bg-opacity-0   focus:outline-none focus:bg-transparent focus:border-accent" placeholder="Password" />
+                    <input id="password" name="password" type="password" class="w-full bg-transparent bg-opacity-0   focus:outline-none focus:bg-transparent focus:border-accent" placeholder="Password (8 - 15 characters)" />
 
                     <span id="showIcon" onclick="showPassword(this)"><i class="fas fa-eye hover:text-secondary"></i></span>
                     <span id="hideIcon" onclick="showPassword(this)" class="hidden hover:text-secondary"><i class="fas fa-eye-slash"></i></span>
@@ -71,6 +79,20 @@ error_reporting(E_ERROR | E_PARSE);
 
     switch ($_GET['res']) {
         case 'incorrectpassword':
+            echo createModal(
+                title: "Incorrect Password.",
+                visible: true,
+                message: "The password you entered does not match.",
+            );
+            break;
+        case 'passwordtooshort':
+            echo createModal(
+                title: "Incorrect Password.",
+                visible: true,
+                message: "The password you entered does not match.",
+            );
+            break;
+        case 'passwordtoolong':
             echo createModal(
                 title: "Incorrect Password.",
                 visible: true,

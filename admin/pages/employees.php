@@ -9,22 +9,23 @@ $mode = isset($_GET['mode']) ? $_GET['mode'] : null;
 $searchVal = isset($_GET['search']) ? $_GET['search'] : null;
 
 $query = <<<SQL
-SELECT 
-u.*,
-CONCAT(u.first_name, ' ', u.middle_name,' ', u.last_name) as 'name',
-r.name as 'role',
-d.name as 'department'
-FROM 
-user as u
-INNER JOIN `role` as r
-ON u.role_id = r.id
-INNER JOIN department as d
-ON u.department_id = d.id
+
+    SELECT 
+    u.*,
+    CONCAT(u.first_name, ' ', u.middle_name,' ', u.last_name) as 'name',
+    r.name as 'role',
+    d.name as 'department'
+    FROM 
+    user as u
+    INNER JOIN `role` as r
+    ON u.role_id = r.id
+    INNER JOIN department as d
+    ON u.department_id = d.id
 
 SQL;
 
 if ($searchVal) {
-    $query .= "WHERE u.id  LIKE '%$searchVal%' OR  u.first_name LIKE '%$searchVal%' OR u.middle_name LIKE '%$searchVal%' OR u.last_name LIKE '%$searchVal%' OR u.username LIKE '%$searchVal%' OR u.email LIKE '%$searchVal%' OR d.name LIKE '%$searchVal%' ORDER BY u.id DESC";
+    $query .= "WHERE u.id LIKE '%$searchVal%' OR  u.first_name LIKE '%$searchVal%' OR u.middle_name LIKE '%$searchVal%' OR u.last_name LIKE '%$searchVal%' OR u.username LIKE '%$searchVal%' OR u.email LIKE '%$searchVal%' OR d.name LIKE '%$searchVal%' ORDER BY u.id DESC";
 } elseif ($id > -1) {
     $query .= "WHERE u.id = '$id'";
 } else {
@@ -42,7 +43,6 @@ try {
 } catch (Exception $ex) {
     echo $ex->getMessage();
 }
-
 include_once '../components/image-container.php';
 ?>
 
@@ -203,10 +203,10 @@ include_once '../components/image-container.php';
 
 <?php elseif (isset($_GET['id'])  && $id > -1 && $mode == 'edit' && !$isEmp) : ?>
 
-
     <?php
     $user = $users[0];
     $itemImage = $user['image_dir'];
+    $isChangePass = isset($_GET['changepass']) && $_GET['changepass'] == 1;
 
     ?>
 
@@ -276,6 +276,9 @@ include_once '../components/image-container.php';
 
                 <!-- Action buttons -->
                 <div class="p-4 w-full h-1/4 flex flex-col space-y-4 ">
+                    <a href="./?page=employees&id=<?= $id ?>&mode=edit&changepass=1" class="text-center w-full rounded border border-accent p-2 hover:scale-110 hover:border-b-2 transition-all transform">
+                        Change Password
+                    </a>
                     <button type="submit" name="action" value="update" class="w-full text-center rounded border border-accent p-2 bg-primary50 hover:scale-110 hover:border-b-2 transition-all transform">
                         Save
                     </button>
@@ -373,7 +376,7 @@ include_once '../components/image-container.php';
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-sm text-gray-400" for="age">Age</label>
-                                <input class="`text-lg" type="number" name="age" id="age" value="<?= $user['age'] ?>">
+                                <input disabled class="`text-lg" type="number" name="age" id="age" value="<?= $user['age'] ?>">
                             </div>
                         </div>
                     </div>
@@ -382,6 +385,94 @@ include_once '../components/image-container.php';
             </div>
         </form>
     </div>
+
+
+    <!-- Create user Modal -->
+
+    <div class="<?= $isChangePass && !$isEmp ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity">
+                <div class="absolute inset-0 bg-gray-900 opacity-20" />
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">
+                &#8203;
+            </span>
+
+            <div class="h-auto inline-block align-center py-8 transform transition-all align-middle w-full max-w-2xl p-2">
+                <form enctype="multipart/form-data" action="./employee/update.php" method="post" id="modal-content" class="animate-fall relative container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 border border-accent30 bg-white text-left h-full min-h-full">
+                    <div class="container h-full max-h-full overflow-y-auto">
+
+                        <!-- Title -->
+                        <div class="flex items-center space-x-4 p-2 px-4 border-b-2 border-accent">
+                            <i class="text-xl md:text-3xl text-accent fas fa-pen"></i>
+                            <h1 class="text-xl md:text-3xl font-semibold text-accent hover:text-secondary">
+                                Change Password
+                            </h1>
+                        </div>
+
+                        <div class="container p-2 px-4 flex flex-col space-y-4  text-md">
+
+                            <!-- Id -->
+                            <input class="text-md" type="text" name="id" id="id" value="<?= $user['id'] ?>" hidden>
+
+
+                            <!-- Password -->
+                            <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-start md:justify-between md:flex-row md:space-x-1">
+                                <span class="w-[40%]">Current Password: </span>
+                                <div class="w-full">
+                                    <div class="flex w-full space-x-4 items-center justify-between">
+                                        <input required type="password" name="prev_password" id="prev_password" placeholder="Enter current password" class="w-full border rounded p-1 px-4">
+                                        <span class="cursor-pointer" id="showIcon" onclick="showPassword(this)"><i class="fas fa-eye hover:text-secondary"></i></span>
+                                        <span id="hideIcon" onclick="showPassword(this)" class="cursor-pointer hidden hover:text-secondary"><i class="fas fa-eye-slash"></i></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <!-- New Password -->
+                            <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-start md:justify-between md:flex-row md:space-x-1">
+                                <span class="w-[40%]">New Password: </span>
+                                <div class="w-full">
+                                    <div class="flex w-full space-x-4 items-center justify-between">
+                                        <input oninput="validatePasswordLength(event)" required type="password" name="password" id="password" placeholder="Enter new password" class="w-full border rounded p-1 px-4">
+                                        <span class="cursor-pointer" id="showIcon" onclick="showPassword(this)"><i class="fas fa-eye hover:text-secondary"></i></span>
+                                        <span id="hideIcon" onclick="showPassword(this)" class="cursor-pointer hidden hover:text-secondary"><i class="fas fa-eye-slash"></i></span>
+                                    </div>
+                                    <p id="passwordLength" class="mx-4 my-2 font-extralight text-xs text-gray-600">Password must 8 - 15 characters</p>
+                                </div>
+                            </div>
+
+
+                            <!-- Confirm Password -->
+                            <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-start md:justify-between md:flex-row md:space-x-1">
+                                <span class="w-[40%]">Confirm Password: </span>
+                                <div class="w-full">
+                                    <div class="flex w-full space-x-4 items-center justify-between">
+                                        <input required type="password" name="confpass" id="confpass" placeholder="Confirm Password" class="w-full border rounded p-1 px-4">
+                                        <span class="cursor-pointer" id="showIcon" onclick="showPassword(this)"><i class="fas fa-eye hover:text-secondary"></i></span>
+                                        <span id="hideIcon" onclick="showPassword(this)" class="cursor-pointer hidden hover:text-secondary"><i class="fas fa-eye-slash"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <!-- option buttons -->
+                    <div class="flex items-center justify-end space-x-4 w-full">
+                        <a name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" href="./?page=employees">Close</a>
+
+                        <button id="btnSubmit" type="submit" name="action" value="updatepassword" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="" disabled>Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 
 
@@ -500,10 +591,31 @@ include_once '../components/image-container.php';
 
 <!-- Modals -->
 
-<!-- Create Modal -->
+<!-- Alert Modals -->
 <?php
 $res = isset($_GET['res']) ? $_GET['res'] : null;
 switch ($res) {
+    case 'incorrectpassword':
+        echo createModal(
+            visible: true,
+            title: 'Incorrect Password',
+            message: 'Incorrect password. Please try again.',
+        );
+        break;
+    case 'passwordmismatch':
+        echo createModal(
+            visible: true,
+            title: 'Password Mismatch',
+            message: 'Password does not match. Please try again.',
+        );
+        break;
+    case 'passwordupdatesuccess':
+        echo createModal(
+            visible: true,
+            title: 'Password Update Success',
+            message: 'Password has been updated successfully.',
+        );
+        break;
     case 'employeeupdatesuccess':
         echo createModal(
             visible: true,
@@ -540,7 +652,6 @@ switch ($res) {
     default:
         break;
 }
-
 ?>
 
 
@@ -548,10 +659,6 @@ switch ($res) {
 
 
 <!-- Create user Modal -->
-
-
-<!-- CREATE MODAL -->
-
 
 <div class="<?= $mode == 'create' && !$isEmp ? '' : 'hidden' ?> fixed z-10 top-0 w-full left-0  overflow-y-auto" id="alert_modal">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -598,6 +705,19 @@ switch ($res) {
                             <span class="w-[40%]">Email: </span>
                             <input required type="email" name="email" id="email" placeholder="Email Address" class="w-full border rounded p-1 px-4">
                         </div>
+                        <!-- Password -->
+                        <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-start md:justify-between md:flex-row md:space-x-1">
+                            <span class="w-[40%]">Password: </span>
+                            <div class="w-full">
+                                <div class="flex w-full space-x-4 items-center justify-between">
+                                    <input oninput="validatePasswordLength(event)" required type="password" name="password" id="password" placeholder="Password" class="w-full border rounded p-1 px-4">
+                                    <span class="cursor-pointer" id="showIcon" onclick="showPassword(this)"><i class="fas fa-eye hover:text-secondary"></i></span>
+                                    <span id="hideIcon" onclick="showPassword(this)" class="cursor-pointer hidden hover:text-secondary"><i class="fas fa-eye-slash"></i></span>
+                                </div>
+                                <p id="passwordLength" class="mx-4 my-2 font-extralight text-xs text-gray-600">Password must 8 - 15 characters</p>
+                            </div>
+                        </div>
+
 
                         <!-- Role -->
                         <div class="w-full flex flex-col space-y-2 md:space-y-0 md:items-center md:justify-between md:flex-row md:space-x-2">
@@ -645,7 +765,7 @@ switch ($res) {
                 <div class="flex items-center justify-end space-x-4 w-full">
                     <a name="closeModal" class="px-4 py-2 bg-secondary30 text-accent border border-accent rounded hover:bg-red-400" href="./?page=employees">Close</a>
 
-                    <button type="submit" name="action" value="create" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="">Save</button>
+                    <button id="btnSubmit" type="submit" name="action" value="create" class="px-4 py-2 bg-primary50 text-accent border border-accent rounded hover:bg-green-400" onclick="">Save</button>
                 </div>
             </form>
         </div>

@@ -31,12 +31,12 @@ function createModal($title = null, $message = null, $visible = false, $btnFunc 
 
             <div id="modal-content" class="animate-fall container flex flex-col justify-between rounded-lg overflow-y-auto shadow-xl p-4 max-h-1/2 border border-accent30 bg-white text-left">
                 <div class="pb-2 border-b-2 border-accent">
-                    <h1 class="text-xl font-bold">
+                    <h1 class="text-xl font-bold" id="modal-title">
                         $title
                     </h1>
                 </div>
                 <div class="pt-2">
-                    <p class="text-base">
+                    <p class="text-base" id="modal-message">
                         $message
                     </p>
                 </div>
