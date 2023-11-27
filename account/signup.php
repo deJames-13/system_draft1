@@ -40,8 +40,8 @@ if (isset($_SESSION['newUser'])) {
                     <i class="fas fa-pen-to-square"></i>
                     Sign in
                 </h1>
-                <input name="email" id="email" type="email" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Email" required value="<?= $email ?? '' ?>" />
-                <input name="username" id="username" type="text" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Username" required value="<?= $username ?? '' ?>" />
+                <input name="email" id="email" type="email" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Email" required value="<?= $email ?>" />
+                <input name="username" id="username" type="text" class="w-2/3 border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="Username" required value="<?= $username  ?>" />
 
                 <div class="w-2/3 flex space-x-4 items-center border-2 border-b-accent rounded-md p-2 px-4 text-lg bg-gray-100">
 
@@ -76,8 +76,8 @@ if (isset($_SESSION['newUser'])) {
     </main>
     <?php
     include_once '../components/modals.php';
-
-    switch ($_GET['res']) {
+    $res = isset($_GET['res']) ? $_GET['res'] : null;
+    switch ($res) {
         case 'incorrectpassword':
             echo createModal(
                 title: "Incorrect Password.",

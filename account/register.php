@@ -1,15 +1,10 @@
 <?php
 
 session_start();
-if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
+
+if (isset($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
     session_destroy();
 }
-
-// Pre-save account
-$_SESSION['newUser'] = [
-    'username' => $_POST['username'],
-    'email' => $_POST['email'],
-];
 
 
 require_once '../scripts/db-config.php';
@@ -58,7 +53,11 @@ try {
         }
 
 
-        $_SESSION['newUser']['password'] =  password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $_SESSION['newUser'] = [
+            'username' => $_POST['username'],
+            'email' => $_POST['email'],
+            'password' =>  password_hash($_POST['password'], PASSWORD_DEFAULT)
+        ];
         header('Location: ./profile.php?viewprofile=1&mode=accountsetup');
         exit;
     } else if ($_POST['action'] == 'saveprofile') {
@@ -95,10 +94,8 @@ try {
         exit;
     } else if ($_POST['action'] == 'updateprofile') {
 
-        // check username availability
-        $username = $dbc->select('customer', ['username'], ['id' => $id])[0]['username'];
 
-        if ($username != $_POST['username']) {
+        if ($_SESSION['userName'] != $_POST['username']) {
             $res = $dbc->select('customer', ['username'], ['username' => $_POST['username']]);
 
             if (!empty($res)) {

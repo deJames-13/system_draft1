@@ -82,7 +82,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
                 message: "The username is not found. Please try again or sign up with the username.",
                 visible: true,
                 btnConfirm: "Sign up",
-                btnFunc: "()=>{window.location.replace('./signup.php')}"
+                btnFunc: "window.location.replace('./signup.php')"
             );
             break;
         case 'wrongpass':
@@ -97,6 +97,7 @@ if (!empty($_GET['fromLogout']) && $_GET['fromLogout'] == '1') {
                 title: "Sign in first",
                 message: "Please sign up or log in to an existing account to have transactions on our shop.",
                 visible: true,
+
             );
             break;
         case 'deleteaccountsuccess':

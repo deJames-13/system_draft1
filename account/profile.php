@@ -149,14 +149,14 @@ if ($_SESSION['userId']) {
                             <label class="text-light" for="username">Username</label>
 
                             <!-- username -->
-                            <input name="username" id="username" <?= isset($_SESSION['newUser']) ? 'disabled' : '' ?> type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $userName ?>" />
+                            <input name="username" id="username" type="text" class="w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $userName ?>" />
                         </div>
 
                         <div class="w-full md:w-2/3 lg:container flex flex-col space-y-2 items-start">
                             <label class="text-light" for="email">Email</label>
 
                             <!-- email -->
-                            <input name="email" id="email" <?= isset($_SESSION['newUser']) ? 'disabled' : '' ?> type="email" class=" w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $email ?>" />
+                            <input name="email" id="email" type="email" class=" w-full border-2 border-b-accent rounded-md p-1 text-md bg-gray-100 focus:outline-none focus:border-accent hover: hover:bg-primary30 focus:bg-primary30" placeholder="" required value="<?= $email ?>" />
                         </div>
                     </div>
 
